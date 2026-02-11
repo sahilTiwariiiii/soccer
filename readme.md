@@ -1,0 +1,1 @@
+sari createion wale se createdByUser ko req.body se hata kar req.user._id wali line ko uncomment kar do 

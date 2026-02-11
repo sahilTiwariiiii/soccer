@@ -66,3 +66,4 @@ mongoose.connect(mongoURI)
     console.error("Error connecting to MongoDB:", err);
     process.exit(1);
   });
+// Addictin detilas me dummy list add karna hai 
