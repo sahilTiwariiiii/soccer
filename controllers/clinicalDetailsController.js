@@ -2,6 +2,7 @@
 import PastMedicalHistory from '../models/PastMedicalHistory.js';
 import PastSurgicalHistory from '../models/PastSurgicalHistory.js';
 import Addiction from '../models/Addiction.js';
+import PersonalHistory from '../models/PersonalHistory.js';
 
 
 // Addiction
@@ -269,9 +270,191 @@ export const deleteComplaint = async (req, res) => {
     }
   };
   
+//  Personal History 
 
+// Create Personal History
+export const createPersonalHistory = async (req, res) => {
+    try {
+      const {
+        visitId,
+        diet,
+        appetite,
+        sleep,
+        bladder,
+        bowel,
+        currentTreatment,
+        comments,
+        createdByUser
+      } = req.body;
+  
+      const history = await PersonalHistory.create({
+        visitId,
+        diet,
+        appetite,
+        sleep,
+        bladder,
+        bowel,
+        currentTreatment,
+        comments,
+        createdByUser
+      });
+  
+      res.status(201).json({
+        success: true,
+        message: "Personal history created successfully",
+        data: history
+      });
+  
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: "Error creating personal history",
+        error: error.message
+      });
+    }
+  };
+  
+// Update Personal History
+export const updatePersonalHistory = async (req, res) => {
+    try {
+      const {
+        visitId,
+        diet,
+        appetite,
+        sleep,
+        bladder,
+        bowel,
+        currentTreatment,
+        comments,
+      } = req.body;
+  
+      const updatedHistory = await PersonalHistory.findByIdAndUpdate(
+        req.params.id,
+        {
+          visitId,
+          diet,
+          appetite,
+          sleep,
+          bladder,
+          bowel,
+          currentTreatment,
+          comments,
+        },
+        { new: true, runValidators: true }
+      );
+  
+      if (!updatedHistory) {
+        return res.status(404).json({
+          success: false,
+          message: "Personal history not found"
+        });
+      }
+  
+      res.status(200).json({
+        success: true,
+        message: "Personal history updated successfully",
+        data: updatedHistory
+      });
+  
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: "Error updating personal history",
+        error: error.message
+      });
+    }
+  };
+// get all Personal History by Patient Id
+export const getPersonalHistoryByPatientId = async (req, res) => {
+    try {
+      const histories = await PersonalHistory.find()
+        .populate({
+          path: "visitId",
+          match: { patientId: req.params.patientId }
+        })
+        .populate("createdByUser");
+  
+      const filtered = histories.filter(h => h.visitId !== null);
+  
+      res.status(200).json({
+        success: true,
+        total: filtered.length,
+        data: filtered
+      });
+  
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: "Error fetching personal history",
+        error: error.message
+      });
+    }
+  };
+// delete Pesonal History by Id
+export const deletePersonalHistoryByVisitId = async (req, res) => {
+    try {
+      const { id } = req.params;
+  
+      const deletedHistory = await PersonalHistory.findOneAndDelete({ _id:id });
+  
+      if (!deletedHistory) {
+        return res.status(404).json({
+          success: false,
+          message: "Personal history not found"
+        });
+      }
+  
+      res.status(200).json({
+        success: true,
+        message: "Personal history deleted successfully"
+      });
+  
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: "Error deleting personal history",
+        error: error.message
+      });
+    }
+  };
+// delete multiple ids
+export const deleteMultiplePersonalHistory = async (req, res) => {
+  try {
+    const { ids } = req.body;
 
+    // Check if ids exist and is array
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide valid PersonalHistory IDs"
+      });
+    }
+
+    const result = await PersonalHistory.deleteMany({
+      _id: { $in: ids }
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Selected personal history records deleted successfully",
+      deletedCount: result.deletedCount
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error deleting personal history",
+      error: error.message
+    });
+  }
+};
+
+  
 
  
 //   getAllAddictionHistory
-export default {createAddiction,updateAddiction,deleteById,deleteMultiple,createPatientPastSurgicalHistory,PatientPastSurgicalHistory,updateSurgicalHistory,getPatientAddiction,PatientPastMedicalHistory,createPatientPastMedicalHistory,updatePatientPastMedicalHistory,deletePatientPastMedicalHistoryById,deleteMultiplePatientPastMedicalHistory};
+export default {createAddiction,updateAddiction,deleteById,deleteMultiple,createPatientPastSurgicalHistory,PatientPastSurgicalHistory,updateSurgicalHistory,getPatientAddiction,PatientPastMedicalHistory,createPatientPastMedicalHistory,updatePatientPastMedicalHistory,deletePatientPastMedicalHistoryById,deleteMultiplePatientPastMedicalHistory,createPersonalHistory,
+    updatePersonalHistory,
+    getPersonalHistoryByPatientId,
+    deletePersonalHistoryByVisitId,
+    deleteMultiplePersonalHistory};

@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const PersonalHistorySchema = new mongoose.Schema({
     visitId: { type: mongoose.Schema.Types.ObjectId, ref: "PatientVisit" },
     diet: {type: String,enums:["Vegetarian", "Non-Vegetarian"]},
@@ -5,6 +7,8 @@ const PersonalHistorySchema = new mongoose.Schema({
     sleep: {type:String,enums:["Normal", "Reduced", "Increased"]},
     bladder: {type:String,enums:["Consistent", "Inconsistent"]},
     bowel: {type:String,enums:["Normal", "Loose-Motions", "Constipation"]},
+    currentTreatment:{type:String},
+    comments:{type:String},
     createdByUser:{type:mongoose.Schema.Types.ObjectId,ref:"User"},
   }, { timestamps: true });
   
