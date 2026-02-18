@@ -1,5 +1,5 @@
 import express from 'express';
-import { createAddiction, createPatientPastMedicalHistory, createPatientPastSurgicalHistory, createPersonalHistory, deleteById, deleteMultiple, deleteMultiplePatientPastMedicalHistory, deleteMultiplePersonalHistory, deleteMultipleSurgicalHistory, deletePatientPastMedicalHistoryById, deletePersonalHistoryByVisitId, deleteSurgicalHistoryById, getPatientAddiction, getPersonalHistoryByPatientId, PatientPastMedicalHistory, PatientPastSurgicalHistory, updateAddiction, updatePatientPastMedicalHistory, updatePersonalHistory, updateSurgicalHistory } from '../controllers/clinicalDetailsController.js';
+import { createAddiction, createDiagnosis, createPatientPastMedicalHistory, createPatientPastSurgicalHistory, createPersonalHistory, deleteById, deleteMultiple, deleteMultiplePatientPastMedicalHistory, deleteMultiplePersonalHistory, deleteMultipleSurgicalHistory, deletePatientPastMedicalHistoryById, deletePersonalHistoryByVisitId, deleteSurgicalHistoryById, getDiagnosisById, getDiagnosisByPatientId, getDiagnosisVisitId, getPatientAddiction, getPersonalHistoryByPatientId, PatientPastMedicalHistory, PatientPastSurgicalHistory, updateAddiction, updateDiagnosis, updatePatientPastMedicalHistory, updatePersonalHistory, updateSurgicalHistory } from '../controllers/clinicalDetailsController.js';
 const router=express.Router();
 // Create Addiction
 router.post("/addiction",createAddiction);
@@ -42,5 +42,12 @@ router.get('/personalhistory/:patientId',getPersonalHistoryByPatientId);
 router.delete('/personalhistory/:id',deletePersonalHistoryByVisitId);
 // delete multiple personal history
 router.delete('/personalhistory',deleteMultiplePersonalHistory);
+
+// Diagnosis
+router.post('/creatediagnosis',createDiagnosis);
+router.put('/updatediagnosis/:id',updateDiagnosis);
+router.get('/getdiagnosis/:id',getDiagnosisById);
+router.get('/diagnosispatient/:patientId',getDiagnosisByPatientId);
+router.get('/visitdiagnosis/:visitId',getDiagnosisVisitId);
 
 export default router;

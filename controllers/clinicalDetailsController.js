@@ -3,6 +3,9 @@ import PastMedicalHistory from '../models/PastMedicalHistory.js';
 import PastSurgicalHistory from '../models/PastSurgicalHistory.js';
 import Addiction from '../models/Addiction.js';
 import PersonalHistory from '../models/PersonalHistory.js';
+import Diagnosis from '../models/Diagnosis.js';
+import PatientRegistration from '../models/PatientRegistration.js';
+import PatientVisit from '../models/PatientVisitSchema.js';
 
 
 // Addiction
@@ -27,7 +30,7 @@ export const createAddiction=async(req,res)=>{
 export const getPatientAddiction=async(req,res)=>{
 const {patientId}=req.params;
 try {
-    const patientAddictionData= await Addiction.find({patientId});
+    const patientAddictionData= await Addiction.find({patientId}).sort({createdAt:-1});
     return res.status(200).json({message:"Get All Addiction Details",patientAddictionData});
 } catch (error) {
     return res.status(500).json({message:error.message});
@@ -40,7 +43,7 @@ export const updateAddiction=async(req,res)=>{
     // const createdByUser=req.user._id;
     const {type,duration,units,frequency,status}=req.body;
     try {        
-        const updateAddictionById=await Addiction.updateOne({_id:id},{type,duration,units,frequency,status});
+        const updateAddictionById=await Addiction.findByIdAndUpdate(id,{type,duration,units,frequency,status});
         return res.status(200).json({message:"Updated Sucessfully",...req.body});
     } catch (error) {
         return res.status(500).json({message:error.message})
@@ -75,7 +78,7 @@ export const deleteMultiple=async(req,res)=>{
 export const PatientPastSurgicalHistory=async(req,res)=>{
     const {patientId}=req.params;
     try {
-        const pastPatientSurgicalHistory= await PastSurgicalHistory.find({patientId});
+        const pastPatientSurgicalHistory= await PastSurgicalHistory.find({patientId}).sort({createdAt:-1});
         return res.status(200).json({message:"Patient Past Surgical history Details",pastPatientSurgicalHistory});
     } catch (error) {
         return res.status(500).json({message:error.message});
@@ -86,7 +89,7 @@ export const createPatientPastSurgicalHistory=async(req,res)=>{
     // const createdByUser=req.user._id;
     const {patientId,surgeryName,surgeryDate,surgeonName,hospital}= req.body;
     if(!patientId){
-        return res.status(400).json({message:"Patiend Id is required"})
+        return res.status(400).json({message:"Patient Id is required"})
     }
     if(!surgeryName){
         return res.status(400).json({message:"Surgery Name is required"})
@@ -134,7 +137,7 @@ export const updateSurgicalHistory=async(req,res)=>{
     const {id}=req.params;
     const {surgeryName,surgeryDate,surgeonName,hospital}=req.body;
     try {
-        const updatedsurgicalhistory= await PastSurgicalHistory.updateOne({_id:id},{surgeryName,surgeryDate,surgeonName,hospital});
+        const updatedsurgicalhistory= await PastSurgicalHistory.findByIdAndUpdate(id,{surgeryName,surgeryDate,surgeonName,hospital},{new:true});
         return res.status(200).json({message:"Updated Surgical Details",updatedsurgicalhistory});
     } catch (error) {
         return res.status(500).json({message:error.message});
@@ -171,9 +174,10 @@ export const updatePatientPastMedicalHistory=async(req,res)=>{
     const {id}=req.params;
     const {disease,duration,medication}=req.body;
    try {
-    const updatedmedicalhistory=await PastMedicalHistory.updateOne({_id:id},{disease,duration,medication,
-        // createdByUser
-    })
+    const updatedmedicalhistory=await PastMedicalHistory.findByIdAndUpdate(id,{disease,duration,medication,
+        // createdByUser,
+    },
+{new:true})
     return res.status(201).json({message:"Updated Past Medical History created",updatedmedicalhistory});
    } catch (error) {
     return res.status(500).json({message:error.message})
@@ -241,9 +245,9 @@ export const updateComplaint = async (req, res) => {
         .json({ message: "complaints required" });
   
     try {
-      const result = await Complaint.updateOne(
-        { _id: id },
-        { complaints }
+      const result = await Complaint.findByIdAndUpdate(
+       id,
+        { complaints },{new:true}
       );
   
       if (result.matchedCount === 0)
@@ -372,7 +376,7 @@ export const getPersonalHistoryByPatientId = async (req, res) => {
           path: "visitId",
           match: { patientId: req.params.patientId }
         })
-        .populate("createdByUser");
+        .populate("createdByUser").sort({createdAt:-1});
   
       const filtered = histories.filter(h => h.visitId !== null);
   
@@ -449,7 +453,100 @@ export const deleteMultiplePersonalHistory = async (req, res) => {
   }
 };
 
+// Diagnosis
+// Create 
+export const createDiagnosis=async(req,res)=>{
+  const {visitId,patientId,diagnosisType,diagnosisName,icdCode,notes}=req.body;
+ 
+  if(!visitId){
+    return res.status(400).json({message:"Visit Id is required"});
+  }
+  if(!diagnosisType){
+    return res.status(400).json({message:"Diagnosis Type is required"});
+  }
+  if(!diagnosisName){
+    return res.status(400).json({message:"Diagnosis Name is required"});
+  }
+ 
+  if(!notes){
+    return res.status(400).json({message:"Notes is required"});
+  }
+  try {
+    
+    const isvisitIdExist= await PatientVisit.findById(visitId);
+    const isPatientExist= await PatientRegistration.findById(patientId);
+    if(!isvisitIdExist){
+      return res.status(401).json({message:"Invalid Visit Id"});
+    }
   
+   if(!isPatientExist){
+      return res.status(401).json({message:"Patient Id invalid"});
+    }
+    //🔥🔥 step to implement -> ek din me ek patient ek hi diagnose banva sakta hai 
+  const creatediagnosis=await Diagnosis.create({
+  visitId,
+  patientId,
+  diagnosisType,
+  diagnosisName,
+  icdCode,
+  notes
+    })
+    return res.status(201).json({message:"Diagnosis Created required"},creatediagnosis);
+  } catch (error) {
+    return res.status(500).json({message:error.message});
+  }
+}
+// Update
+export const updateDiagnosis=async(req,res)=>{
+  const {id}=req.params;
+  const {visitId,diagnosisType,diagnosisName,icdCode,notes}=req.body;
+  try {
+    const updatediagnosis=await Diagnosis.findByIdAndUpdate(id,{diagnosisType,diagnosisName,icdCode,notes},{new:true});
+    return res.status(201).json({message:"Diagnosis Updated Sucessfully",data:updatediagnosis});
+  } catch (error) {
+    return res.status(500).json({message:error.message});
+  }
+}
+// Get Diagnosis by id
+export const getDiagnosisById=async(req,res)=>{
+  try {
+    const {id}=req.params;
+    const getdiagnosis=await Diagnosis.findById(id);
+    return res.status(200).json({message:"Get Sucessfully",data:getdiagnosis});
+  } catch (error) {
+    return res.status(500).json({message:error.message});
+  }
+}
+// Get all Diagnosis by Patient Id ->  only doctor will able to see this 
+export const getDiagnosisByPatientId=async(req,res)=>{
+  const {patientId}=req.params;
+  try {
+    const isexist=await PatientRegistration.find({patientId});
+    if(!isexist){
+      return res.status(401).json({message:"Invalid Patient Id"});
+    }
+    const getpatientdiagnosis=await Diagnosis.find({patientId}).populate("patientId").sort({createdAt:-1});
+    return res.status(200).json({message:"Patient All Diagnosis retrived Sucessfully",data:getpatientdiagnosis});
+  } catch (error) {
+    return res.status(500).json({message:error.message});
+  }
+}
+// get diagnosis by visit id
+export const getDiagnosisVisitId=async(req,res)=>{
+  const {visitId}=req.params;
+
+  try {
+    const isvisitidexist=await PatientVisit.findById(visitId);
+    if(!isvisitidexist){
+      return res.status(401).json({message:"Invalid Visit Exists"})
+    }
+    const getdiagnosis=await Diagnosis.find({visitId}).populate("visitId");
+    return res.status(200).json({message:"Retrived Visit Diagnosis Sucessfully",data:getdiagnosis});
+  } catch (error) {
+    return res.status(500).json({message:error.message});
+  }
+}
+
 
  
 //   getAllAddictionHistory
@@ -457,4 +554,8 @@ export default {createAddiction,updateAddiction,deleteById,deleteMultiple,create
     updatePersonalHistory,
     getPersonalHistoryByPatientId,
     deletePersonalHistoryByVisitId,
-    deleteMultiplePersonalHistory};
+    deleteMultiplePersonalHistory,createDiagnosis,
+    updateDiagnosis,
+    getDiagnosisById,
+    getDiagnosisByPatientId,
+    getDiagnosisVisitId};
