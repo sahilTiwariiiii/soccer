@@ -8,6 +8,7 @@ import PatientRegistration from '../models/PatientRegistration.js';
 import PatientVisit from '../models/PatientVisitSchema.js';
 import DoctorNotes from '../models/DoctorNotes.js'
 import User from '../models/User.js'
+import CurrentTreatment from '../models/CurrentTreatment.js';
 
 // Addiction
 
@@ -589,6 +590,9 @@ export const createDoctorNotes=async(req,res)=>{
 // Update
 export const updateDoctorNotes=async(req,res)=>{
   const {id}=req.params;
+  if(!id){
+    return res.status(400).json({message:"Id is required"});
+  }
   const {subjective,objective,assessment,plan}=req.body;
 
   if(!subjective && objective &&assessment&&plan){
@@ -618,8 +622,114 @@ try {
 }
 }
 
+// Doctor Notes
+export const getDoctorNotesById=async(req,res)=>{
+  try {
+    const {id}=req.params;
+    if(!id){
+      return res.status(400).json({message:"Id is required"})
+    }
+    const getdata=await DoctorNotes.findOne({_id:id});
+    if(!getdata){
+      return res.staus(400).json({message:"Not exists "})
+    }
+    return res.status(200).json({message:"Retrived Data sucessfully",getdata});
+    
+  } catch (error) {
+    return res.status(500).json({message:error.message})
+  }
+}
 
+// Delete Notes
+export const deleteDoctorNotes=async(req,res)=>{
+  const {id}=req.params;
+  const user=req.user.id;
+try {
+  const isVisit=await DoctorNotes.findOne({_id:id});
+  if(!isVisit){
+    return res.status(404).json({message:"Visit Id not exists"})
+  }
+  await DoctorNotes.findByIdAndDelete(id);
+  return res.status(200).json({message:"Deleted Sucessfully"});
+} catch (error) {
+  return res.status(500).json({message:error.message})
+}
+}
 
+// CurrentTreatment (Prescription)
+// Create 
+export const createCurrentTeatmentPrecription=async(req,res)=>{
+  const {visitId}=req.params;
+  const userId=req.user.id;
+  const {medicines,pharmacyNotes,refills}=req.body;
+  if (!medicines || !Array.isArray(medicines) || medicines.length === 0) {
+    return res.status(400).json({ message: "At least one medicine is required" });
+  }
+  try {
+    // only doctor will be able to create the precreption
+     // check visit id existing or not
+     const isVisited=await PatientVisit.findOne({_id:visitId});
+     if(!isVisited){
+       return res.status(404).json({message:"Invalid visit Id"});
+     }
+     // Only Doctor will be able to create the Doctor Notes if the role was 
+     const isDoctor=await User.findOne({_id:userId});
+     if(!isDoctor){
+       return res.status(404).json({message:"User not found"})
+     }
+     if(isDoctor.role!=="doctor"){
+       return res.status(403).json({message:`Hello ${isDoctor.role} ${isDoctor.name} ,Insufficient Permission,Only Doctor can create Doctor Notes`});
+     }
+    //  Prevent the Duplicate Precreption
+    const existing=await CurrentTreatment.findOne({visitId});
+    if(existing){
+   return res.status(409).json({message:"Precreption already created for this visit"});
+    }
+    //  now create the Precription
+ 
+ const createdPrecription=await CurrentTreatment.create({
+  visitId,
+  doctorId:userId,
+  patientId:isVisited.patientId,
+  medicines,pharmacyNotes,refills
+ })
+ return res.status(201).json({message:"Precription Created Sucesfully",createdPrecription})
+  } catch (error) {
+    return res.status(500).json({message:error.message})
+  }
+}
+// Update
+export const updateCurrentTeratmentPrecription=async(req,res)=>{
+  const {medicines,pharmacyNotes,refills}=req.body;
+  if(!medicines && !pharmacyNotes && !refills){
+    return res.status(400).json({message:"At least field is required to update"});
+  }
+
+  try {
+    const userId=req.user.id;
+    // check document id
+    const {id}=req.params;
+    // is the 'id' visit in our db
+    const isId=await CurrentTreatment.findOne({_id:id});
+    if(!isId){
+      return res.status(404).json({message:"Document Id not exist!"})
+    }
+    // Only Doctor will do update
+    const isDoctor=await User.findOne({_id:userId});
+    if(isDoctor.role!=="doctor"){
+      return res.status(404).json({message:`Hi ${isDoctor.role}, ${isDoctor.name}, Permission Denied, Only Doctor can update`});
+    }
+    // Update Object Dynamically
+    const updateData={};
+    if (medicines) updateData.medicines=medicines;
+    if (pharmacyNotes) updateData.medicinespharmacyNotes=pharmacyNotes;
+    if (refills) updateData.refills=refills;
+    const updated_data=await CurrentTreatment.findByIdAndUpdate({_id:id},{updatedDate},{new:true});
+    return res.status(201).json({message:"Updated Sucessfully",updated_data});
+  } catch (error) {
+    return res.status(500).json({message:error.message});
+  }
+}
 
 //   getAllAddictionHistory
 
@@ -633,4 +743,4 @@ export default {createAddiction,updateAddiction,deleteById,deleteMultiple,create
     updateDiagnosis,
     getDiagnosisById,
     getDiagnosisByPatientId,
-    getDiagnosisVisitId,createDoctorNotes,updateDoctorNotes};
+    getDiagnosisVisitId,createDoctorNotes,updateDoctorNotes,getDoctorNotesById,deleteDoctorNotes,createCurrentTeatmentPrecription,updateCurrentTeratmentPrecription};

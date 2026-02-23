@@ -1,5 +1,5 @@
 import express from 'express';
-import { createAddiction, createDiagnosis, createDoctorNotes, createPatientPastMedicalHistory, createPatientPastSurgicalHistory, createPersonalHistory, deleteById, deleteMultiple, deleteMultiplePatientPastMedicalHistory, deleteMultiplePersonalHistory, deleteMultipleSurgicalHistory, deletePatientPastMedicalHistoryById, deletePersonalHistoryByVisitId, deleteSurgicalHistoryById, getDiagnosisById, getDiagnosisByPatientId, getDiagnosisVisitId, getPatientAddiction, getPersonalHistoryByPatientId, PatientPastMedicalHistory, PatientPastSurgicalHistory, updateAddiction, updateDiagnosis, updateDoctorNotes, updatePatientPastMedicalHistory, updatePersonalHistory, updateSurgicalHistory } from '../controllers/clinicalDetailsController.js';
+import { createAddiction, createCurrentTeatmentPrecription, createDiagnosis, createDoctorNotes, createPatientPastMedicalHistory, createPatientPastSurgicalHistory, createPersonalHistory, deleteById, deleteDoctorNotes, deleteMultiple, deleteMultiplePatientPastMedicalHistory, deleteMultiplePersonalHistory, deleteMultipleSurgicalHistory, deletePatientPastMedicalHistoryById, deletePersonalHistoryByVisitId, deleteSurgicalHistoryById, getDiagnosisById, getDiagnosisByPatientId, getDiagnosisVisitId, getDoctorNotesById, getPatientAddiction, getPersonalHistoryByPatientId, PatientPastMedicalHistory, PatientPastSurgicalHistory, updateAddiction, updateCurrentTeratmentPrecription, updateDiagnosis, updateDoctorNotes, updatePatientPastMedicalHistory, updatePersonalHistory, updateSurgicalHistory } from '../controllers/clinicalDetailsController.js';
 import authMiddleware from '../middlewares/auth.js';
 const router=express.Router();
 // Create Addiction
@@ -52,5 +52,9 @@ router.get('/diagnosispatient/:patientId',getDiagnosisByPatientId);
 router.get('/visitdiagnosis/:visitId',getDiagnosisVisitId);
 router.post('/createdoctornotes',authMiddleware,createDoctorNotes);
 router.put('/updatedoctornotes/:id',authMiddleware,updateDoctorNotes);
+router.get('/updatedoctornotes/:id',authMiddleware,getDoctorNotesById);
+router.delete('/deletedoctornotes/:id',authMiddleware,deleteDoctorNotes);
+router.post('/createprecription/:visitId',authMiddleware,createCurrentTeatmentPrecription);
+router.put('/updateprecription/:id',authMiddleware,updateCurrentTeratmentPrecription);
 
 export default router;
