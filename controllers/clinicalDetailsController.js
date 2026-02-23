@@ -6,7 +6,8 @@ import PersonalHistory from '../models/PersonalHistory.js';
 import Diagnosis from '../models/Diagnosis.js';
 import PatientRegistration from '../models/PatientRegistration.js';
 import PatientVisit from '../models/PatientVisitSchema.js';
-
+import DoctorNotes from '../models/DoctorNotes.js'
+import User from '../models/User.js'
 
 // Addiction
 
@@ -547,9 +548,83 @@ export const getDiagnosisVisitId=async(req,res)=>{
   }
 }
 
+// Doctor Notes
+// Create
+export const createDoctorNotes=async(req,res)=>{
+  // We Get the User Id from the token
+  const {visitId,subjective,objective,assessment,plan}=req.body;
+  if (!visitId || !subjective || !objective || !assessment || !plan) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+  const userId=req.user.id;
+  try {
+    // check visit id existing or not
+    const isVisited=await PatientVisit.findOne({_id:visitId});
+    if(!isVisited){
+      return res.status(404).json({message:"Invalid visit Id"});
+    }
+    // Only Doctor will be able to create the Doctor Notes if the role was 
+    const isDoctor=await User.findOne({_id:userId});
+    if(!isDoctor){
+      return res.status(404).json({message:"User not found"})
+    }
+    if(isDoctor.role!=="doctor"){
+      return res.status(403).json({message:`Hello ${isDoctor.role} ${isDoctor.name} ,Insufficient Permission,Only Doctor can create Doctor Notes`});
+    }
+    // check that One Doctor can create One note for that visit means one day one patient can consult more that one doctor multiples not one doctor can create notes for one time only for that patient visit after that they will be able to update that
+    const isexistingNotes=await DoctorNotes.findOne({visitId,userId});
+    // ✅ If only the visitId matches but the userId does not match → the document will not be found.
 
- 
+// ✅ If only the userId matches but the visitId does not match → the document will not be found.
+    if(isexistingNotes){
+      return res.status(409).json({message:"Dr. you already Created the Notes for this Patient"})
+    }
+    // take out the userId form the schema only
+    await DoctorNotes.create({visitId,userId,subjective,objective,assessment,plan});
+    return res.status(201).json({message:"Doctor Notes Created Sucessfully"});
+  } catch (error) {
+    return res.status(500).json({mesage:error.message});
+  }
+}
+// Update
+export const updateDoctorNotes=async(req,res)=>{
+  const {id}=req.params;
+  const {subjective,objective,assessment,plan}=req.body;
+
+  if(!subjective && objective &&assessment&&plan){
+    return res.status(400).json({mesage:"At least One field are required to update"})
+  }
+try {
+
+  const userId=req.user.id;
+  // only Doctor can update Doctor notes
+    const isDoctor=await User.findOne({_id:userId});
+    if(!isDoctor){
+      return res.status(404).json({message:"User not found"})
+    }
+    if(isDoctor.role!=="doctor"){
+      return res.status(403).json({message:`Hello ${isDoctor.role} ${isDoctor.name} ,Insufficient Permission,Only Doctor can create Doctor Notes`});
+    }
+  // Check that visit Id exist or not
+  const isId= await DoctorNotes.findOne({_id:id});
+  if(!isId){
+    return res.status(404).json({message:"Visit Id does not exists!"});
+  }
+  // find visit and update
+  await DoctorNotes.findByIdAndUpdate({_id:id},{subjective,objective,assessment,plan,},{new:true});
+  return res.status(201).json({message:"Update Sucessfully"})
+} catch (error) {
+  return res.status(500).json({message:error.message})
+}
+}
+
+
+
+
 //   getAllAddictionHistory
+
+
+
 export default {createAddiction,updateAddiction,deleteById,deleteMultiple,createPatientPastSurgicalHistory,PatientPastSurgicalHistory,updateSurgicalHistory,getPatientAddiction,PatientPastMedicalHistory,createPatientPastMedicalHistory,updatePatientPastMedicalHistory,deletePatientPastMedicalHistoryById,deleteMultiplePatientPastMedicalHistory,createPersonalHistory,
     updatePersonalHistory,
     getPersonalHistoryByPatientId,
@@ -558,4 +633,4 @@ export default {createAddiction,updateAddiction,deleteById,deleteMultiple,create
     updateDiagnosis,
     getDiagnosisById,
     getDiagnosisByPatientId,
-    getDiagnosisVisitId};
+    getDiagnosisVisitId,createDoctorNotes,updateDoctorNotes};
