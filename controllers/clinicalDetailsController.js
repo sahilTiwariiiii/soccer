@@ -658,7 +658,7 @@ try {
 
 // CurrentTreatment (Prescription)
 // Create 
-export const createCurrentTeatmentPrecription=async(req,res)=>{
+export const createCurrentTeatmentPrescription=async(req,res)=>{
   const {visitId}=req.params;
   const userId=req.user.id;
   const {medicines,pharmacyNotes,refills}=req.body;
@@ -685,21 +685,21 @@ export const createCurrentTeatmentPrecription=async(req,res)=>{
     if(existing){
    return res.status(409).json({message:"Precreption already created for this visit"});
     }
-    //  now create the Precription
+    //  now create the Prescription
  
- const createdPrecription=await CurrentTreatment.create({
+ const createdPrescription=await CurrentTreatment.create({
   visitId,
   doctorId:userId,
   patientId:isVisited.patientId,
   medicines,pharmacyNotes,refills
  })
- return res.status(201).json({message:"Precription Created Sucesfully",createdPrecription})
+ return res.status(201).json({message:"Prescription Created Sucesfully",createdPrescription})
   } catch (error) {
     return res.status(500).json({message:error.message})
   }
 }
 // Update
-export const updateCurrentTeratmentPrecription=async(req,res)=>{
+export const updateCurrentTeratmentPrescription=async(req,res)=>{
   const {medicines,pharmacyNotes,refills}=req.body;
   if(!medicines && !pharmacyNotes && !refills){
     return res.status(400).json({message:"At least field is required to update"});
@@ -722,14 +722,62 @@ export const updateCurrentTeratmentPrecription=async(req,res)=>{
     // Update Object Dynamically
     const updateData={};
     if (medicines) updateData.medicines=medicines;
-    if (pharmacyNotes) updateData.medicinespharmacyNotes=pharmacyNotes;
+    if (pharmacyNotes) updateData.pharmacyNotes=pharmacyNotes;
     if (refills) updateData.refills=refills;
-    const updated_data=await CurrentTreatment.findByIdAndUpdate({_id:id},{updatedDate},{new:true});
+    const updated_data=await CurrentTreatment.findByIdAndUpdate(id,updateData,{new:true});
+    // why we had not done these line above and why it was not working
+    // findByIdAndUpdate({_id:id},{updateData},{new:true});
     return res.status(201).json({message:"Updated Sucessfully",updated_data});
   } catch (error) {
     return res.status(500).json({message:error.message});
   }
 }
+// Get Current Treatment
+export const getCurrentTreatmentPrescription=async(req,res)=>{
+  const {id}=req.params;
+  // add the condition so that if can do that 
+  if(!id){
+    return res.status(400).json({message:"Id is required"})
+  }
+  try {
+const isExist=await CurrentTreatment.findOne({_id:id});
+if(!isExist){
+  return res.status(404).json({message:"Prescription Id not found"});
+}
+return res.status(200).json({message:"Prescription Retrived Sucessfully",isExist});
+  } catch (error) {
+    return res.status(500).json({message:error.message})
+}
+}
+// Delete
+export const deleteCurrentTreatmentPrescription=async(req,res)=>{
+  const userId=req.user.id;
+  const {id}=req.params;
+  if(!id){
+    return res.status(404).json({message:"Id is required"})
+  }
+ 
+  
+  try {
+    // check id exisit or not
+    const isExists=await CurrentTreatment.findOne({_id:id});
+    if(!isExists){
+      return res.status(404).json({message:"Invalid Id"});
+    }
+    const isDoctor=await User.findOne({_id:userId});
+    if (!isDoctor) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    if(isDoctor.role!=="doctor"){
+      return res.status(404).json({message:`Hello ${isDoctor.role}. ${isDoctor.name}, Insufficient Permission , Only Doctor can delete Prescription`});
+    }
+    await CurrentTreatment.findByIdAndDelete(id);
+    return res.status(200).json({message:"Precription Deleted Sucessfully"});
+  } catch (error) {
+    return res.status(500).json({message:error.message})
+  }
+}
+
 
 //   getAllAddictionHistory
 
@@ -743,4 +791,4 @@ export default {createAddiction,updateAddiction,deleteById,deleteMultiple,create
     updateDiagnosis,
     getDiagnosisById,
     getDiagnosisByPatientId,
-    getDiagnosisVisitId,createDoctorNotes,updateDoctorNotes,getDoctorNotesById,deleteDoctorNotes,createCurrentTeatmentPrecription,updateCurrentTeratmentPrecription};
+    getDiagnosisVisitId,createDoctorNotes,updateDoctorNotes,getDoctorNotesById,deleteDoctorNotes,createCurrentTeatmentPrescription,updateCurrentTeratmentPrescription,getCurrentTreatmentPrescription,deleteCurrentTreatmentPrescription};
