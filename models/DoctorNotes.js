@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+// yaha pe doctor jo likhna hai vo likhega yaha pe yaha pe medicine nahi hoga keval doctor ne jo examination kiya hai vo rahega
 const DoctorNotesSchema = new mongoose.Schema({
   visitId: {
     type: mongoose.Schema.Types.ObjectId,
