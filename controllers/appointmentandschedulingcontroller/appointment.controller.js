@@ -1,11 +1,45 @@
 import Appointment from "../models/Appointment.js";
 
-// 🔹 Create Appointment
+/* ======================================================
+   🔹 Create Appointment
+====================================================== */
 export const createAppointment = async (req, res) => {
   try {
-    const data = req.body;
+    const { hospitalId, branchId, _id } = req.user;
 
-    const appointment = await Appointment.create(data);
+    const {
+      patientId,
+      doctorId,
+      appointmentDate,
+      startTime,
+      endTime,
+      consultationType,
+      reason,
+      notes
+    } = req.body;
+
+    // 🔹 Basic validation
+    if (!patientId || !doctorId || !appointmentDate || !startTime || !endTime) {
+      return res.status(400).json({ message: "Required fields missing" });
+    }
+
+    // 🔹 Generate appointment number
+    const appointmentNumber = `APT-${Date.now()}`;
+
+    const appointment = await Appointment.create({
+      hospitalId,
+      branchId,
+      appointmentNumber,
+      patientId,
+      doctorId,
+      appointmentDate,
+      startTime,
+      endTime,
+      consultationType,
+      reason,
+      notes,
+      bookedBy: _id
+    });
 
     return res.status(201).json({
       message: "Appointment created successfully",
@@ -17,12 +51,15 @@ export const createAppointment = async (req, res) => {
   }
 };
 
-// 🔹 Get All Appointments (With Filters + Pagination)
+
+/* ======================================================
+   🔹 Get All Appointments (Hospital Scoped)
+====================================================== */
 export const getAllAppointments = async (req, res) => {
   try {
+    const { hospitalId, branchId } = req.user;
+
     const {
-      hospitalId,
-      branchId,
       doctorId,
       patientId,
       status,
@@ -33,10 +70,12 @@ export const getAllAppointments = async (req, res) => {
       limit = 10
     } = req.query;
 
-    const filter = { isActive: true };
+    const filter = {
+      hospitalId,
+      branchId,
+      isActive: true
+    };
 
-    if (hospitalId) filter.hospitalId = hospitalId;
-    if (branchId) filter.branchId = branchId;
     if (doctorId) filter.doctorId = doctorId;
     if (patientId) filter.patientId = patientId;
     if (status) filter.status = status;
@@ -49,7 +88,7 @@ export const getAllAppointments = async (req, res) => {
       };
     }
 
-    const skip = (page - 1) * limit;
+    const skip = (Number(page) - 1) * Number(limit);
 
     const appointments = await Appointment.find(filter)
       .populate("patientId", "name phone")
@@ -73,10 +112,20 @@ export const getAllAppointments = async (req, res) => {
   }
 };
 
-// 🔹 Get Appointment By ID
+
+/* ======================================================
+   🔹 Get Appointment By ID (Scoped)
+====================================================== */
 export const getAppointmentById = async (req, res) => {
   try {
-    const appointment = await Appointment.findById(req.params.id)
+    const { hospitalId, branchId } = req.user;
+
+    const appointment = await Appointment.findOne({
+      _id: req.params.id,
+      hospitalId,
+      branchId,
+      isActive: true
+    })
       .populate("patientId")
       .populate("doctorId")
       .populate("branchId");
@@ -92,12 +141,39 @@ export const getAppointmentById = async (req, res) => {
   }
 };
 
-// 🔹 Update Appointment
+
+/* ======================================================
+   🔹 Update Appointment (Restricted Fields)
+====================================================== */
 export const updateAppointment = async (req, res) => {
   try {
-    const updated = await Appointment.findByIdAndUpdate(
-      req.params.id,
-      req.body,
+    const { hospitalId, branchId } = req.user;
+
+    const allowedFields = [
+      "appointmentDate",
+      "startTime",
+      "endTime",
+      "consultationType",
+      "reason",
+      "notes"
+    ];
+
+    const updateData = {};
+
+    allowedFields.forEach(field => {
+      if (req.body[field] !== undefined) {
+        updateData[field] = req.body[field];
+      }
+    });
+
+    const updated = await Appointment.findOneAndUpdate(
+      {
+        _id: req.params.id,
+        hospitalId,
+        branchId,
+        isActive: true
+      },
+      updateData,
       { new: true }
     );
 
@@ -115,13 +191,26 @@ export const updateAppointment = async (req, res) => {
   }
 };
 
-// 🔹 Update Status Only (Important for HMS Flow)
+
+/* ======================================================
+   🔹 Update Status (HMS Flow Safe)
+====================================================== */
 export const updateAppointmentStatus = async (req, res) => {
   try {
+    const { hospitalId, branchId } = req.user;
     const { status } = req.body;
 
-    const updated = await Appointment.findByIdAndUpdate(
-      req.params.id,
+    if (!status) {
+      return res.status(400).json({ message: "Status is required" });
+    }
+
+    const updated = await Appointment.findOneAndUpdate(
+      {
+        _id: req.params.id,
+        hospitalId,
+        branchId,
+        isActive: true
+      },
       { status },
       { new: true }
     );
@@ -140,23 +229,36 @@ export const updateAppointmentStatus = async (req, res) => {
   }
 };
 
-// 🔹 Cancel Appointment (Proper HMS Logic)
+
+/* ======================================================
+   🔹 Cancel Appointment (Real HMS Logic)
+====================================================== */
 export const cancelAppointment = async (req, res) => {
   try {
-    const { cancellationReason, cancelledBy } = req.body;
+    const { hospitalId, branchId, _id } = req.user;
+    const { cancellationReason } = req.body;
 
-    const updated = await Appointment.findByIdAndUpdate(
-      req.params.id,
+    const updated = await Appointment.findOneAndUpdate(
+      {
+        _id: req.params.id,
+        hospitalId,
+        branchId,
+        isActive: true
+      },
       {
         status: "Cancelled",
         cancellationReason,
-        cancelledBy
+        cancelledBy: _id
       },
       { new: true }
     );
 
+    if (!updated) {
+      return res.status(404).json({ message: "Appointment not found" });
+    }
+
     return res.status(200).json({
-      message: "Appointment cancelled",
+      message: "Appointment cancelled successfully",
       data: updated
     });
 
@@ -165,12 +267,27 @@ export const cancelAppointment = async (req, res) => {
   }
 };
 
-// 🔹 Soft Delete
+
+/* ======================================================
+   🔹 Soft Delete (Multi-Tenant Safe)
+====================================================== */
 export const deleteAppointment = async (req, res) => {
   try {
-    await Appointment.findByIdAndUpdate(req.params.id, {
-      isActive: false
-    });
+    const { hospitalId, branchId } = req.user;
+
+    const deleted = await Appointment.findOneAndUpdate(
+      {
+        _id: req.params.id,
+        hospitalId,
+        branchId
+      },
+      { isActive: false },
+      { new: true }
+    );
+
+    if (!deleted) {
+      return res.status(404).json({ message: "Appointment not found" });
+    }
 
     return res.status(200).json({
       message: "Appointment deleted successfully"

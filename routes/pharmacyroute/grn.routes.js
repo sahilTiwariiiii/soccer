@@ -7,10 +7,10 @@ import {
   deleteGRN
 } from "../controllers/grn.controller.js";
 
-import { authenticateUser } from "../middleware/authMiddleware.js";
+
 
 const router = express.Router();
-router.use(authenticateUser);
+
 
 // CRUD routes
 router.post("/", createGRN);

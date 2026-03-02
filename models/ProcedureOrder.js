@@ -1,6 +1,7 @@
+// models/ProcedureOrder.js
 import mongoose from "mongoose";
 
-const InvestigationOrderSchema = new mongoose.Schema({
+const ProcedureOrderSchema = new mongoose.Schema({
 
   hospitalId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -25,32 +26,43 @@ const InvestigationOrderSchema = new mongoose.Schema({
 
   encounterType: {
     type: String,
-    enum: ["OPD", "IPD"],
+    enum: ["OPD", "IPD", "DAYCARE"],
     required: true
   },
 
-  // For OPD
   visitId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "PatientVisit",
     default: null
   },
 
-  // For IPD
   ipdAdmissionId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "IPDAdmission",
     default: null
   },
 
-  investigationId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "InvestigationMaster",
+  procedureType: {
+    type: String,
+    enum: [
+      "Dressing",
+      "Suturing",
+      "Nebulization",
+      "Catheterization",
+      "Biopsy",
+      "Endoscopy",
+      "Minor-Surgery",
+      "Major-Surgery",
+      "Dialysis",
+      "Physiotherapy",
+      "Vaccination",
+      "Other"
+    ],
     required: true
   },
 
-  priceAtOrderTime: {
-    type: Number,
+  procedureName: {
+    type: String,
     required: true
   },
 
@@ -60,39 +72,23 @@ const InvestigationOrderSchema = new mongoose.Schema({
     default: "Normal"
   },
 
-  orderStatus: {
+  status: {
     type: String,
-    enum: [
-      "Ordered",
-      "Sample-Collected",
-      "In-Progress",
-      "Completed",
-      "Cancelled"
-    ],
-    default: "Ordered",
-    index: true
+    enum: ["Ordered", "In-Progress", "Completed", "Cancelled"],
+    default: "Ordered"
   },
 
-  source: {
-    type: String,
-    enum: ["Digital", "Paper-Entered"],
-    required: true
-  },
-
-  createdBy: {
+  performedBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true
+    ref: "User"
   },
 
-  sampleCollectedAt: Date,
-  completedAt: Date,
-  cancelReason: String,
-  result: String,
-  reportFile: String
+  notes: String,
+
+  performedAt: Date
 
 }, { timestamps: true });
 
-const InvestigationOrder = mongoose.model("InvestigationOrder", InvestigationOrderSchema);
+const ProcedureOrder = mongoose.model("ProcedureOrder", ProcedureOrderSchema);
 
-export default InvestigationOrder;
+export default ProcedureOrder;
