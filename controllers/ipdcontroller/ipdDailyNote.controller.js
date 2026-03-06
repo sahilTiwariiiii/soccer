@@ -1,5 +1,5 @@
-import IPDDailyNote from "../models/IPDDailyNote.js";
-import IPDAdmission from "../models/IPDAdmission.js";
+import IPDDailyNote from "../../models/ipdmanagement/IPDDailyNote.js";
+import IPDAdmission from "../../models/ipdmanagement/IPDAdmission.js";
 
 /* =================================
    1️⃣ Create Daily Note

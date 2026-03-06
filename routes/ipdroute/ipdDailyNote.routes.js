@@ -5,9 +5,9 @@ import {
   getSingleIPDDailyNote,
   updateIPDDailyNote,
   deleteIPDDailyNote,
-} from "../controllers/ipdDailyNote.controller.js";
+} from "../../controllers/ipdcontroller/ipdDailyNote.controller.js";
 
-import authMiddleware from "../middlewares/authMiddleware.js";
+import authMiddleware from "../../middlewares/auth.js";
 
 const router = express.Router();
 

@@ -1,5 +1,5 @@
-import IPDNursingNote from "../models/IPDNursingNote.js";
-import IPDAdmission from "../models/IPDAdmission.js";
+import IPDNursingNote from "../../models/ipdmanagement/IPDNursingNote.js";
+import IPDAdmission from "../../models/ipdmanagement/IPDAdmission.js";
 
 /* =================================
    1️⃣ Create Nursing Note

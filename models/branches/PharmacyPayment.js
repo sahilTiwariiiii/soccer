@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const PharmacyPaymentSchema = new mongoose.Schema({
 
     hospitalId: {
@@ -32,3 +34,5 @@ const PharmacyPaymentSchema = new mongoose.Schema({
     }
   
   }, { timestamps: true });
+
+export default mongoose.model("PharmacyPayment", PharmacyPaymentSchema);

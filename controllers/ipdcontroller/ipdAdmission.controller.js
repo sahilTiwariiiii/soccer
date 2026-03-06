@@ -1,4 +1,4 @@
-import IPDAdmission from "../models/IPDAdmission.js";
+import IPDAdmission from "../../models/ipdmanagement/IPDAdmission.js";
 
 /* ===============================
    1️⃣ Create IPD Admission

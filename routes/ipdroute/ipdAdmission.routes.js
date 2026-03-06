@@ -6,9 +6,9 @@ import {
   updateIPDAdmission,
   dischargeIPDPatient,
   deleteIPDAdmission,
-} from "../controllers/ipdAdmission.controller.js";
+} from "../../controllers/ipdcontroller/ipdAdmission.controller.js";
 
-import authMiddleware from "../middlewares/authMiddleware.js";
+import authMiddleware from "../../middlewares/auth.js";
 
 const router = express.Router();
 

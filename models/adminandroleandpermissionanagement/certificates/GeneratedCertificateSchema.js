@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const GeneratedCertificateSchema = new mongoose.Schema({
 
     hospitalId: { type: mongoose.Schema.Types.ObjectId, ref: "Hospital", required: true },

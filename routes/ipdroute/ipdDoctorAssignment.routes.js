@@ -5,9 +5,9 @@ import {
   getDoctorsForIPD,
   updateDoctorRole,
   removeDoctorFromIPD,
-} from "../controllers/ipdDoctorAssignment.controller.js";
+} from "../../controllers/ipdcontroller/ipdDoctorAssignment.controller.js";
 
-import authMiddleware from "../middlewares/authMiddleware.js";
+import authMiddleware from "../../middlewares/auth.js";
 
 const router = express.Router();
 

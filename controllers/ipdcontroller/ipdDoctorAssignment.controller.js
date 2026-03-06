@@ -1,5 +1,5 @@
-import IPDDoctorAssignment from "../models/IPDDoctorAssignment.js";
-import IPDAdmission from "../models/IPDAdmission.js";
+import IPDDoctorAssignment from "../../models/ipdmanagement/IPDDoctorAssignment.js";
+import IPDAdmission from "../../models/ipdmanagement/IPDAdmission.js";
 
 /* =================================
    1️⃣ Assign Doctor To IPD
