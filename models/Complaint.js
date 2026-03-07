@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 const ComplaintSchema = new mongoose.Schema({
     visitId: { type: mongoose.Schema.Types.ObjectId, ref: "PatientVisit" },
     complaints: [String],

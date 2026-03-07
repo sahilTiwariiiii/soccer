@@ -1,14 +1,14 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "Samrat HMS API",
+    "title": "API",
     "version": "1.0.0",
     "description": "Auto-generated Swagger / OpenAPI documentation covering all modules, submodules, and endpoints.\n\nAuthentication: JWT Bearer tokens (Authorization: Bearer <token>) from middlewares/auth.js.\n\nList endpoints support pagination via `page` and `limit`."
   },
   "servers": [
     {
-      "url": "http://localhost:6000",
-      "description": "Local development server"
+      "url": "/",
+      "description": "Relative to current host"
     }
   ],
   "components": {
@@ -65,19 +65,13 @@
         "summary": "POST /api/v1/register",
         "responses": {
           "200": {
-            "description": "OK"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "additionalProperties": true
-              },
-              "example": {
-                "exampleField": "value"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
               }
             }
           }
@@ -92,7 +86,15 @@
         "summary": "POST /api/v1/login",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -101,10 +103,44 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "additionalProperties": true
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
               },
               "example": {
-                "exampleField": "value"
+                "email": "user@example.com",
+                "password": "password_value"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users": {
+      "get": {
+        "tags": [
+          "V1 - UserRoute"
+        ],
+        "summary": "GET /api/v1/users",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
               }
             }
           }
@@ -118,8 +154,32 @@
         ],
         "summary": "POST /api/v1/patient-register",
         "responses": {
-          "200": {
-            "description": "OK"
+          "201": {
+            "description": "Registered and visited",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                },
+                "example": {
+                  "message": "User registered and Visited Sucessfully"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                },
+                "example": {
+                  "message": "Visit Date is required"
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -128,10 +188,169 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "additionalProperties": true
+                "properties": {
+                  "visitDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "visitTime": {
+                    "type": "string"
+                  },
+                  "visitType": {
+                    "type": "string",
+                    "enum": [
+                      "OPD",
+                      "IPD",
+                      "Emergency"
+                    ]
+                  },
+                  "fee": {
+                    "type": "number"
+                  },
+                  "mobile": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "departmentId": {
+                    "type": "string"
+                  },
+                  "departmentName": {
+                    "type": "string"
+                  },
+                  "doctorId": {
+                    "type": "string"
+                  },
+                  "slot": {
+                    "type": "string",
+                    "enum": [
+                      "Slot I",
+                      "Slot II",
+                      "Slot III"
+                    ]
+                  },
+                  "patientName": {
+                    "type": "string"
+                  },
+                  "gender": {
+                    "type": "string",
+                    "enum": [
+                      "Male",
+                      "Female",
+                      "Other"
+                    ]
+                  },
+                  "maritalStatus": {
+                    "type": "string",
+                    "enum": [
+                      "Single",
+                      "Married",
+                      "Divorced",
+                      "Widowed"
+                    ]
+                  },
+                  "dob": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "age": {
+                    "type": "number"
+                  },
+                  "currentAge": {
+                    "type": "number"
+                  },
+                  "relationType": {
+                    "type": "string"
+                  },
+                  "guardianName": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "string"
+                  },
+                  "country": {
+                    "type": "string"
+                  },
+                  "stateId": {
+                    "type": "string"
+                  },
+                  "cityId": {
+                    "type": "string"
+                  },
+                  "bloodGroup": {
+                    "type": "string"
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "referredDoctorId": {
+                    "type": "string"
+                  },
+                  "referralMobile": {
+                    "type": "string"
+                  },
+                  "paymentMode": {
+                    "type": "string",
+                    "enum": [
+                      "Cash",
+                      "Card",
+                      "UPI",
+                      "Insurance"
+                    ]
+                  },
+                  "discountPercent": {
+                    "type": "number"
+                  },
+                  "remark": {
+                    "type": "string"
+                  },
+                  "patientImage": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "visitDate",
+                  "visitTime",
+                  "visitType",
+                  "fee",
+                  "mobile",
+                  "slot",
+                  "patientName"
+                ]
               },
               "example": {
-                "exampleField": "value"
+                "visitDate": "2026-03-07T06:23:33.155Z",
+                "visitTime": "2026-03-07T06:23:33.156Z",
+                "visitType": "OPD",
+                "fee": 1,
+                "mobile": "mobile_value",
+                "email": "user@example.com",
+                "departmentId": "507f1f77bcf86cd799439011",
+                "departmentName": "Sample Name",
+                "doctorId": "507f1f77bcf86cd799439011",
+                "slot": "Slot I",
+                "patientName": "Sample Name",
+                "gender": "Male",
+                "maritalStatus": "Single",
+                "dob": "dob_value",
+                "age": 1,
+                "currentAge": 1,
+                "relationType": "relationType_value",
+                "guardianName": "Sample Name",
+                "address": "address_value",
+                "country": "country_value",
+                "stateId": "507f1f77bcf86cd799439011",
+                "cityId": "507f1f77bcf86cd799439011",
+                "bloodGroup": "bloodGroup_value",
+                "source": "source_value",
+                "referredDoctorId": "507f1f77bcf86cd799439011",
+                "referralMobile": "referralMobile_value",
+                "paymentMode": "Cash",
+                "discountPercent": 1,
+                "remark": "remark_value",
+                "patientImage": "patientImage_value"
               }
             }
           }
@@ -313,19 +532,13 @@
         "summary": "POST /api/v1/addiction",
         "responses": {
           "200": {
-            "description": "OK"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "additionalProperties": true
-              },
-              "example": {
-                "exampleField": "value"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
               }
             }
           }
@@ -338,7 +551,15 @@
         "summary": "DELETE /api/v1/addiction",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         }
       }
@@ -351,7 +572,15 @@
         "summary": "PUT /api/v1/addiction/:id",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -363,21 +592,7 @@
               "type": "string"
             }
           }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "additionalProperties": true
-              },
-              "example": {
-                "exampleField": "value"
-              }
-            }
-          }
-        }
+        ]
       },
       "delete": {
         "tags": [
@@ -386,7 +601,15 @@
         "summary": "DELETE /api/v1/addiction/:id",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -409,7 +632,15 @@
         "summary": "GET /api/v1/addiction/:patientId",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -432,7 +663,15 @@
         "summary": "GET /api/v1/all-clinical-details/",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         }
       }
@@ -445,19 +684,13 @@
         "summary": "POST /api/v1/surgical",
         "responses": {
           "200": {
-            "description": "OK"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "additionalProperties": true
-              },
-              "example": {
-                "exampleField": "value"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
               }
             }
           }
@@ -470,7 +703,15 @@
         "summary": "DELETE /api/v1/surgical",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         }
       }
@@ -483,7 +724,15 @@
         "summary": "GET /api/v1/surgical/:patientId",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -506,7 +755,15 @@
         "summary": "PUT /api/v1/surgical/:id",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -518,21 +775,7 @@
               "type": "string"
             }
           }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "additionalProperties": true
-              },
-              "example": {
-                "exampleField": "value"
-              }
-            }
-          }
-        }
+        ]
       },
       "delete": {
         "tags": [
@@ -541,7 +784,15 @@
         "summary": "DELETE /api/v1/surgical/:id",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -564,7 +815,15 @@
         "summary": "GET /api/v1/medical/:patientId",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -587,19 +846,13 @@
         "summary": "POST /api/v1/medical",
         "responses": {
           "200": {
-            "description": "OK"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "additionalProperties": true
-              },
-              "example": {
-                "exampleField": "value"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
               }
             }
           }
@@ -612,7 +865,15 @@
         "summary": "DELETE /api/v1/medical",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         }
       }
@@ -625,7 +886,15 @@
         "summary": "PUT /api/v1/medical/:id",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -637,21 +906,7 @@
               "type": "string"
             }
           }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "additionalProperties": true
-              },
-              "example": {
-                "exampleField": "value"
-              }
-            }
-          }
-        }
+        ]
       },
       "delete": {
         "tags": [
@@ -660,7 +915,15 @@
         "summary": "DELETE /api/v1/medical/:id",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -683,19 +946,13 @@
         "summary": "POST /api/v1/personalhistory",
         "responses": {
           "200": {
-            "description": "OK"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "additionalProperties": true
-              },
-              "example": {
-                "exampleField": "value"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
               }
             }
           }
@@ -708,7 +965,15 @@
         "summary": "DELETE /api/v1/personalhistory",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         }
       }
@@ -721,7 +986,15 @@
         "summary": "PUT /api/v1/personalhistory/:id",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -733,21 +1006,7 @@
               "type": "string"
             }
           }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "additionalProperties": true
-              },
-              "example": {
-                "exampleField": "value"
-              }
-            }
-          }
-        }
+        ]
       },
       "delete": {
         "tags": [
@@ -756,7 +1015,15 @@
         "summary": "DELETE /api/v1/personalhistory/:id",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -779,7 +1046,15 @@
         "summary": "GET /api/v1/personalhistory/:patientId",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -802,19 +1077,13 @@
         "summary": "POST /api/v1/creatediagnosis",
         "responses": {
           "200": {
-            "description": "OK"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "additionalProperties": true
-              },
-              "example": {
-                "exampleField": "value"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
               }
             }
           }
@@ -829,7 +1098,15 @@
         "summary": "PUT /api/v1/updatediagnosis/:id",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -841,21 +1118,7 @@
               "type": "string"
             }
           }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "additionalProperties": true
-              },
-              "example": {
-                "exampleField": "value"
-              }
-            }
-          }
-        }
+        ]
       }
     },
     "/api/v1/getdiagnosis/{id}": {
@@ -866,7 +1129,15 @@
         "summary": "GET /api/v1/getdiagnosis/:id",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -889,7 +1160,15 @@
         "summary": "GET /api/v1/diagnosispatient/:patientId",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -912,7 +1191,15 @@
         "summary": "GET /api/v1/visitdiagnosis/:visitId",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -935,19 +1222,13 @@
         "summary": "POST /api/v1/createdoctornotes",
         "responses": {
           "200": {
-            "description": "OK"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "additionalProperties": true
-              },
-              "example": {
-                "exampleField": "value"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
               }
             }
           }
@@ -962,7 +1243,15 @@
         "summary": "PUT /api/v1/updatedoctornotes/:id",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -974,21 +1263,7 @@
               "type": "string"
             }
           }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "additionalProperties": true
-              },
-              "example": {
-                "exampleField": "value"
-              }
-            }
-          }
-        }
+        ]
       },
       "get": {
         "tags": [
@@ -997,7 +1272,15 @@
         "summary": "GET /api/v1/updatedoctornotes/:id",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1020,7 +1303,15 @@
         "summary": "DELETE /api/v1/deletedoctornotes/:id",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1043,7 +1334,15 @@
         "summary": "POST /api/v1/createPrescription/:visitId",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1055,21 +1354,7 @@
               "type": "string"
             }
           }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "additionalProperties": true
-              },
-              "example": {
-                "exampleField": "value"
-              }
-            }
-          }
-        }
+        ]
       }
     },
     "/api/v1/updatePrescription/{id}": {
@@ -1080,7 +1365,15 @@
         "summary": "PUT /api/v1/updatePrescription/:id",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1092,21 +1385,7 @@
               "type": "string"
             }
           }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "additionalProperties": true
-              },
-              "example": {
-                "exampleField": "value"
-              }
-            }
-          }
-        }
+        ]
       }
     },
     "/api/v1/getPrescription/{id}": {
@@ -1117,7 +1396,15 @@
         "summary": "GET /api/v1/getPrescription/:id",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1140,7 +1427,15 @@
         "summary": "DELETE /api/v1/deletePrescription/:id",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1251,16 +1546,16 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "asset_name": "asset_name_value",
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "asset_name": "Sample Name",
                 "asset_code": "asset_code_value",
-                "category_id": "category_id_value",
-                "subcategory_id": "subcategory_id_value",
-                "vendor_id": "vendor_id_value",
-                "department_id": "department_id_value",
-                "location_id": "location_id_value",
-                "assigned_staff_id": "assigned_staff_id_value",
+                "category_id": "507f1f77bcf86cd799439011",
+                "subcategory_id": "507f1f77bcf86cd799439011",
+                "vendor_id": "507f1f77bcf86cd799439011",
+                "department_id": "507f1f77bcf86cd799439011",
+                "location_id": "507f1f77bcf86cd799439011",
+                "assigned_staff_id": "507f1f77bcf86cd799439011",
                 "status": "available"
               }
             }
@@ -1383,16 +1678,16 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "asset_name": "asset_name_value",
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "asset_name": "Sample Name",
                 "asset_code": "asset_code_value",
-                "category_id": "category_id_value",
-                "subcategory_id": "subcategory_id_value",
-                "vendor_id": "vendor_id_value",
-                "department_id": "department_id_value",
-                "location_id": "location_id_value",
-                "assigned_staff_id": "assigned_staff_id_value",
+                "category_id": "507f1f77bcf86cd799439011",
+                "subcategory_id": "507f1f77bcf86cd799439011",
+                "vendor_id": "507f1f77bcf86cd799439011",
+                "department_id": "507f1f77bcf86cd799439011",
+                "location_id": "507f1f77bcf86cd799439011",
+                "assigned_staff_id": "507f1f77bcf86cd799439011",
                 "status": "available"
               }
             }
@@ -1505,9 +1800,9 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "name": "name_value",
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "name": "Sample Name",
                 "is_active": true
               }
             }
@@ -1603,9 +1898,9 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "name": "name_value",
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "name": "Sample Name",
                 "is_active": true
               }
             }
@@ -1719,10 +2014,10 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "category_id": "category_id_value",
-                "name": "name_value"
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "category_id": "507f1f77bcf86cd799439011",
+                "name": "Sample Name"
               }
             }
           }
@@ -1818,10 +2113,10 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "category_id": "category_id_value",
-                "name": "name_value"
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "category_id": "507f1f77bcf86cd799439011",
+                "name": "Sample Name"
               }
             }
           }
@@ -1930,9 +2225,9 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "name": "name_value"
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "name": "Sample Name"
               }
             }
           }
@@ -2024,9 +2319,9 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "name": "name_value"
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "name": "Sample Name"
               }
             }
           }
@@ -2134,9 +2429,9 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "room_id": "room_id_value"
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "room_id": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -2227,9 +2522,9 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "room_id": "room_id_value"
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "room_id": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -2343,11 +2638,11 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "asset_id": "asset_id_value",
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "asset_id": "507f1f77bcf86cd799439011",
                 "assigned_to_staff": "assigned_to_staff_value",
-                "department_id": "department_id_value"
+                "department_id": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -2444,11 +2739,11 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "asset_id": "asset_id_value",
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "asset_id": "507f1f77bcf86cd799439011",
                 "assigned_to_staff": "assigned_to_staff_value",
-                "department_id": "department_id_value"
+                "department_id": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -2567,10 +2862,10 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "from_branch_id": "from_branch_id_value",
-                "to_branch_id": "to_branch_id_value",
-                "asset_id": "asset_id_value",
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "from_branch_id": "507f1f77bcf86cd799439011",
+                "to_branch_id": "507f1f77bcf86cd799439011",
+                "asset_id": "507f1f77bcf86cd799439011",
                 "from_location": "from_location_value",
                 "to_location": "to_location_value",
                 "transferred_by": "transferred_by_value"
@@ -2675,10 +2970,10 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "from_branch_id": "from_branch_id_value",
-                "to_branch_id": "to_branch_id_value",
-                "asset_id": "asset_id_value",
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "from_branch_id": "507f1f77bcf86cd799439011",
+                "to_branch_id": "507f1f77bcf86cd799439011",
+                "asset_id": "507f1f77bcf86cd799439011",
                 "from_location": "from_location_value",
                 "to_location": "to_location_value",
                 "transferred_by": "transferred_by_value"
@@ -2800,11 +3095,11 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "asset_id": "asset_id_value",
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "asset_id": "507f1f77bcf86cd799439011",
                 "maintenance_type": "preventive",
-                "vendor_id": "vendor_id_value"
+                "vendor_id": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -2906,11 +3201,11 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "asset_id": "asset_id_value",
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "asset_id": "507f1f77bcf86cd799439011",
                 "maintenance_type": "preventive",
-                "vendor_id": "vendor_id_value"
+                "vendor_id": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -3021,9 +3316,9 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "asset_id": "asset_id_value",
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "asset_id": "507f1f77bcf86cd799439011",
                 "verified_by": "verified_by_value"
               }
             }
@@ -3118,9 +3413,9 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "asset_id": "asset_id_value",
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "asset_id": "507f1f77bcf86cd799439011",
                 "verified_by": "verified_by_value"
               }
             }
@@ -3232,9 +3527,9 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "asset_id": "asset_id_value",
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "asset_id": "507f1f77bcf86cd799439011",
                 "uploaded_by": "uploaded_by_value"
               }
             }
@@ -3329,9 +3624,9 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "asset_id": "asset_id_value",
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "asset_id": "507f1f77bcf86cd799439011",
                 "uploaded_by": "uploaded_by_value"
               }
             }
@@ -3443,9 +3738,9 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "asset_id": "asset_id_value",
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "asset_id": "507f1f77bcf86cd799439011",
                 "used_by": "used_by_value"
               }
             }
@@ -3540,9 +3835,9 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "asset_id": "asset_id_value",
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "asset_id": "507f1f77bcf86cd799439011",
                 "used_by": "used_by_value"
               }
             }
@@ -3651,9 +3946,9 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "asset_id": "asset_id_value"
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "asset_id": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -3744,9 +4039,9 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "asset_id": "asset_id_value"
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "asset_id": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -3854,9 +4149,9 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "asset_id": "asset_id_value"
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "asset_id": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -3947,9 +4242,9 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "asset_id": "asset_id_value"
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "asset_id": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -4066,9 +4361,9 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "asset_id": "asset_id_value",
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "asset_id": "507f1f77bcf86cd799439011",
                 "disposal_type": "sold"
               }
             }
@@ -4169,9 +4464,9 @@
                 ]
               },
               "example": {
-                "hospital_id": "hospital_id_value",
-                "branch_id": "branch_id_value",
-                "asset_id": "asset_id_value",
+                "hospital_id": "507f1f77bcf86cd799439011",
+                "branch_id": "507f1f77bcf86cd799439011",
+                "asset_id": "507f1f77bcf86cd799439011",
                 "disposal_type": "sold"
               }
             }
@@ -4306,14 +4601,14 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "name": "name_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "name": "Sample Name",
                 "equipmentCode": "equipmentCode_value",
-                "categoryId": "categoryId_value",
-                "vendorId": "vendorId_value",
-                "departmentId": "departmentId_value",
-                "locationId": "locationId_value",
+                "categoryId": "507f1f77bcf86cd799439011",
+                "vendorId": "507f1f77bcf86cd799439011",
+                "departmentId": "507f1f77bcf86cd799439011",
+                "locationId": "507f1f77bcf86cd799439011",
                 "status": "active"
               }
             }
@@ -4431,14 +4726,14 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "name": "name_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "name": "Sample Name",
                 "equipmentCode": "equipmentCode_value",
-                "categoryId": "categoryId_value",
-                "vendorId": "vendorId_value",
-                "departmentId": "departmentId_value",
-                "locationId": "locationId_value",
+                "categoryId": "507f1f77bcf86cd799439011",
+                "vendorId": "507f1f77bcf86cd799439011",
+                "departmentId": "507f1f77bcf86cd799439011",
+                "locationId": "507f1f77bcf86cd799439011",
                 "status": "active"
               }
             }
@@ -4554,9 +4849,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "name": "name_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "name": "Sample Name",
                 "parentCategory": "parentCategory_value",
                 "createdBy": "createdBy_value"
               }
@@ -4656,9 +4951,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "name": "name_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "name": "Sample Name",
                 "parentCategory": "parentCategory_value",
                 "createdBy": "createdBy_value"
               }
@@ -4769,9 +5064,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "name": "name_value"
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "name": "Sample Name"
               }
             }
           }
@@ -4863,9 +5158,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "name": "name_value"
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "name": "Sample Name"
               }
             }
           }
@@ -4977,10 +5272,10 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "name": "name_value",
-                "departmentId": "departmentId_value"
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "name": "Sample Name",
+                "departmentId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -5075,10 +5370,10 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "name": "name_value",
-                "departmentId": "departmentId_value"
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "name": "Sample Name",
+                "departmentId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -5187,9 +5482,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "name": "name_value"
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "name": "Sample Name"
               }
             }
           }
@@ -5281,9 +5576,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "name": "name_value"
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "name": "Sample Name"
               }
             }
           }
@@ -5382,7 +5677,7 @@
                 "required": []
               },
               "example": {
-                "vendorId": "vendorId_value"
+                "vendorId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -5464,7 +5759,7 @@
                 "required": []
               },
               "example": {
-                "vendorId": "vendorId_value"
+                "vendorId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -5572,9 +5867,9 @@
                 "required": []
               },
               "example": {
-                "fromBranchId": "fromBranchId_value",
-                "toBranchId": "toBranchId_value",
-                "equipmentId": "equipmentId_value",
+                "fromBranchId": "507f1f77bcf86cd799439011",
+                "toBranchId": "507f1f77bcf86cd799439011",
+                "equipmentId": "507f1f77bcf86cd799439011",
                 "transferredBy": "transferredBy_value"
               }
             }
@@ -5666,9 +5961,9 @@
                 "required": []
               },
               "example": {
-                "fromBranchId": "fromBranchId_value",
-                "toBranchId": "toBranchId_value",
-                "equipmentId": "equipmentId_value",
+                "fromBranchId": "507f1f77bcf86cd799439011",
+                "toBranchId": "507f1f77bcf86cd799439011",
+                "equipmentId": "507f1f77bcf86cd799439011",
                 "transferredBy": "transferredBy_value"
               }
             }
@@ -5782,9 +6077,9 @@
                 ]
               },
               "example": {
-                "equipmentId": "equipmentId_value",
+                "equipmentId": "507f1f77bcf86cd799439011",
                 "frequency": "monthly",
-                "vendorId": "vendorId_value"
+                "vendorId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -5880,9 +6175,9 @@
                 ]
               },
               "example": {
-                "equipmentId": "equipmentId_value",
+                "equipmentId": "507f1f77bcf86cd799439011",
                 "frequency": "monthly",
-                "vendorId": "vendorId_value"
+                "vendorId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -5984,8 +6279,8 @@
                 "required": []
               },
               "example": {
-                "equipmentId": "equipmentId_value",
-                "vendorId": "vendorId_value"
+                "equipmentId": "507f1f77bcf86cd799439011",
+                "vendorId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -6070,8 +6365,8 @@
                 "required": []
               },
               "example": {
-                "equipmentId": "equipmentId_value",
-                "vendorId": "vendorId_value"
+                "equipmentId": "507f1f77bcf86cd799439011",
+                "vendorId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -6173,8 +6468,8 @@
                 "required": []
               },
               "example": {
-                "equipmentId": "equipmentId_value",
-                "vendorId": "vendorId_value"
+                "equipmentId": "507f1f77bcf86cd799439011",
+                "vendorId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -6259,8 +6554,8 @@
                 "required": []
               },
               "example": {
-                "equipmentId": "equipmentId_value",
-                "vendorId": "vendorId_value"
+                "equipmentId": "507f1f77bcf86cd799439011",
+                "vendorId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -6359,7 +6654,7 @@
                 "required": []
               },
               "example": {
-                "equipmentId": "equipmentId_value"
+                "equipmentId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -6441,7 +6736,7 @@
                 "required": []
               },
               "example": {
-                "equipmentId": "equipmentId_value"
+                "equipmentId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -6543,7 +6838,7 @@
                 "required": []
               },
               "example": {
-                "equipmentId": "equipmentId_value",
+                "equipmentId": "507f1f77bcf86cd799439011",
                 "changedBy": "changedBy_value"
               }
             }
@@ -6629,7 +6924,7 @@
                 "required": []
               },
               "example": {
-                "equipmentId": "equipmentId_value",
+                "equipmentId": "507f1f77bcf86cd799439011",
                 "changedBy": "changedBy_value"
               }
             }
@@ -6735,9 +7030,9 @@
                 "required": []
               },
               "example": {
-                "equipmentId": "equipmentId_value",
+                "equipmentId": "507f1f77bcf86cd799439011",
                 "usedBy": "usedBy_value",
-                "patientId": "patientId_value"
+                "patientId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -6825,9 +7120,9 @@
                 "required": []
               },
               "example": {
-                "equipmentId": "equipmentId_value",
+                "equipmentId": "507f1f77bcf86cd799439011",
                 "usedBy": "usedBy_value",
-                "patientId": "patientId_value"
+                "patientId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -6932,9 +7227,9 @@
                 "required": []
               },
               "example": {
-                "equipmentId": "equipmentId_value",
-                "sparePartId": "sparePartId_value",
-                "usedInMaintenanceId": "usedInMaintenanceId_value"
+                "equipmentId": "507f1f77bcf86cd799439011",
+                "sparePartId": "507f1f77bcf86cd799439011",
+                "usedInMaintenanceId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -7022,9 +7317,9 @@
                 "required": []
               },
               "example": {
-                "equipmentId": "equipmentId_value",
-                "sparePartId": "sparePartId_value",
-                "usedInMaintenanceId": "usedInMaintenanceId_value"
+                "equipmentId": "507f1f77bcf86cd799439011",
+                "sparePartId": "507f1f77bcf86cd799439011",
+                "usedInMaintenanceId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -7123,7 +7418,7 @@
                 "required": []
               },
               "example": {
-                "equipmentId": "equipmentId_value"
+                "equipmentId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -7205,7 +7500,7 @@
                 "required": []
               },
               "example": {
-                "equipmentId": "equipmentId_value"
+                "equipmentId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -7315,7 +7610,7 @@
                 "required": []
               },
               "example": {
-                "equipmentId": "equipmentId_value",
+                "equipmentId": "507f1f77bcf86cd799439011",
                 "reportedBy": "reportedBy_value",
                 "status": "open"
               }
@@ -7410,7 +7705,7 @@
                 "required": []
               },
               "example": {
-                "equipmentId": "equipmentId_value",
+                "equipmentId": "507f1f77bcf86cd799439011",
                 "reportedBy": "reportedBy_value",
                 "status": "open"
               }
@@ -7519,7 +7814,7 @@
                 "required": []
               },
               "example": {
-                "equipmentId": "equipmentId_value",
+                "equipmentId": "507f1f77bcf86cd799439011",
                 "alertType": "maintenance_due"
               }
             }
@@ -7610,7 +7905,7 @@
                 "required": []
               },
               "example": {
-                "equipmentId": "equipmentId_value",
+                "equipmentId": "507f1f77bcf86cd799439011",
                 "alertType": "maintenance_due"
               }
             }
@@ -7729,11 +8024,11 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "name": "name_value",
-                "templateId": "templateId_value",
-                "departmentId": "departmentId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "name": "Sample Name",
+                "templateId": "507f1f77bcf86cd799439011",
+                "departmentId": "507f1f77bcf86cd799439011",
                 "isActive": true
               }
             }
@@ -7835,11 +8130,11 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "name": "name_value",
-                "templateId": "templateId_value",
-                "departmentId": "departmentId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "name": "Sample Name",
+                "templateId": "507f1f77bcf86cd799439011",
+                "departmentId": "507f1f77bcf86cd799439011",
                 "isActive": true
               }
             }
@@ -7968,9 +8263,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "templateName": "templateName_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "templateName": "Sample Name",
                 "version": 1,
                 "pageSize": "pageSize_value",
                 "orientation": "portrait",
@@ -8086,9 +8381,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "templateName": "templateName_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "templateName": "Sample Name",
                 "version": 1,
                 "pageSize": "pageSize_value",
                 "orientation": "portrait",
@@ -8223,10 +8518,10 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "templateId": "templateId_value",
-                "fieldName": "fieldName_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "templateId": "507f1f77bcf86cd799439011",
+                "fieldName": "Sample Name",
                 "dataType": "text",
                 "placeholderKey": "placeholderKey_value",
                 "required": true
@@ -8342,10 +8637,10 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "templateId": "templateId_value",
-                "fieldName": "fieldName_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "templateId": "507f1f77bcf86cd799439011",
+                "fieldName": "Sample Name",
                 "dataType": "text",
                 "placeholderKey": "placeholderKey_value",
                 "required": true
@@ -8459,9 +8754,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "userId": "userId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "userId": "507f1f77bcf86cd799439011",
                 "isActive": true
               }
             }
@@ -8556,9 +8851,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "userId": "userId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "userId": "507f1f77bcf86cd799439011",
                 "isActive": true
               }
             }
@@ -8667,9 +8962,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "certificateId": "certificateId_value"
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "certificateId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -8760,9 +9055,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "certificateId": "certificateId_value"
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "certificateId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -8886,12 +9181,12 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "certificateId": "certificateId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "certificateId": "507f1f77bcf86cd799439011",
                 "action": "create",
-                "userId": "userId_value",
-                "timestamp": "timestamp_value"
+                "userId": "507f1f77bcf86cd799439011",
+                "timestamp": "2026-03-07T06:07:03.690Z"
               }
             }
           }
@@ -8998,12 +9293,12 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "certificateId": "certificateId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "certificateId": "507f1f77bcf86cd799439011",
                 "action": "create",
-                "userId": "userId_value",
-                "timestamp": "timestamp_value"
+                "userId": "507f1f77bcf86cd799439011",
+                "timestamp": "2026-03-07T06:07:03.690Z"
               }
             }
           }
@@ -9137,14 +9432,14 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
                 "certificateNumber": "certificateNumber_value",
-                "certificateTypeId": "certificateTypeId_value",
-                "templateId": "templateId_value",
-                "patientId": "patientId_value",
-                "doctorId": "doctorId_value",
-                "issueDate": "issueDate_value",
+                "certificateTypeId": "507f1f77bcf86cd799439011",
+                "templateId": "507f1f77bcf86cd799439011",
+                "patientId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011",
+                "issueDate": "2026-03-07T06:07:03.694Z",
                 "status": "draft",
                 "issuedBy": "issuedBy_value"
               }
@@ -9263,14 +9558,14 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
                 "certificateNumber": "certificateNumber_value",
-                "certificateTypeId": "certificateTypeId_value",
-                "templateId": "templateId_value",
-                "patientId": "patientId_value",
-                "doctorId": "doctorId_value",
-                "issueDate": "issueDate_value",
+                "certificateTypeId": "507f1f77bcf86cd799439011",
+                "templateId": "507f1f77bcf86cd799439011",
+                "patientId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011",
+                "issueDate": "2026-03-07T06:07:03.694Z",
                 "status": "draft",
                 "issuedBy": "issuedBy_value"
               }
@@ -9390,10 +9685,10 @@
                 ]
               },
               "example": {
-                "name": "name_value",
+                "name": "Sample Name",
                 "unit": "unit_value",
                 "dataType": "number",
-                "departmentId": "departmentId_value",
+                "departmentId": "507f1f77bcf86cd799439011",
                 "isActive": true
               }
             }
@@ -9495,10 +9790,10 @@
                 ]
               },
               "example": {
-                "name": "name_value",
+                "name": "Sample Name",
                 "unit": "unit_value",
                 "dataType": "number",
-                "departmentId": "departmentId_value",
+                "departmentId": "507f1f77bcf86cd799439011",
                 "isActive": true
               }
             }
@@ -9610,8 +9905,8 @@
                 ]
               },
               "example": {
-                "departmentId": "departmentId_value",
-                "vitalId": "vitalId_value",
+                "departmentId": "507f1f77bcf86cd799439011",
+                "vitalId": "507f1f77bcf86cd799439011",
                 "isMandatory": true,
                 "displayOrder": 1
               }
@@ -9707,8 +10002,8 @@
                 ]
               },
               "example": {
-                "departmentId": "departmentId_value",
-                "vitalId": "vitalId_value",
+                "departmentId": "507f1f77bcf86cd799439011",
+                "vitalId": "507f1f77bcf86cd799439011",
                 "isMandatory": true,
                 "displayOrder": 1
               }
@@ -9821,8 +10116,8 @@
                 ]
               },
               "example": {
-                "visitId": "visitId_value",
-                "departmentId": "departmentId_value",
+                "visitId": "507f1f77bcf86cd799439011",
+                "departmentId": "507f1f77bcf86cd799439011",
                 "vitals": "vitals_value",
                 "recordedBy": "recordedBy_value"
               }
@@ -9918,8 +10213,8 @@
                 ]
               },
               "example": {
-                "visitId": "visitId_value",
-                "departmentId": "departmentId_value",
+                "visitId": "507f1f77bcf86cd799439011",
+                "departmentId": "507f1f77bcf86cd799439011",
                 "vitals": "vitals_value",
                 "recordedBy": "recordedBy_value"
               }
@@ -10048,8 +10343,8 @@
                 ]
               },
               "example": {
-                "name": "name_value",
-                "legalName": "legalName_value",
+                "name": "Sample Name",
+                "legalName": "Sample Name",
                 "registrationNumber": "registrationNumber_value",
                 "ownerDetails": "ownerDetails_value",
                 "isVerified": true,
@@ -10166,8 +10461,8 @@
                 ]
               },
               "example": {
-                "name": "name_value",
-                "legalName": "legalName_value",
+                "name": "Sample Name",
+                "legalName": "Sample Name",
                 "registrationNumber": "registrationNumber_value",
                 "ownerDetails": "ownerDetails_value",
                 "isVerified": true,
@@ -10275,7 +10570,7 @@
                 ]
               },
               "example": {
-                "name": "name_value"
+                "name": "Sample Name"
               }
             }
           }
@@ -10359,7 +10654,7 @@
                 ]
               },
               "example": {
-                "name": "name_value"
+                "name": "Sample Name"
               }
             }
           }
@@ -10464,8 +10759,8 @@
                 ]
               },
               "example": {
-                "name": "name_value",
-                "countryId": "countryId_value"
+                "name": "Sample Name",
+                "countryId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -10553,8 +10848,8 @@
                 ]
               },
               "example": {
-                "name": "name_value",
-                "countryId": "countryId_value"
+                "name": "Sample Name",
+                "countryId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -10659,8 +10954,8 @@
                 ]
               },
               "example": {
-                "name": "name_value",
-                "stateId": "stateId_value"
+                "name": "Sample Name",
+                "stateId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -10748,8 +11043,8 @@
                 ]
               },
               "example": {
-                "name": "name_value",
-                "stateId": "stateId_value"
+                "name": "Sample Name",
+                "stateId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -10859,10 +11154,10 @@
                 ]
               },
               "example": {
-                "name": "name_value",
+                "name": "Sample Name",
                 "description": "description_value",
                 "createdAt": "createdAt_value",
-                "updatedAt": "updatedAt_value"
+                "updatedAt": "2026-03-07T06:07:03.722Z"
               }
             }
           }
@@ -10955,10 +11250,10 @@
                 ]
               },
               "example": {
-                "name": "name_value",
+                "name": "Sample Name",
                 "description": "description_value",
                 "createdAt": "createdAt_value",
-                "updatedAt": "updatedAt_value"
+                "updatedAt": "2026-03-07T06:07:03.722Z"
               }
             }
           }
@@ -11129,16 +11424,16 @@
                 ]
               },
               "example": {
-                "uhid": "uhid_value",
+                "uhid": "507f1f77bcf86cd799439011",
                 "mobile": "mobile_value",
-                "patientName": "patientName_value",
+                "patientName": "Sample Name",
                 "gender": "Male",
                 "maritalStatus": "Single",
                 "dob": "dob_value",
                 "relationType": "S/O",
                 "country": "country_value",
-                "stateId": "stateId_value",
-                "cityId": "cityId_value",
+                "stateId": "507f1f77bcf86cd799439011",
+                "cityId": "507f1f77bcf86cd799439011",
                 "bloodGroup": "A+",
                 "source": "SELF"
               }
@@ -11294,16 +11589,16 @@
                 ]
               },
               "example": {
-                "uhid": "uhid_value",
+                "uhid": "507f1f77bcf86cd799439011",
                 "mobile": "mobile_value",
-                "patientName": "patientName_value",
+                "patientName": "Sample Name",
                 "gender": "Male",
                 "maritalStatus": "Single",
                 "dob": "dob_value",
                 "relationType": "S/O",
                 "country": "country_value",
-                "stateId": "stateId_value",
-                "cityId": "cityId_value",
+                "stateId": "507f1f77bcf86cd799439011",
+                "cityId": "507f1f77bcf86cd799439011",
                 "bloodGroup": "A+",
                 "source": "SELF"
               }
@@ -11458,11 +11753,11 @@
               },
               "example": {
                 "receiptNumber": "receiptNumber_value",
-                "patientId": "patientId_value",
-                "uhid": "uhid_value",
-                "visitId": "visitId_value",
-                "departmentId": "departmentId_value",
-                "doctorId": "doctorId_value",
+                "patientId": "507f1f77bcf86cd799439011",
+                "uhid": "507f1f77bcf86cd799439011",
+                "visitId": "507f1f77bcf86cd799439011",
+                "departmentId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011",
                 "paymentMode": "Cash",
                 "discountPercent": 1,
                 "fee": 1,
@@ -11605,11 +11900,11 @@
               },
               "example": {
                 "receiptNumber": "receiptNumber_value",
-                "patientId": "patientId_value",
-                "uhid": "uhid_value",
-                "visitId": "visitId_value",
-                "departmentId": "departmentId_value",
-                "doctorId": "doctorId_value",
+                "patientId": "507f1f77bcf86cd799439011",
+                "uhid": "507f1f77bcf86cd799439011",
+                "visitId": "507f1f77bcf86cd799439011",
+                "departmentId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011",
                 "paymentMode": "Cash",
                 "discountPercent": 1,
                 "fee": 1,
@@ -11781,14 +12076,14 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "patientId": "patientId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "patientId": "507f1f77bcf86cd799439011",
                 "encounterType": "OPD",
-                "visitId": "visitId_value",
-                "ipdAdmissionId": "ipdAdmissionId_value",
+                "visitId": "507f1f77bcf86cd799439011",
+                "ipdAdmissionId": "507f1f77bcf86cd799439011",
                 "procedureType": "Dressing",
-                "procedureName": "procedureName_value",
+                "procedureName": "Sample Name",
                 "priority": "Normal",
                 "status": "Ordered",
                 "performedBy": "performedBy_value"
@@ -11939,14 +12234,14 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "patientId": "patientId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "patientId": "507f1f77bcf86cd799439011",
                 "encounterType": "OPD",
-                "visitId": "visitId_value",
-                "ipdAdmissionId": "ipdAdmissionId_value",
+                "visitId": "507f1f77bcf86cd799439011",
+                "ipdAdmissionId": "507f1f77bcf86cd799439011",
                 "procedureType": "Dressing",
-                "procedureName": "procedureName_value",
+                "procedureName": "Sample Name",
                 "priority": "Normal",
                 "status": "Ordered",
                 "performedBy": "performedBy_value"
@@ -12079,13 +12374,13 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "patientId": "patientId_value",
-                "visitId": "visitId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "patientId": "507f1f77bcf86cd799439011",
+                "visitId": "507f1f77bcf86cd799439011",
                 "admissionNumber": "admissionNumber_value",
-                "admissionDate": "admissionDate_value",
-                "bedId": "bedId_value",
+                "admissionDate": "2026-03-07T06:07:03.734Z",
+                "bedId": "507f1f77bcf86cd799439011",
                 "status": "ADMITTED"
               }
             }
@@ -12199,13 +12494,13 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "patientId": "patientId_value",
-                "visitId": "visitId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "patientId": "507f1f77bcf86cd799439011",
+                "visitId": "507f1f77bcf86cd799439011",
                 "admissionNumber": "admissionNumber_value",
-                "admissionDate": "admissionDate_value",
-                "bedId": "bedId_value",
+                "admissionDate": "2026-03-07T06:07:03.734Z",
+                "bedId": "507f1f77bcf86cd799439011",
                 "status": "ADMITTED"
               }
             }
@@ -12257,7 +12552,15 @@
         "summary": "PUT /api/v1/ipd/admissions/:id/discharge",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -12269,21 +12572,7 @@
               "type": "string"
             }
           }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "additionalProperties": true
-              },
-              "example": {
-                "exampleField": "value"
-              }
-            }
-          }
-        }
+        ]
       }
     },
     "/api/v1/ipd/doctor-assignments": {
@@ -12364,10 +12653,10 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "ipdAdmissionId": "ipdAdmissionId_value",
-                "doctorId": "doctorId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "ipdAdmissionId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011",
                 "role": "Primary"
               }
             }
@@ -12472,10 +12761,10 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "ipdAdmissionId": "ipdAdmissionId_value",
-                "doctorId": "doctorId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "ipdAdmissionId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011",
                 "role": "Primary"
               }
             }
@@ -12527,7 +12816,15 @@
         "summary": "GET /api/v1/ipd/doctor-assignments/ipd/:ipdId",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -12612,10 +12909,10 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "ipdId": "ipdId_value",
-                "doctorId": "doctorId_value"
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "ipdId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -12711,10 +13008,10 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "ipdId": "ipdId_value",
-                "doctorId": "doctorId_value"
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "ipdId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -12827,10 +13124,10 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "ipdId": "ipdId_value",
-                "nurseId": "nurseId_value"
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "ipdId": "507f1f77bcf86cd799439011",
+                "nurseId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -12926,10 +13223,10 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "ipdId": "ipdId_value",
-                "nurseId": "nurseId_value"
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "ipdId": "507f1f77bcf86cd799439011",
+                "nurseId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -12970,6 +13267,408 @@
             }
           }
         }
+      }
+    },
+    "/api/v1/opd/tokens": {
+      "get": {
+        "tags": [
+          "Tokens - opdToken.routes"
+        ],
+        "summary": "List Tokens - opdToken.routes",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Tokens - opdToken.routes"
+        ],
+        "summary": "Create Tokens - opdToken.routes",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "hospitalId": {
+                    "type": "string"
+                  },
+                  "branchId": {
+                    "type": "string"
+                  },
+                  "roomId": {
+                    "type": "string"
+                  },
+                  "doctorId": {
+                    "type": "string"
+                  },
+                  "patientId": {
+                    "type": "string"
+                  },
+                  "visitId": {
+                    "type": "string"
+                  },
+                  "tokenDate": {
+                    "type": "string"
+                  },
+                  "tokenNumber": {
+                    "type": "number"
+                  },
+                  "priority": {
+                    "type": "string",
+                    "enum": [
+                      "Normal",
+                      "Urgent"
+                    ]
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "Waiting",
+                      "Called",
+                      "In-Consultation",
+                      "Completed",
+                      "No-Show",
+                      "Cancelled"
+                    ]
+                  },
+                  "calledAt": {
+                    "type": "string"
+                  },
+                  "completedAt": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "hospitalId",
+                  "branchId",
+                  "roomId",
+                  "patientId",
+                  "visitId",
+                  "tokenDate",
+                  "tokenNumber"
+                ]
+              },
+              "example": {
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "roomId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011",
+                "patientId": "507f1f77bcf86cd799439011",
+                "visitId": "507f1f77bcf86cd799439011",
+                "tokenDate": "2026-03-07T06:07:03.743Z",
+                "tokenNumber": 1,
+                "priority": "Normal",
+                "status": "Waiting",
+                "calledAt": "calledAt_value",
+                "completedAt": "completedAt_value"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/opd/tokens/{id}": {
+      "get": {
+        "tags": [
+          "Tokens - opdToken.routes"
+        ],
+        "summary": "Get Tokens - opdToken.routes by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Tokens - opdToken.routes"
+        ],
+        "summary": "Update Tokens - opdToken.routes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "hospitalId": {
+                    "type": "string"
+                  },
+                  "branchId": {
+                    "type": "string"
+                  },
+                  "roomId": {
+                    "type": "string"
+                  },
+                  "doctorId": {
+                    "type": "string"
+                  },
+                  "patientId": {
+                    "type": "string"
+                  },
+                  "visitId": {
+                    "type": "string"
+                  },
+                  "tokenDate": {
+                    "type": "string"
+                  },
+                  "tokenNumber": {
+                    "type": "number"
+                  },
+                  "priority": {
+                    "type": "string",
+                    "enum": [
+                      "Normal",
+                      "Urgent"
+                    ]
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "Waiting",
+                      "Called",
+                      "In-Consultation",
+                      "Completed",
+                      "No-Show",
+                      "Cancelled"
+                    ]
+                  },
+                  "calledAt": {
+                    "type": "string"
+                  },
+                  "completedAt": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "hospitalId",
+                  "branchId",
+                  "roomId",
+                  "patientId",
+                  "visitId",
+                  "tokenDate",
+                  "tokenNumber"
+                ]
+              },
+              "example": {
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "roomId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011",
+                "patientId": "507f1f77bcf86cd799439011",
+                "visitId": "507f1f77bcf86cd799439011",
+                "tokenDate": "2026-03-07T06:07:03.743Z",
+                "tokenNumber": 1,
+                "priority": "Normal",
+                "status": "Waiting",
+                "calledAt": "calledAt_value",
+                "completedAt": "completedAt_value"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Tokens - opdToken.routes"
+        ],
+        "summary": "Delete Tokens - opdToken.routes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/opd/tokens/{id}/call": {
+      "patch": {
+        "tags": [
+          "Tokens - opdToken.routes"
+        ],
+        "summary": "PATCH /api/v1/opd/tokens/:id/call",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/opd/tokens/{id}/complete": {
+      "patch": {
+        "tags": [
+          "Tokens - opdToken.routes"
+        ],
+        "summary": "PATCH /api/v1/opd/tokens/:id/complete",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/opd/{visitId}/summary": {
+      "get": {
+        "tags": [
+          "Opd - opd.routes"
+        ],
+        "summary": "GET /api/v1/opd/:visitId/summary",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "visitId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
       }
     },
     "/api/v1/branches": {
@@ -13070,8 +13769,8 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "name": "name_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "name": "Sample Name",
                 "branchCode": "branchCode_value",
                 "branchType": "General",
                 "branchHead": "branchHead_value",
@@ -13205,8 +13904,8 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "name": "name_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "name": "Sample Name",
                 "branchCode": "branchCode_value",
                 "branchType": "General",
                 "branchHead": "branchHead_value",
@@ -13350,9 +14049,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "floorName": "floorName_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "floorName": "Sample Name",
                 "floorNumber": 1,
                 "floorType": "OPD",
                 "floorManager": "floorManager_value",
@@ -13474,9 +14173,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "floorName": "floorName_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "floorName": "Sample Name",
                 "floorNumber": 1,
                 "floorType": "OPD",
                 "floorManager": "floorManager_value",
@@ -13625,12 +14324,12 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "floorId": "floorId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "floorId": "507f1f77bcf86cd799439011",
                 "roomNumber": "roomNumber_value",
                 "roomType": "Consultation",
-                "departmentId": "departmentId_value",
+                "departmentId": "507f1f77bcf86cd799439011",
                 "capacity": 1,
                 "status": "Available",
                 "assignedDoctor": "assignedDoctor_value"
@@ -13760,12 +14459,12 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "floorId": "floorId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "floorId": "507f1f77bcf86cd799439011",
                 "roomNumber": "roomNumber_value",
                 "roomType": "Consultation",
-                "departmentId": "departmentId_value",
+                "departmentId": "507f1f77bcf86cd799439011",
                 "capacity": 1,
                 "status": "Available",
                 "assignedDoctor": "assignedDoctor_value"
@@ -13899,9 +14598,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "roomId": "roomId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "roomId": "507f1f77bcf86cd799439011",
                 "bedNumber": "bedNumber_value",
                 "bedType": "General",
                 "status": "Available"
@@ -14018,9 +14717,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "roomId": "roomId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "roomId": "507f1f77bcf86cd799439011",
                 "bedNumber": "bedNumber_value",
                 "bedType": "General",
                 "status": "Available"
@@ -14156,11 +14855,11 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "floorId": "floorId_value",
-                "roomId": "roomId_value",
-                "staffId": "staffId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "floorId": "507f1f77bcf86cd799439011",
+                "roomId": "507f1f77bcf86cd799439011",
+                "staffId": "507f1f77bcf86cd799439011",
                 "role": "Doctor",
                 "shift": "Morning"
               }
@@ -14278,11 +14977,11 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "floorId": "floorId_value",
-                "roomId": "roomId_value",
-                "staffId": "staffId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "floorId": "507f1f77bcf86cd799439011",
+                "roomId": "507f1f77bcf86cd799439011",
+                "staffId": "507f1f77bcf86cd799439011",
                 "role": "Doctor",
                 "shift": "Morning"
               }
@@ -14405,9 +15104,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "invoiceId": "invoiceId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "invoiceId": "507f1f77bcf86cd799439011",
                 "paymentMode": "Cash",
                 "receivedBy": "receivedBy_value"
               }
@@ -14513,9 +15212,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "invoiceId": "invoiceId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "invoiceId": "507f1f77bcf86cd799439011",
                 "paymentMode": "Cash",
                 "receivedBy": "receivedBy_value"
               }
@@ -14626,7 +15325,7 @@
                 "required": []
               },
               "example": {
-                "patientId": "patientId_value",
+                "patientId": "507f1f77bcf86cd799439011",
                 "createdByUser": "createdByUser_value",
                 "status": "Ongoing"
               }
@@ -14720,7 +15419,7 @@
                 "required": []
               },
               "example": {
-                "patientId": "patientId_value",
+                "patientId": "507f1f77bcf86cd799439011",
                 "createdByUser": "createdByUser_value",
                 "status": "Ongoing"
               }
@@ -14849,11 +15548,11 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "ambulanceId": "ambulanceId_value",
-                "driverId": "driverId_value",
-                "startTime": "startTime_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "ambulanceId": "507f1f77bcf86cd799439011",
+                "driverId": "507f1f77bcf86cd799439011",
+                "startTime": "2026-03-07T06:07:03.806Z",
                 "status": "Active",
                 "createdBy": "createdBy_value"
               }
@@ -14965,11 +15664,11 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "ambulanceId": "ambulanceId_value",
-                "driverId": "driverId_value",
-                "startTime": "startTime_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "ambulanceId": "507f1f77bcf86cd799439011",
+                "driverId": "507f1f77bcf86cd799439011",
+                "startTime": "2026-03-07T06:07:03.806Z",
                 "status": "Active",
                 "createdBy": "createdBy_value"
               }
@@ -15094,10 +15793,10 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "ambulanceId": "ambulanceId_value",
-                "maintenanceDate": "maintenanceDate_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "ambulanceId": "507f1f77bcf86cd799439011",
+                "maintenanceDate": "2026-03-07T06:07:03.807Z",
                 "type": "Routine",
                 "performedBy": "performedBy_value"
               }
@@ -15205,10 +15904,10 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "ambulanceId": "ambulanceId_value",
-                "maintenanceDate": "maintenanceDate_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "ambulanceId": "507f1f77bcf86cd799439011",
+                "maintenanceDate": "2026-03-07T06:07:03.807Z",
                 "type": "Routine",
                 "performedBy": "performedBy_value"
               }
@@ -15333,11 +16032,11 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
                 "vehicleNumber": "vehicleNumber_value",
                 "type": "Basic",
-                "driverId": "driverId_value",
+                "driverId": "507f1f77bcf86cd799439011",
                 "isActive": true
               }
             }
@@ -15444,11 +16143,11 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
                 "vehicleNumber": "vehicleNumber_value",
                 "type": "Basic",
-                "driverId": "driverId_value",
+                "driverId": "507f1f77bcf86cd799439011",
                 "isActive": true
               }
             }
@@ -15608,14 +16307,14 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
                 "appointmentNumber": "appointmentNumber_value",
-                "patientId": "patientId_value",
-                "doctorId": "doctorId_value",
-                "appointmentDate": "appointmentDate_value",
-                "startTime": "startTime_value",
-                "endTime": "endTime_value",
+                "patientId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011",
+                "appointmentDate": "2026-03-07T06:07:03.810Z",
+                "startTime": "2026-03-07T06:07:03.810Z",
+                "endTime": "2026-03-07T06:07:03.810Z",
                 "consultationType": "OPD",
                 "status": "Booked",
                 "bookedBy": "bookedBy_value",
@@ -15762,14 +16461,14 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
                 "appointmentNumber": "appointmentNumber_value",
-                "patientId": "patientId_value",
-                "doctorId": "doctorId_value",
-                "appointmentDate": "appointmentDate_value",
-                "startTime": "startTime_value",
-                "endTime": "endTime_value",
+                "patientId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011",
+                "appointmentDate": "2026-03-07T06:07:03.810Z",
+                "startTime": "2026-03-07T06:07:03.810Z",
+                "endTime": "2026-03-07T06:07:03.810Z",
                 "consultationType": "OPD",
                 "status": "Booked",
                 "bookedBy": "bookedBy_value",
@@ -15907,12 +16606,12 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "doctorId": "doctorId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011",
                 "dayOfWeek": "Sunday",
-                "startTime": "startTime_value",
-                "endTime": "endTime_value",
+                "startTime": "2026-03-07T06:07:03.811Z",
+                "endTime": "2026-03-07T06:07:03.811Z",
                 "isActive": true
               }
             }
@@ -16029,12 +16728,12 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "doctorId": "doctorId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011",
                 "dayOfWeek": "Sunday",
-                "startTime": "startTime_value",
-                "endTime": "endTime_value",
+                "startTime": "2026-03-07T06:07:03.811Z",
+                "endTime": "2026-03-07T06:07:03.811Z",
                 "isActive": true
               }
             }
@@ -16164,9 +16863,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "donationId": "donationId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "donationId": "507f1f77bcf86cd799439011",
                 "componentType": "Whole Blood",
                 "status": "Available"
               }
@@ -16280,9 +16979,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "donationId": "donationId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "donationId": "507f1f77bcf86cd799439011",
                 "componentType": "Whole Blood",
                 "status": "Available"
               }
@@ -16396,9 +17095,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "componentId": "componentId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "componentId": "507f1f77bcf86cd799439011",
                 "discardedBy": "discardedBy_value"
               }
             }
@@ -16494,9 +17193,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "componentId": "componentId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "componentId": "507f1f77bcf86cd799439011",
                 "discardedBy": "discardedBy_value"
               }
             }
@@ -16639,12 +17338,12 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
                 "donationNumber": "donationNumber_value",
-                "donorId": "donorId_value",
-                "campId": "campId_value",
-                "donationDate": "donationDate_value",
+                "donorId": "507f1f77bcf86cd799439011",
+                "campId": "507f1f77bcf86cd799439011",
+                "donationDate": "2026-03-07T06:07:03.815Z",
                 "collectedBy": "collectedBy_value",
                 "bloodGroup": "bloodGroup_value",
                 "quantityML": 1,
@@ -16774,12 +17473,12 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
                 "donationNumber": "donationNumber_value",
-                "donorId": "donorId_value",
-                "campId": "campId_value",
-                "donationDate": "donationDate_value",
+                "donorId": "507f1f77bcf86cd799439011",
+                "campId": "507f1f77bcf86cd799439011",
+                "donationDate": "2026-03-07T06:07:03.815Z",
                 "collectedBy": "collectedBy_value",
                 "bloodGroup": "bloodGroup_value",
                 "quantityML": 1,
@@ -16892,8 +17591,8 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
                 "doctorInCharge": "doctorInCharge_value"
               }
             }
@@ -16985,8 +17684,8 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
                 "doctorInCharge": "doctorInCharge_value"
               }
             }
@@ -17110,9 +17809,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "donorId": "donorId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "donorId": "507f1f77bcf86cd799439011",
                 "bloodGroup": "bloodGroup_value",
                 "totalDonations": 1,
                 "status": "Active"
@@ -17221,9 +17920,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "donorId": "donorId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "donorId": "507f1f77bcf86cd799439011",
                 "bloodGroup": "bloodGroup_value",
                 "totalDonations": 1,
                 "status": "Active"
@@ -17553,9 +18252,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "componentId": "componentId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "componentId": "507f1f77bcf86cd799439011",
                 "bloodGroup": "bloodGroup_value",
                 "currentStatus": "Available"
               }
@@ -17662,9 +18361,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "componentId": "componentId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "componentId": "507f1f77bcf86cd799439011",
                 "bloodGroup": "bloodGroup_value",
                 "currentStatus": "Available"
               }
@@ -17789,10 +18488,10 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "requestId": "requestId_value",
-                "componentId": "componentId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "requestId": "507f1f77bcf86cd799439011",
+                "componentId": "507f1f77bcf86cd799439011",
                 "issuedBy": "issuedBy_value",
                 "status": "Issued"
               }
@@ -17900,10 +18599,10 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "requestId": "requestId_value",
-                "componentId": "componentId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "requestId": "507f1f77bcf86cd799439011",
+                "componentId": "507f1f77bcf86cd799439011",
                 "issuedBy": "issuedBy_value",
                 "status": "Issued"
               }
@@ -18029,9 +18728,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "patientId": "patientId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "patientId": "507f1f77bcf86cd799439011",
                 "requestedBy": "requestedBy_value",
                 "bloodGroup": "bloodGroup_value",
                 "status": "Pending"
@@ -18141,9 +18840,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "patientId": "patientId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "patientId": "507f1f77bcf86cd799439011",
                 "requestedBy": "requestedBy_value",
                 "bloodGroup": "bloodGroup_value",
                 "status": "Pending"
@@ -18265,9 +18964,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "donationId": "donationId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "donationId": "507f1f77bcf86cd799439011",
                 "testedBy": "testedBy_value",
                 "status": "Safe"
               }
@@ -18371,9 +19070,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "donationId": "donationId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "donationId": "507f1f77bcf86cd799439011",
                 "testedBy": "testedBy_value",
                 "status": "Safe"
               }
@@ -18498,10 +19197,10 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "requestId": "requestId_value",
-                "componentId": "componentId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "requestId": "507f1f77bcf86cd799439011",
+                "componentId": "507f1f77bcf86cd799439011",
                 "result": "Compatible",
                 "performedBy": "performedBy_value"
               }
@@ -18609,10 +19308,10 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "requestId": "requestId_value",
-                "componentId": "componentId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "requestId": "507f1f77bcf86cd799439011",
+                "componentId": "507f1f77bcf86cd799439011",
                 "result": "Compatible",
                 "performedBy": "performedBy_value"
               }
@@ -18633,195 +19332,6 @@
           "Auto - cross-matchs"
         ],
         "summary": "Delete Auto - cross-matchs",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Deleted",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MessageResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/auto/complaints": {
-      "get": {
-        "tags": [
-          "Auto - complaints"
-        ],
-        "summary": "List Auto - complaints",
-        "parameters": [
-          {
-            "name": "page",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "default": 1
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "default": 10
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Paginated list",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaginatedResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Auto - complaints"
-        ],
-        "summary": "Create Auto - complaints",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "visitId": {
-                    "type": "string"
-                  },
-                  "createdByUser": {
-                    "type": "string"
-                  }
-                },
-                "required": []
-              },
-              "example": {
-                "visitId": "visitId_value",
-                "createdByUser": "createdByUser_value"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": true
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/auto/complaints/{id}": {
-      "get": {
-        "tags": [
-          "Auto - complaints"
-        ],
-        "summary": "Get Auto - complaints by ID",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Detail",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": true
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Auto - complaints"
-        ],
-        "summary": "Update Auto - complaints",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "visitId": {
-                    "type": "string"
-                  },
-                  "createdByUser": {
-                    "type": "string"
-                  }
-                },
-                "required": []
-              },
-              "example": {
-                "visitId": "visitId_value",
-                "createdByUser": "createdByUser_value"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Updated"
-          },
-          "404": {
-            "description": "Not found"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Auto - complaints"
-        ],
-        "summary": "Delete Auto - complaints",
         "parameters": [
           {
             "name": "id",
@@ -18931,10 +19441,10 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
                 "batchNumber": "batchNumber_value",
-                "instrumentId": "instrumentId_value",
+                "instrumentId": "507f1f77bcf86cd799439011",
                 "quantity": 1,
                 "sterilizationBy": "sterilizationBy_value",
                 "status": "Ready"
@@ -19048,10 +19558,10 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
                 "batchNumber": "batchNumber_value",
-                "instrumentId": "instrumentId_value",
+                "instrumentId": "507f1f77bcf86cd799439011",
                 "quantity": 1,
                 "sterilizationBy": "sterilizationBy_value",
                 "status": "Ready"
@@ -19192,9 +19702,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "batchId": "batchId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "batchId": "507f1f77bcf86cd799439011",
                 "issuedTo": "issuedTo_value",
                 "issuedFor": "Surgery",
                 "issuedQuantity": 1,
@@ -19321,9 +19831,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "batchId": "batchId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "batchId": "507f1f77bcf86cd799439011",
                 "issuedTo": "issuedTo_value",
                 "issuedFor": "Surgery",
                 "issuedQuantity": 1,
@@ -19451,9 +19961,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "name": "name_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "name": "Sample Name",
                 "category": "category_value",
                 "code": "code_value",
                 "isActive": true,
@@ -19562,9 +20072,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "name": "name_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "name": "Sample Name",
                 "category": "category_value",
                 "code": "code_value",
                 "isActive": true,
@@ -19695,11 +20205,11 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "batchId": "batchId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "batchId": "507f1f77bcf86cd799439011",
                 "cycleNumber": 1,
-                "startTime": "startTime_value",
+                "startTime": "2026-03-07T06:07:03.831Z",
                 "performedBy": "performedBy_value",
                 "status": "Pending"
               }
@@ -19811,11 +20321,11 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "batchId": "batchId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "batchId": "507f1f77bcf86cd799439011",
                 "cycleNumber": 1,
-                "startTime": "startTime_value",
+                "startTime": "2026-03-07T06:07:03.831Z",
                 "performedBy": "performedBy_value",
                 "status": "Pending"
               }
@@ -19935,9 +20445,9 @@
                 ]
               },
               "example": {
-                "visitId": "visitId_value",
-                "doctorId": "doctorId_value",
-                "patientId": "patientId_value",
+                "visitId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011",
+                "patientId": "507f1f77bcf86cd799439011",
                 "medicines": "medicines_value",
                 "pharmacyNotes": "pharmacyNotes_value",
                 "refills": 1
@@ -20041,9 +20551,9 @@
                 ]
               },
               "example": {
-                "visitId": "visitId_value",
-                "doctorId": "doctorId_value",
-                "patientId": "patientId_value",
+                "visitId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011",
+                "patientId": "507f1f77bcf86cd799439011",
                 "medicines": "medicines_value",
                 "pharmacyNotes": "pharmacyNotes_value",
                 "refills": 1
@@ -20157,8 +20667,8 @@
                 ]
               },
               "example": {
-                "visitId": "visitId_value",
-                "patientId": "patientId_value",
+                "visitId": "507f1f77bcf86cd799439011",
+                "patientId": "507f1f77bcf86cd799439011",
                 "diagnosisType": "Provisional"
               }
             }
@@ -20253,8 +20763,8 @@
                 ]
               },
               "example": {
-                "visitId": "visitId_value",
-                "patientId": "patientId_value",
+                "visitId": "507f1f77bcf86cd799439011",
+                "patientId": "507f1f77bcf86cd799439011",
                 "diagnosisType": "Provisional"
               }
             }
@@ -20360,8 +20870,8 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "doctorId": "doctorId_value"
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -20449,8 +20959,8 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "doctorId": "doctorId_value"
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -20566,9 +21076,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "doctorId": "doctorId_value",
-                "branchId": "branchId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
                 "commission": "Percentage"
               }
             }
@@ -20668,9 +21178,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "doctorId": "doctorId_value",
-                "branchId": "branchId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
                 "commission": "Percentage"
               }
             }
@@ -20799,9 +21309,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "doctorId": "doctorId_value",
-                "branchId": "branchId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
                 "dayOfWeek": 1,
                 "slotDuration": 1,
                 "status": "Pending",
@@ -20916,9 +21426,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "doctorId": "doctorId_value",
-                "branchId": "branchId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
                 "dayOfWeek": 1,
                 "slotDuration": 1,
                 "status": "Pending",
@@ -21027,8 +21537,8 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "doctorId": "doctorId_value"
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -21116,8 +21626,8 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "doctorId": "doctorId_value"
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -21222,8 +21732,8 @@
                 ]
               },
               "example": {
-                "visitId": "visitId_value",
-                "userId": "userId_value"
+                "visitId": "507f1f77bcf86cd799439011",
+                "userId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -21311,8 +21821,8 @@
                 ]
               },
               "example": {
-                "visitId": "visitId_value",
-                "userId": "userId_value"
+                "visitId": "507f1f77bcf86cd799439011",
+                "userId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -21440,9 +21950,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "name": "name_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "name": "Sample Name",
                 "category": "Lab",
                 "price": 1,
                 "isActive": true,
@@ -21557,9 +22067,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "name": "name_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "name": "Sample Name",
                 "category": "Lab",
                 "price": 1,
                 "isActive": true,
@@ -21723,13 +22233,13 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "patientId": "patientId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "patientId": "507f1f77bcf86cd799439011",
                 "encounterType": "OPD",
-                "visitId": "visitId_value",
-                "ipdAdmissionId": "ipdAdmissionId_value",
-                "investigationId": "investigationId_value",
+                "visitId": "507f1f77bcf86cd799439011",
+                "ipdAdmissionId": "507f1f77bcf86cd799439011",
+                "investigationId": "507f1f77bcf86cd799439011",
                 "priceAtOrderTime": 1,
                 "priority": "Normal",
                 "orderStatus": "Ordered",
@@ -21877,13 +22387,13 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "patientId": "patientId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "patientId": "507f1f77bcf86cd799439011",
                 "encounterType": "OPD",
-                "visitId": "visitId_value",
-                "ipdAdmissionId": "ipdAdmissionId_value",
-                "investigationId": "investigationId_value",
+                "visitId": "507f1f77bcf86cd799439011",
+                "ipdAdmissionId": "507f1f77bcf86cd799439011",
+                "investigationId": "507f1f77bcf86cd799439011",
                 "priceAtOrderTime": 1,
                 "priority": "Normal",
                 "orderStatus": "Ordered",
@@ -22019,10 +22529,10 @@
               },
               "example": {
                 "isAbnormal": true,
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "investigationOrderId": "investigationOrderId_value",
-                "labSampleId": "labSampleId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "investigationOrderId": "507f1f77bcf86cd799439011",
+                "labSampleId": "507f1f77bcf86cd799439011",
                 "resultStatus": "Pending",
                 "verifiedBy": "verifiedBy_value",
                 "verifiedAt": "verifiedAt_value"
@@ -22139,10 +22649,10 @@
               },
               "example": {
                 "isAbnormal": true,
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "investigationOrderId": "investigationOrderId_value",
-                "labSampleId": "labSampleId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "investigationOrderId": "507f1f77bcf86cd799439011",
+                "labSampleId": "507f1f77bcf86cd799439011",
                 "resultStatus": "Pending",
                 "verifiedBy": "verifiedBy_value",
                 "verifiedAt": "verifiedAt_value"
@@ -22283,9 +22793,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "investigationOrderId": "investigationOrderId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "investigationOrderId": "507f1f77bcf86cd799439011",
                 "sampleType": "sampleType_value",
                 "barcode": "barcode_value",
                 "status": "Collected",
@@ -22413,9 +22923,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "investigationOrderId": "investigationOrderId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "investigationOrderId": "507f1f77bcf86cd799439011",
                 "sampleType": "sampleType_value",
                 "barcode": "barcode_value",
                 "status": "Collected",
@@ -22524,7 +23034,7 @@
                 "required": []
               },
               "example": {
-                "patientId": "patientId_value",
+                "patientId": "507f1f77bcf86cd799439011",
                 "createdByUser": "createdByUser_value"
               }
             }
@@ -22610,7 +23120,7 @@
                 "required": []
               },
               "example": {
-                "patientId": "patientId_value",
+                "patientId": "507f1f77bcf86cd799439011",
                 "createdByUser": "createdByUser_value"
               }
             }
@@ -22713,7 +23223,7 @@
                 "required": []
               },
               "example": {
-                "patientId": "patientId_value",
+                "patientId": "507f1f77bcf86cd799439011",
                 "createdByUser": "createdByUser_value"
               }
             }
@@ -22799,7 +23309,7 @@
                 "required": []
               },
               "example": {
-                "patientId": "patientId_value",
+                "patientId": "507f1f77bcf86cd799439011",
                 "createdByUser": "createdByUser_value"
               }
             }
@@ -22961,15 +23471,15 @@
                 ]
               },
               "example": {
-                "patientId": "patientId_value",
-                "uhid": "uhid_value",
-                "visitDate": "visitDate_value",
-                "visitTime": "visitTime_value",
+                "patientId": "507f1f77bcf86cd799439011",
+                "uhid": "507f1f77bcf86cd799439011",
+                "visitDate": "2026-03-07T06:07:03.847Z",
+                "visitTime": "2026-03-07T06:07:03.847Z",
                 "visitType": "OPD",
                 "status": "Arrived",
-                "departmentId": "departmentId_value",
-                "departmentName": "departmentName_value",
-                "doctorId": "doctorId_value",
+                "departmentId": "507f1f77bcf86cd799439011",
+                "departmentName": "Sample Name",
+                "doctorId": "507f1f77bcf86cd799439011",
                 "slot": "Slot I",
                 "paymentMode": "Cash",
                 "receiptNo": "receiptNo_value"
@@ -23116,15 +23626,15 @@
                 ]
               },
               "example": {
-                "patientId": "patientId_value",
-                "uhid": "uhid_value",
-                "visitDate": "visitDate_value",
-                "visitTime": "visitTime_value",
+                "patientId": "507f1f77bcf86cd799439011",
+                "uhid": "507f1f77bcf86cd799439011",
+                "visitDate": "2026-03-07T06:07:03.847Z",
+                "visitTime": "2026-03-07T06:07:03.847Z",
                 "visitType": "OPD",
                 "status": "Arrived",
-                "departmentId": "departmentId_value",
-                "departmentName": "departmentName_value",
-                "doctorId": "doctorId_value",
+                "departmentId": "507f1f77bcf86cd799439011",
+                "departmentName": "Sample Name",
+                "doctorId": "507f1f77bcf86cd799439011",
                 "slot": "Slot I",
                 "paymentMode": "Cash",
                 "receiptNo": "receiptNo_value"
@@ -23250,7 +23760,7 @@
                 "required": []
               },
               "example": {
-                "visitId": "visitId_value",
+                "visitId": "507f1f77bcf86cd799439011",
                 "diet": "diet_value",
                 "appetite": "appetite_value",
                 "sleep": "sleep_value",
@@ -23364,7 +23874,7 @@
                 "required": []
               },
               "example": {
-                "visitId": "visitId_value",
+                "visitId": "507f1f77bcf86cd799439011",
                 "diet": "diet_value",
                 "appetite": "appetite_value",
                 "sleep": "sleep_value",
@@ -23484,9 +23994,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "purchaseOrderId": "purchaseOrderId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "purchaseOrderId": "507f1f77bcf86cd799439011",
                 "receivedBy": "receivedBy_value"
               }
             }
@@ -23582,9 +24092,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "purchaseOrderId": "purchaseOrderId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "purchaseOrderId": "507f1f77bcf86cd799439011",
                 "receivedBy": "receivedBy_value"
               }
             }
@@ -23703,9 +24213,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "invoiceId": "invoiceId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "invoiceId": "507f1f77bcf86cd799439011",
                 "claimStatus": "Submitted"
               }
             }
@@ -23807,9 +24317,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "invoiceId": "invoiceId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "invoiceId": "507f1f77bcf86cd799439011",
                 "claimStatus": "Submitted"
               }
             }
@@ -23935,10 +24445,10 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "fromBranchId": "fromBranchId_value",
-                "toBranchId": "toBranchId_value",
-                "medicineId": "medicineId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "fromBranchId": "507f1f77bcf86cd799439011",
+                "toBranchId": "507f1f77bcf86cd799439011",
+                "medicineId": "507f1f77bcf86cd799439011",
                 "status": "Requested",
                 "approvedBy": "approvedBy_value"
               }
@@ -24048,10 +24558,10 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "fromBranchId": "fromBranchId_value",
-                "toBranchId": "toBranchId_value",
-                "medicineId": "medicineId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "fromBranchId": "507f1f77bcf86cd799439011",
+                "toBranchId": "507f1f77bcf86cd799439011",
+                "medicineId": "507f1f77bcf86cd799439011",
                 "status": "Requested",
                 "approvedBy": "approvedBy_value"
               }
@@ -24172,8 +24682,8 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "name": "name_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "name": "Sample Name",
                 "scheduleType": "OTC",
                 "isActive": true,
                 "createdBy": "createdBy_value"
@@ -24278,8 +24788,8 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "name": "name_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "name": "Sample Name",
                 "scheduleType": "OTC",
                 "isActive": true,
                 "createdBy": "createdBy_value"
@@ -24400,8 +24910,8 @@
                 ]
               },
               "example": {
-                "branchId": "branchId_value",
-                "name": "name_value",
+                "branchId": "507f1f77bcf86cd799439011",
+                "name": "Sample Name",
                 "pharmacyLicenseNumber": "pharmacyLicenseNumber_value",
                 "pharmacistInCharge": "pharmacistInCharge_value",
                 "isLicenseVerified": true,
@@ -24506,8 +25016,8 @@
                 ]
               },
               "example": {
-                "branchId": "branchId_value",
-                "name": "name_value",
+                "branchId": "507f1f77bcf86cd799439011",
+                "name": "Sample Name",
                 "pharmacyLicenseNumber": "pharmacyLicenseNumber_value",
                 "pharmacistInCharge": "pharmacistInCharge_value",
                 "isLicenseVerified": true,
@@ -24639,12 +25149,12 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "pharmacyId": "pharmacyId_value",
-                "prescriptionId": "prescriptionId_value",
-                "prescriptionItemId": "prescriptionItemId_value",
-                "stockId": "stockId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "pharmacyId": "507f1f77bcf86cd799439011",
+                "prescriptionId": "507f1f77bcf86cd799439011",
+                "prescriptionItemId": "507f1f77bcf86cd799439011",
+                "stockId": "507f1f77bcf86cd799439011",
                 "quantityGiven": 1,
                 "dispensedBy": "dispensedBy_value"
               }
@@ -24757,12 +25267,12 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "pharmacyId": "pharmacyId_value",
-                "prescriptionId": "prescriptionId_value",
-                "prescriptionItemId": "prescriptionItemId_value",
-                "stockId": "stockId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "pharmacyId": "507f1f77bcf86cd799439011",
+                "prescriptionId": "507f1f77bcf86cd799439011",
+                "prescriptionItemId": "507f1f77bcf86cd799439011",
+                "stockId": "507f1f77bcf86cd799439011",
                 "quantityGiven": 1,
                 "dispensedBy": "dispensedBy_value"
               }
@@ -24890,13 +25400,13 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "prescriptionId": "prescriptionId_value",
-                "patientId": "patientId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "prescriptionId": "507f1f77bcf86cd799439011",
+                "patientId": "507f1f77bcf86cd799439011",
                 "paymentStatus": "Unpaid",
                 "createdBy": "createdBy_value",
-                "updatedBy": "updatedBy_value"
+                "updatedBy": "2026-03-07T06:07:03.855Z"
               }
             }
           }
@@ -25005,13 +25515,13 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "prescriptionId": "prescriptionId_value",
-                "patientId": "patientId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "prescriptionId": "507f1f77bcf86cd799439011",
+                "patientId": "507f1f77bcf86cd799439011",
                 "paymentStatus": "Unpaid",
                 "createdBy": "createdBy_value",
-                "updatedBy": "updatedBy_value"
+                "updatedBy": "2026-03-07T06:07:03.855Z"
               }
             }
           }
@@ -25147,14 +25657,14 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "pharmacyId": "pharmacyId_value",
-                "medicineId": "medicineId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "pharmacyId": "507f1f77bcf86cd799439011",
+                "medicineId": "507f1f77bcf86cd799439011",
                 "batchNumber": "batchNumber_value",
-                "expiryDate": "expiryDate_value",
+                "expiryDate": "2026-03-07T06:07:03.857Z",
                 "availableQuantity": 1,
-                "supplierId": "supplierId_value",
+                "supplierId": "507f1f77bcf86cd799439011",
                 "status": "Available"
               }
             }
@@ -25274,14 +25784,14 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "pharmacyId": "pharmacyId_value",
-                "medicineId": "medicineId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "pharmacyId": "507f1f77bcf86cd799439011",
+                "medicineId": "507f1f77bcf86cd799439011",
                 "batchNumber": "batchNumber_value",
-                "expiryDate": "expiryDate_value",
+                "expiryDate": "2026-03-07T06:07:03.857Z",
                 "availableQuantity": 1,
-                "supplierId": "supplierId_value",
+                "supplierId": "507f1f77bcf86cd799439011",
                 "status": "Available"
               }
             }
@@ -25412,11 +25922,11 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "visitId": "visitId_value",
-                "patientId": "patientId_value",
-                "doctorId": "doctorId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "visitId": "507f1f77bcf86cd799439011",
+                "patientId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011",
                 "status": "Pending",
                 "createdBy": "createdBy_value"
               }
@@ -25531,11 +26041,11 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "visitId": "visitId_value",
-                "patientId": "patientId_value",
-                "doctorId": "doctorId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "visitId": "507f1f77bcf86cd799439011",
+                "patientId": "507f1f77bcf86cd799439011",
+                "doctorId": "507f1f77bcf86cd799439011",
                 "status": "Pending",
                 "createdBy": "createdBy_value"
               }
@@ -25656,8 +26166,8 @@
                 ]
               },
               "example": {
-                "prescriptionId": "prescriptionId_value",
-                "medicineId": "medicineId_value",
+                "prescriptionId": "507f1f77bcf86cd799439011",
+                "medicineId": "507f1f77bcf86cd799439011",
                 "quantityPrescribed": 1,
                 "quantityDispensed": 1,
                 "itemStatus": "Pending"
@@ -25762,8 +26272,8 @@
                 ]
               },
               "example": {
-                "prescriptionId": "prescriptionId_value",
-                "medicineId": "medicineId_value",
+                "prescriptionId": "507f1f77bcf86cd799439011",
+                "medicineId": "507f1f77bcf86cd799439011",
                 "quantityPrescribed": 1,
                 "quantityDispensed": 1,
                 "itemStatus": "Pending"
@@ -25898,11 +26408,11 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "supplierId": "supplierId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "supplierId": "507f1f77bcf86cd799439011",
                 "orderNumber": "orderNumber_value",
-                "orderDate": "orderDate_value",
+                "orderDate": "2026-03-07T06:07:03.859Z",
                 "status": "Draft",
                 "approvedBy": "approvedBy_value",
                 "createdBy": "createdBy_value"
@@ -26020,11 +26530,11 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "supplierId": "supplierId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "supplierId": "507f1f77bcf86cd799439011",
                 "orderNumber": "orderNumber_value",
-                "orderDate": "orderDate_value",
+                "orderDate": "2026-03-07T06:07:03.859Z",
                 "status": "Draft",
                 "approvedBy": "approvedBy_value",
                 "createdBy": "createdBy_value"
@@ -26147,10 +26657,10 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "purchaseOrderId": "purchaseOrderId_value",
-                "medicineId": "medicineId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "purchaseOrderId": "507f1f77bcf86cd799439011",
+                "medicineId": "507f1f77bcf86cd799439011",
                 "quantityOrdered": 1,
                 "quantityReceived": 1
               }
@@ -26255,10 +26765,10 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "purchaseOrderId": "purchaseOrderId_value",
-                "medicineId": "medicineId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "purchaseOrderId": "507f1f77bcf86cd799439011",
+                "medicineId": "507f1f77bcf86cd799439011",
                 "quantityOrdered": 1,
                 "quantityReceived": 1
               }
@@ -26392,9 +26902,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "stockId": "stockId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "stockId": "507f1f77bcf86cd799439011",
                 "adjustmentType": "Damage",
                 "quantity": 1,
                 "reason": "reason_value",
@@ -26514,9 +27024,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "stockId": "stockId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "stockId": "507f1f77bcf86cd799439011",
                 "adjustmentType": "Damage",
                 "quantity": 1,
                 "reason": "reason_value",
@@ -26653,17 +27163,17 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "supplierName": "supplierName_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "supplierName": "Sample Name",
                 "contactPerson": "contactPerson_value",
-                "phone": "phone_value",
-                "email": "email_value",
+                "phone": "9000000000",
+                "email": "user@example.com",
                 "address": "address_value",
                 "gstNumber": "gstNumber_value",
                 "isActive": true,
                 "createdBy": "createdBy_value",
-                "updatedBy": "updatedBy_value"
+                "updatedBy": "2026-03-07T06:07:03.863Z"
               }
             }
           }
@@ -26778,17 +27288,17 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "supplierName": "supplierName_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "supplierName": "Sample Name",
                 "contactPerson": "contactPerson_value",
-                "phone": "phone_value",
-                "email": "email_value",
+                "phone": "9000000000",
+                "email": "user@example.com",
                 "address": "address_value",
                 "gstNumber": "gstNumber_value",
                 "isActive": true,
                 "createdBy": "createdBy_value",
-                "updatedBy": "updatedBy_value"
+                "updatedBy": "2026-03-07T06:07:03.863Z"
               }
             }
           }
@@ -26897,9 +27407,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "radiologyStudyId": "radiologyStudyId_value"
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "radiologyStudyId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -26991,9 +27501,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "radiologyStudyId": "radiologyStudyId_value"
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "radiologyStudyId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -27116,9 +27626,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "radiologyStudyId": "radiologyStudyId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "radiologyStudyId": "507f1f77bcf86cd799439011",
                 "reportStatus": "Draft",
                 "reportedBy": "reportedBy_value",
                 "verifiedBy": "verifiedBy_value"
@@ -27227,9 +27737,9 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "radiologyStudyId": "radiologyStudyId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "radiologyStudyId": "507f1f77bcf86cd799439011",
                 "reportStatus": "Draft",
                 "reportedBy": "reportedBy_value",
                 "verifiedBy": "verifiedBy_value"
@@ -27362,13 +27872,13 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "investigationOrderId": "investigationOrderId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "investigationOrderId": "507f1f77bcf86cd799439011",
                 "modality": "modality_value",
                 "status": "Scheduled",
-                "radiologistId": "radiologistId_value",
-                "technicianId": "technicianId_value"
+                "radiologistId": "507f1f77bcf86cd799439011",
+                "technicianId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -27481,13 +27991,13 @@
                 ]
               },
               "example": {
-                "hospitalId": "hospitalId_value",
-                "branchId": "branchId_value",
-                "investigationOrderId": "investigationOrderId_value",
+                "hospitalId": "507f1f77bcf86cd799439011",
+                "branchId": "507f1f77bcf86cd799439011",
+                "investigationOrderId": "507f1f77bcf86cd799439011",
                 "modality": "modality_value",
                 "status": "Scheduled",
-                "radiologistId": "radiologistId_value",
-                "technicianId": "technicianId_value"
+                "radiologistId": "507f1f77bcf86cd799439011",
+                "technicianId": "507f1f77bcf86cd799439011"
               }
             }
           }
@@ -27665,26 +28175,26 @@
                 ]
               },
               "example": {
-                "employee_id": "employee_id_value",
-                "name": "name_value",
-                "email": "email_value",
-                "phone": "phone_value",
+                "employee_id": "507f1f77bcf86cd799439011",
+                "name": "Sample Name",
+                "email": "user@example.com",
+                "phone": "9000000000",
                 "role": "manager",
-                "department_id": "department_id_value",
+                "department_id": "507f1f77bcf86cd799439011",
                 "profile_picture": "profile_picture_value",
                 "address": "address_value",
                 "emergency_contact": "emergency_contact_value",
-                "document_id": "document_id_value",
+                "document_id": "507f1f77bcf86cd799439011",
                 "type": "file",
                 "value": "value_value",
                 "pin_code": 1,
                 "qualification": "qualification_value",
                 "specialization": "specialization_value",
                 "shift": "shift_value",
-                "end_time": "end_time_value",
+                "end_time": "2026-03-07T06:07:03.866Z",
                 "password": "password_value",
                 "created_at": "created_at_value",
-                "updated_at": "updated_at_value"
+                "updated_at": "2026-03-07T06:07:03.866Z"
               }
             }
           }
@@ -27845,26 +28355,26 @@
                 ]
               },
               "example": {
-                "employee_id": "employee_id_value",
-                "name": "name_value",
-                "email": "email_value",
-                "phone": "phone_value",
+                "employee_id": "507f1f77bcf86cd799439011",
+                "name": "Sample Name",
+                "email": "user@example.com",
+                "phone": "9000000000",
                 "role": "manager",
-                "department_id": "department_id_value",
+                "department_id": "507f1f77bcf86cd799439011",
                 "profile_picture": "profile_picture_value",
                 "address": "address_value",
                 "emergency_contact": "emergency_contact_value",
-                "document_id": "document_id_value",
+                "document_id": "507f1f77bcf86cd799439011",
                 "type": "file",
                 "value": "value_value",
                 "pin_code": 1,
                 "qualification": "qualification_value",
                 "specialization": "specialization_value",
                 "shift": "shift_value",
-                "end_time": "end_time_value",
+                "end_time": "2026-03-07T06:07:03.866Z",
                 "password": "password_value",
                 "created_at": "created_at_value",
-                "updated_at": "updated_at_value"
+                "updated_at": "2026-03-07T06:07:03.866Z"
               }
             }
           }

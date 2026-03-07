@@ -4,6 +4,7 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import swaggerUi from 'swagger-ui-express';
+import cors from 'cors';
 
 import { ConnectDb } from './db/database.js';
 import UserRoute from './routes/UserRoute.js';
@@ -26,6 +27,8 @@ import roomRoutes from './routes/branchesroute/room.routes.js';
 import bedRoutes from './routes/branchesroute/bed.routes.js';
 import roomStaffAssignmentRoutes from './routes/branchesroute/roomStaffAssignment.routes.js';
 import pharmacyPaymentRoutes from './routes/branchesroute/pharmacyPayment.routes.js';
+import opdTokenRoutes from './routes/opdroute/opdToken.routes.js';
+import opdRoutes from './routes/opdroute/opd.routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -33,10 +36,12 @@ const __dirname = path.dirname(__filename);
 const swaggerDocument = JSON.parse(
   fs.readFileSync(path.join(__dirname, 'swagger.json'), 'utf8')
 );
+swaggerDocument.servers = [{ url: '/', description: 'Same origin' }];
 
 const app = express();
 dotenv.config();
 app.use(express.json());
+app.use(cors());
 
 ConnectDb();
 
@@ -57,6 +62,9 @@ app.use('/api/v1/ipd/admissions', ipdAdmissionRoutes);
 app.use('/api/v1/ipd/doctor-assignments', ipdDoctorAssignmentRoutes);
 app.use('/api/v1/ipd/daily-notes', ipdDailyNoteRoutes);
 app.use('/api/v1/ipd/nursing-notes', ipdNursingNoteRoutes);
+// OPD queue and visit summary
+app.use('/api/v1/opd/tokens', opdTokenRoutes);
+app.use('/api/v1/opd', opdRoutes);
 
 // Branches / infrastructure
 app.use('/api/v1/branches', branchRoutes);
@@ -73,7 +81,7 @@ app.get('/swagger.json', (req, res) => {
 
 // Swagger UI (light theme)
 const swaggerUiOptions = {
-  customSiteTitle: 'Samrat HMS API Docs',
+  customSiteTitle: 'API Docs',
   customCss: `
     :root {
       color-scheme: light;

@@ -121,6 +121,13 @@ function parseModelSchema(modelFile) {
     else if (/Date/.test(body)) type = 'string';
     else if (/ObjectId/.test(body)) type = 'string';
     const prop = { type };
+    // add common formats for better examples
+    const lname = name.toLowerCase();
+    if (type === 'string') {
+      if (lname.includes('email')) prop.format = 'email';
+      else if (lname.includes('date') || lname.includes('time')) prop.format = 'date-time';
+      else if (lname.endsWith('id')) prop.format = 'objectid';
+    }
     const enumMatch = /enum:\s*\[([^\]]+)\]/.exec(body);
     if (enumMatch) {
       const items = enumMatch[1]
@@ -142,7 +149,15 @@ function exampleForSchema(schema) {
   const props = schema.properties || {};
   Object.entries(props).forEach(([k, v]) => {
     if (v.enum && v.enum.length) obj[k] = v.enum[0];
-    else if (v.type === 'string') obj[k] = k + '_value';
+    else if (v.type === 'string') {
+      const key = k.toLowerCase();
+      if (key.includes('email')) obj[k] = 'user@example.com';
+      else if (key.includes('phone')) obj[k] = '9000000000';
+      else if (key.includes('name')) obj[k] = 'Sample Name';
+      else if (key.endsWith('id')) obj[k] = '507f1f77bcf86cd799439011';
+      else if (key.includes('date') || key.includes('time')) obj[k] = new Date().toISOString();
+      else obj[k] = k + '_value';
+    }
     else if (v.type === 'number') obj[k] = 1;
     else if (v.type === 'boolean') obj[k] = true;
     else obj[k] = null;
@@ -161,12 +176,12 @@ function buildOpenApiBase() {
   return {
     openapi: '3.0.3',
     info: {
-      title: 'Samrat HMS API',
+      title: 'API',
       version: '1.0.0',
       description:
         'Auto-generated Swagger / OpenAPI documentation covering all modules, submodules, and endpoints.\n\nAuthentication: JWT Bearer tokens (Authorization: Bearer <token>) from middlewares/auth.js.\n\nList endpoints support pagination via `page` and `limit`.',
     },
-    servers: [{ url: 'http://localhost:6000', description: 'Local development server' }],
+    servers: [{ url: '/', description: 'Relative to current host' }],
     components: {
       securitySchemes: {
         bearerAuth: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
@@ -192,70 +207,99 @@ function buildOpenApiBase() {
   };
 }
 
+function loadExistingSwagger() {
+  try {
+    const raw = fs.readFileSync(OUTPUT_FILE, 'utf8');
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+function responseExampleForSchema(schema) {
+  const ex = exampleForSchema(schema);
+  ex._id = '64bca9f2b1c2a30012ab3456';
+  return ex;
+}
+
 function addCrudOperations(paths, fullBase, tag, modelSchema) {
   const refSchemaName = null;
   const requestSchema = modelSchema
     ? { type: 'object', properties: modelSchema.properties, required: modelSchema.required }
     : { type: 'object', additionalProperties: true };
   const ex = exampleForSchema(requestSchema);
+  const resEx = responseExampleForSchema(requestSchema);
   // List GET /
   paths[`${fullBase}`] = paths[`${fullBase}`] || {};
-  paths[`${fullBase}`]['get'] = {
-    tags: [tag],
-    summary: `List ${tag}`,
-    parameters: [
-      { name: 'page', in: 'query', schema: { type: 'integer', default: 1 } },
-      { name: 'limit', in: 'query', schema: { type: 'integer', default: 10 } },
-    ],
-    responses: {
-      200: {
-        description: 'Paginated list',
-        content: { 'application/json': { schema: { $ref: '#/components/schemas/PaginatedResponse' } } },
+  if (!paths[`${fullBase}`]['get']) {
+    paths[`${fullBase}`]['get'] = {
+      tags: [tag],
+      summary: `List ${tag}`,
+      parameters: [
+        { name: 'page', in: 'query', schema: { type: 'integer', default: 1 } },
+        { name: 'limit', in: 'query', schema: { type: 'integer', default: 10 } },
+      ],
+      responses: {
+        200: {
+          description: 'Paginated list',
+          content: { 'application/json': { schema: { $ref: '#/components/schemas/PaginatedResponse' }, example: { total: 1, page: 1, limit: 10, data: [resEx] } } },
+        },
       },
-    },
-  };
+    };
+  }
   // Create POST /
-  paths[`${fullBase}`]['post'] = {
-    tags: [tag],
-    summary: `Create ${tag}`,
-    requestBody: {
-      required: true,
-      content: { 'application/json': { schema: requestSchema, example: ex } },
-    },
-    responses: {
-      201: { description: 'Created', content: { 'application/json': { schema: { type: 'object', additionalProperties: true } } } },
-    },
-  };
+  if (!paths[`${fullBase}`]['post']) {
+    paths[`${fullBase}`]['post'] = {
+      tags: [tag],
+      summary: `Create ${tag}`,
+      requestBody: {
+        required: true,
+        content: { 'application/json': { schema: requestSchema, example: ex } },
+      },
+      responses: {
+        201: { description: 'Created', content: { 'application/json': { schema: { type: 'object', additionalProperties: true }, example: resEx } } },
+      },
+    };
+  }
   // GET /:id
   const byId = `${fullBase}/{id}`;
   paths[byId] = paths[byId] || {};
-  paths[byId]['get'] = {
-    tags: [tag],
-    summary: `Get ${tag} by ID`,
-    parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
-    responses: {
-      200: { description: 'Detail', content: { 'application/json': { schema: { type: 'object', additionalProperties: true } } } },
-      404: { description: 'Not found' },
-    },
-  };
+  if (!paths[byId]['get']) {
+    paths[byId]['get'] = {
+      tags: [tag],
+      summary: `Get ${tag} by ID`,
+      parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
+      responses: {
+        200: { description: 'Detail', content: { 'application/json': { schema: { type: 'object', additionalProperties: true }, example: resEx } } },
+        404: { description: 'Not found', content: { 'application/json': { schema: { $ref: '#/components/schemas/MessageResponse' }, example: { message: 'Not found' } } } },
+      },
+    };
+  }
   // PUT /:id
-  paths[byId]['put'] = {
-    tags: [tag],
-    summary: `Update ${tag}`,
-    parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
-    requestBody: { required: true, content: { 'application/json': { schema: requestSchema, example: ex } } },
-    responses: { 200: { description: 'Updated' }, 404: { description: 'Not found' } },
-  };
+  if (!paths[byId]['put']) {
+    paths[byId]['put'] = {
+      tags: [tag],
+      summary: `Update ${tag}`,
+      parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
+      requestBody: { required: true, content: { 'application/json': { schema: requestSchema, example: ex } } },
+      responses: {
+        200: { description: 'Updated', content: { 'application/json': { schema: { type: 'object', additionalProperties: true }, example: resEx } } },
+        404: { description: 'Not found', content: { 'application/json': { schema: { $ref: '#/components/schemas/MessageResponse' }, example: { message: 'Not found' } } } },
+      },
+    };
+  }
   // DELETE /:id
-  paths[byId]['delete'] = {
-    tags: [tag],
-    summary: `Delete ${tag}`,
-    parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
-    responses: { 200: { description: 'Deleted', content: { 'application/json': { schema: { $ref: '#/components/schemas/MessageResponse' } } } } },
-  };
+  if (!paths[byId]['delete']) {
+    paths[byId]['delete'] = {
+      tags: [tag],
+      summary: `Delete ${tag}`,
+      parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
+      responses: { 200: { description: 'Deleted', content: { 'application/json': { schema: { $ref: '#/components/schemas/MessageResponse' }, example: { message: 'Deleted successfully' } } } } },
+    };
+  }
 }
 
-function addCustomOperation(paths, fullPath, method, tag) {
+function addCustomOperation(paths, fullPath, method, tag, requestSchema) {
   // Convert Express-style params to OpenAPI style
   const key = fullPath.replace(/\/:([A-Za-z0-9_]+)/g, '/{$1}');
   paths[key] = paths[key] || {};
@@ -263,7 +307,7 @@ function addCustomOperation(paths, fullPath, method, tag) {
   const op = {
     tags: [tag],
     summary,
-    responses: { 200: { description: 'OK' } },
+    responses: { 200: { description: 'OK', content: { 'application/json': { schema: { type: 'object', additionalProperties: true } } } } },
   };
   // Add path params
   const paramNames = [];
@@ -276,14 +320,62 @@ function addCustomOperation(paths, fullPath, method, tag) {
   if (paramNames.length) {
     op.parameters = paramNames.map(n => ({ name: n, in: 'path', required: true, schema: { type: 'string' } }));
   }
-  // For body methods, add a generic JSON request body
-  if (['POST', 'PUT', 'PATCH'].includes(method)) {
+  // For body methods, only add when a schema is available
+  if (['POST', 'PUT', 'PATCH'].includes(method) && requestSchema) {
     op.requestBody = {
       required: true,
       content: {
         'application/json': {
-          schema: { type: 'object', additionalProperties: true },
-          example: { exampleField: 'value' }
+          schema: requestSchema,
+          example: exampleForSchema(requestSchema)
+        }
+      }
+    };
+  }
+  // add better response examples for known endpoints
+  const lowerKey = key.toLowerCase();
+  if (lowerKey.endsWith('/opd/tokens') && method === 'POST') {
+    op.responses = {
+      201: {
+        description: 'Token issued',
+        content: {
+          'application/json': {
+            schema: { type: 'object', additionalProperties: true },
+            example: {
+              _id: '64bca9f2b1c2a30012ab3456',
+              hospitalId: '507f1f77bcf86cd799439011',
+              branchId: '507f1f77bcf86cd799439012',
+              roomId: '507f1f77bcf86cd799439013',
+              doctorId: '507f1f77bcf86cd799439016',
+              patientId: '507f1f77bcf86cd799439014',
+              visitId: '507f1f77bcf86cd799439015',
+              tokenDate: new Date().toISOString(),
+              tokenNumber: 12,
+              priority: 'Normal',
+              status: 'Waiting'
+            }
+          }
+        }
+      }
+    };
+  } else if (lowerKey.endsWith('/patient-register') && method === 'POST') {
+    op.responses = {
+      201: {
+        description: 'Registered and visited',
+        content: {
+          'application/json': {
+            schema: { type: 'object', additionalProperties: true },
+            example: { message: 'User registered and Visited Sucessfully' }
+          }
+        }
+      },
+      400: {
+        description: 'Validation error',
+        content: {
+          'application/json': {
+            schema: { $ref: '#/components/schemas/MessageResponse' },
+            example: { message: 'Visit Date is required' }
+          }
         }
       }
     };
@@ -292,7 +384,11 @@ function addCustomOperation(paths, fullPath, method, tag) {
 }
 
 function main() {
-  const api = buildOpenApiBase();
+  const existing = loadExistingSwagger();
+  const api = existing || buildOpenApiBase();
+  api.servers = [{ url: '/', description: 'Relative to current host' }];
+  if (!api.components) api.components = buildOpenApiBase().components;
+  if (!api.paths) api.paths = {};
   const mounts = parseServerMounts();
 
   // Map controller->model schemas cache
@@ -340,16 +436,73 @@ function main() {
         if (hasList || hasCreate || hasGetById || hasUpdate || hasDelete) {
           addCrudOperations(api.paths, fullBase, tag, modelSchema);
         }
-        // Add any custom non-root paths
+        // Add any custom non-root paths (no dummy bodies)
         for (const r of routerInfo.routes) {
           if (r.path !== '/' && !r.path.startsWith('/:id')) {
-            addCustomOperation(api.paths, `${fullBase}${r.path}`, r.method, tag);
+            // Special-case examples: login
+            let reqSchema = null;
+            const lowerPath = `${fullBase}${r.path}`.toLowerCase();
+            if (lowerPath.endsWith('/login') && r.method === 'POST') {
+              reqSchema = { type: 'object', properties: { email: { type: 'string', format: 'email' }, password: { type: 'string' } }, required: ['email', 'password'] };
+            } else if (lowerPath.endsWith('/patient-register') && r.method === 'POST') {
+              reqSchema = {
+                type: 'object',
+                properties: {
+                  visitDate: { type: 'string', format: 'date-time' },
+                  visitTime: { type: 'string' },
+                  visitType: { type: 'string', enum: ['OPD', 'IPD', 'Emergency'] },
+                  fee: { type: 'number' },
+                  mobile: { type: 'string' },
+                  email: { type: 'string', format: 'email' },
+                  departmentId: { type: 'string' },
+                  departmentName: { type: 'string' },
+                  doctorId: { type: 'string' },
+                  slot: { type: 'string', enum: ['Slot I', 'Slot II', 'Slot III'] },
+                  patientName: { type: 'string' },
+                  gender: { type: 'string', enum: ['Male', 'Female', 'Other'] },
+                  maritalStatus: { type: 'string', enum: ['Single', 'Married', 'Divorced', 'Widowed'] },
+                  dob: { type: 'string', format: 'date-time' },
+                  age: { type: 'number' },
+                  currentAge: { type: 'number' },
+                  relationType: { type: 'string' },
+                  guardianName: { type: 'string' },
+                  address: { type: 'string' },
+                  country: { type: 'string' },
+                  stateId: { type: 'string' },
+                  cityId: { type: 'string' },
+                  bloodGroup: { type: 'string' },
+                  source: { type: 'string' },
+                  referredDoctorId: { type: 'string' },
+                  referralMobile: { type: 'string' },
+                  paymentMode: { type: 'string', enum: ['Cash', 'Card', 'UPI', 'Insurance'] },
+                  discountPercent: { type: 'number' },
+                  remark: { type: 'string' },
+                  patientImage: { type: 'string' }
+                },
+                required: ['visitDate', 'visitTime', 'visitType', 'fee', 'mobile', 'slot', 'patientName']
+              };
+            } else if (lowerPath.endsWith('/opd/tokens') && r.method === 'POST') {
+              reqSchema = {
+                type: 'object',
+                properties: {
+                  hospitalId: { type: 'string' },
+                  branchId: { type: 'string' },
+                  roomId: { type: 'string' },
+                  patientId: { type: 'string' },
+                  visitId: { type: 'string' },
+                  doctorId: { type: 'string' },
+                  priority: { type: 'string', enum: ['Normal', 'Urgent'] }
+                },
+                required: ['hospitalId', 'branchId', 'roomId', 'patientId', 'visitId']
+              };
+            }
+            addCustomOperation(api.paths, `${fullBase}${r.path}`, r.method, tag, reqSchema);
           }
         }
-        // Add per-id nested custom paths (e.g., /:id/schedule)
+        // Add per-id nested custom paths (e.g., /:id/schedule) without dummy bodies
         for (const r of routerInfo.routes) {
           if (r.path.startsWith('/:id') && r.path !== '/:id') {
-            addCustomOperation(api.paths, `${fullBase}${r.path}`, r.method, tag);
+            addCustomOperation(api.paths, `${fullBase}${r.path}`, r.method, tag, null);
           }
         }
       }
@@ -381,12 +534,54 @@ function main() {
       }
       for (const r of routerInfo.routes) {
         if (r.path !== '/' && !r.path.startsWith('/:id')) {
-          addCustomOperation(api.paths, `${fullBase}${r.path}`, r.method, tag);
+          let reqSchema = null;
+          const lowerPath = `${fullBase}${r.path}`.toLowerCase();
+          if (lowerPath.endsWith('/login') && r.method === 'POST') {
+            reqSchema = { type: 'object', properties: { email: { type: 'string', format: 'email' }, password: { type: 'string' } }, required: ['email', 'password'] };
+          } else if (lowerPath.endsWith('/patient-register') && r.method === 'POST') {
+            reqSchema = {
+              type: 'object',
+              properties: {
+                visitDate: { type: 'string', format: 'date-time' },
+                visitTime: { type: 'string' },
+                visitType: { type: 'string', enum: ['OPD', 'IPD', 'Emergency'] },
+                fee: { type: 'number' },
+                mobile: { type: 'string' },
+                email: { type: 'string', format: 'email' },
+                departmentId: { type: 'string' },
+                departmentName: { type: 'string' },
+                doctorId: { type: 'string' },
+                slot: { type: 'string', enum: ['Slot I', 'Slot II', 'Slot III'] },
+                patientName: { type: 'string' },
+                gender: { type: 'string', enum: ['Male', 'Female', 'Other'] },
+                maritalStatus: { type: 'string', enum: ['Single', 'Married', 'Divorced', 'Widowed'] },
+                dob: { type: 'string', format: 'date-time' },
+                age: { type: 'number' },
+                currentAge: { type: 'number' },
+                relationType: { type: 'string' },
+                guardianName: { type: 'string' },
+                address: { type: 'string' },
+                country: { type: 'string' },
+                stateId: { type: 'string' },
+                cityId: { type: 'string' },
+                bloodGroup: { type: 'string' },
+                source: { type: 'string' },
+                referredDoctorId: { type: 'string' },
+                referralMobile: { type: 'string' },
+                paymentMode: { type: 'string', enum: ['Cash', 'Card', 'UPI', 'Insurance'] },
+                discountPercent: { type: 'number' },
+                remark: { type: 'string' },
+                patientImage: { type: 'string' }
+              },
+              required: ['visitDate', 'visitTime', 'visitType', 'fee', 'mobile', 'slot', 'patientName']
+            };
+          }
+          addCustomOperation(api.paths, `${fullBase}${r.path}`, r.method, tag, reqSchema);
         }
       }
       for (const r of routerInfo.routes) {
         if (r.path.startsWith('/:id') && r.path !== '/:id') {
-          addCustomOperation(api.paths, `${fullBase}${r.path}`, r.method, tag);
+          addCustomOperation(api.paths, `${fullBase}${r.path}`, r.method, tag, null);
         }
       }
     }
