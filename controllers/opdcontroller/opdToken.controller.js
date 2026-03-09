@@ -33,9 +33,25 @@ export const issueToken = async (req, res) => {
 
 export const listTokens = async (req, res) => {
   try {
-    const { roomId, status, date } = req.query;
+    const { roomId, status, date, doctorId: queryDoctorId } = req.query;
     const filter = {};
-    if (roomId) filter.roomId = roomId;
+
+    if (req.user.role && req.user.role.trim().toLowerCase() === "doctor") {
+      // Doctors can only see their own tokens
+      filter.doctorId = req.user.id; // Using req.user.id from the JWT payload
+    } else {
+      // For non-doctor roles (e.g., admin, receptionist), require a specific filter
+      if (!queryDoctorId && !roomId) {
+        return res.status(400).json({ message: "For non-doctor roles, either doctorId or roomId is required as a filter." });
+      }
+      if (queryDoctorId) {
+        filter.doctorId = queryDoctorId;
+      }
+      if (roomId) {
+        filter.roomId = roomId;
+      }
+    }
+
     if (status) filter.status = status;
     if (date) {
       const d = new Date(date);

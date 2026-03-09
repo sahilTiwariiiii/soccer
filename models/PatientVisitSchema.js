@@ -58,6 +58,11 @@ const PatientVisitSchema = new mongoose.Schema({
     ref: "Doctor"
   },
 
+  roomId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Room"
+  },
+
   slot: {
     type: String,
     enum: ["Slot I", "Slot II", "Slot III"]

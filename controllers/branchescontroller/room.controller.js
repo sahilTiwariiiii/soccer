@@ -31,6 +31,7 @@ export const getRooms = async (req, res) => {
       roomType,
       status,
       departmentId,
+      assignedDoctor,
       search,
       page = 1,
       limit = 10,
@@ -41,6 +42,7 @@ export const getRooms = async (req, res) => {
     if (roomType) filter.roomType = roomType;
     if (status) filter.status = status;
     if (departmentId) filter.departmentId = departmentId;
+    if (assignedDoctor) filter.assignedDoctor = assignedDoctor;
     if (search) {
       filter.$or = [
         { roomNumber: { $regex: search, $options: "i" } },
@@ -109,6 +111,21 @@ export const deleteRoom = async (req, res) => {
     if (!deleted) return res.status(404).json({ message: "Room not found" });
 
     return res.status(200).json({ message: "Room deleted successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getRoomsByDoctor = async (req, res) => {
+  try {
+    const { hospitalId, branchId } = req.user || {};
+    if (!hospitalId || !branchId) {
+      return res.status(401).json({ message: "Unauthorized: hospitalId/branchId missing in token" });
+    }
+
+    const { doctorId } = req.params;
+    const rooms = await Room.find({ hospitalId, branchId, assignedDoctor: doctorId }).sort({ roomNumber: 1 });
+    return res.status(200).json(rooms);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

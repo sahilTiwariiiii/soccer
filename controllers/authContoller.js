@@ -188,6 +188,6 @@ if(!isMatch){
     return res.status(401).json({message:"Invalid Credentials"})
 }
 // now sign the token 
-const token=jwt.sign({id:user._id,email:user.email},process.env.JWT_SECRET,{expiresIn:process.env.Jwt_EXPIRES_IN})
+const token=jwt.sign({id:user._id,email:user.email, role: user.role},process.env.JWT_SECRET,{expiresIn:process.env.Jwt_EXPIRES_IN})
 return res.status(200).json({message:"Login Sucessfully",token,user:req.body})
-}
+} 

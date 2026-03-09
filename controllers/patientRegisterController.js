@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import PatientRegistration from "../models/PatientRegistration.js";
 import PatientVisit from "../models/PatientVisitSchema.js";
 import PatientReceipt from "../models/PatientReceipt.js";
+import Room from "../models/branches/RoomSchema.js";
+import OpdToken from "../models/opd/OpdToken.js";
 import { generatepatientuhid } from "../services/generatepatientuhid.js";
 import { generateUniqueReceiptNumber } from "../services/generateuniquereceiptid.js";
 
@@ -15,6 +17,7 @@ export const PatientRegisterController = async (req, res) => {
         departmentId,
         departmentName,
         doctorId,
+        roomId,
         slot,
         patientName,
         gender,
@@ -46,6 +49,9 @@ if (!visitTime) {
 }
 if (!visitType) {
     return res.status(400).json({ message: "Visit Type is required" })
+}
+if (visitType === "OPD" && !roomId) {
+    return res.status(400).json({ message: "Room Id is required for OPD visit" })
 }
 if (fee===undefined||fee===null) {
     return res.status(400).json({ message: "Fee is required" })
@@ -111,6 +117,7 @@ if (!paymentMode) {
                     // dont pass any status because we will get the status will be budefault set as 'arrived'
                     // status,
                     doctorId,
+                    roomId,
                     slot,
                     fee,
                     paymentMode,
@@ -129,7 +136,32 @@ if (!paymentMode) {
             fee,
             remark,
                     })
-                return res.status(201).json({ message: "Patient Visit Sucessfully" });
+
+                   // Generate Token if Visit Type is OPD
+                   let tokenInfo = null;
+                   if (visitType === "OPD") {
+                       const room = await Room.findById(roomId);
+                       if (room) {
+                           const date = new Date();
+                           const start = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+                           const end = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
+                           const count = await OpdToken.countDocuments({ roomId, tokenDate: { $gte: start, $lt: end } });
+                           const tokenNumber = count + 1;
+                           tokenInfo = await OpdToken.create({
+                               hospitalId: room.hospitalId,
+                               branchId: room.branchId,
+                               roomId,
+                               doctorId: doctorId || room.assignedDoctor,
+                               patientId: patient._id,
+                               visitId: patientVisited._id,
+                               tokenDate: date,
+                               tokenNumber,
+                               priority: req.body.priority || "Normal"
+                           });
+                       }
+                   }
+
+                return res.status(201).json({ message: "Patient Visit Sucessfully", token: tokenInfo });
             }
         }
         // if not find any uhid then create it
@@ -175,6 +207,7 @@ if (!paymentMode) {
             // dont pass any status because we will get the status will be budefault set as 'arrived'
             // status,
             doctorId,
+            roomId,
             slot,
             fee,
             paymentMode,
@@ -194,7 +227,31 @@ fee,
 remark,
         })
 
-        return res.status(201).json({message:"User registered and Visited Sucessfully"});
+        // Generate Token if Visit Type is OPD
+        let tokenInfo = null;
+        if (visitType === "OPD") {
+            const room = await Room.findById(roomId);
+            if (room) {
+                const date = new Date();
+                const start = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+                const end = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
+                const count = await OpdToken.countDocuments({ roomId, tokenDate: { $gte: start, $lt: end } });
+                const tokenNumber = count + 1;
+                tokenInfo = await OpdToken.create({
+                    hospitalId: room.hospitalId,
+                    branchId: room.branchId,
+                    roomId,
+                    doctorId: doctorId || room.assignedDoctor,
+                    patientId: newPatient._id,
+                    visitId: patientVisited._id,
+                    tokenDate: date,
+                    tokenNumber,
+                    priority: req.body.priority || "Normal"
+                });
+            }
+        }
+
+        return res.status(201).json({message:"User registered and Visited Sucessfully", token: tokenInfo});
         
     } catch (error) {
       return res.status(500).json({message:error.message});
