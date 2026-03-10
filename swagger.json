@@ -321,36 +321,36 @@
                 ]
               },
               "example": {
-                "visitDate": "2026-03-07T06:23:33.155Z",
-                "visitTime": "2026-03-07T06:23:33.156Z",
+                "visitDate": "2026-03-09T12:24:51.597Z",
+                "visitTime": "2026-03-09T12:24:51.598Z",
                 "visitType": "OPD",
                 "fee": 1,
-                "mobile": "mobile_value",
-                "email": "user@example.com",
-                "departmentId": "507f1f77bcf86cd799439011",
-                "departmentName": "Sample Name",
-                "doctorId": "507f1f77bcf86cd799439011",
+                "mobile": "9876543210",
+                "email": "rahul.sharma@example.com",
+                "departmentId": "698334ced5bdf65d67c809bd",
+                "departmentName": "General Medicine",
+                "doctorId": "6981937c68d0f7fe64da7b51",
                 "slot": "Slot I",
-                "patientName": "Sample Name",
+                "patientName": "Rahul Sharma",
                 "gender": "Male",
                 "maritalStatus": "Single",
-                "dob": "dob_value",
-                "age": 1,
-                "currentAge": 1,
-                "relationType": "relationType_value",
-                "guardianName": "Sample Name",
-                "address": "address_value",
-                "country": "country_value",
+                "dob": "1995-05-10",
+                "age": 30,
+                "currentAge": 30,
+                "relationType": "Father",
+                "guardianName": "Ramesh Sharma",
+                "address": "MP Nagar Zone 2",
+                "country": "India",
                 "stateId": "507f1f77bcf86cd799439011",
                 "cityId": "507f1f77bcf86cd799439011",
-                "bloodGroup": "bloodGroup_value",
-                "source": "source_value",
-                "referredDoctorId": "507f1f77bcf86cd799439011",
-                "referralMobile": "referralMobile_value",
+                "bloodGroup": "O+",
+                "source": "Walk-in",
+                "referredDoctorId": "6981937c68d0f7fe64da7b51",
+                "referralMobile": "9876543210",
                 "paymentMode": "Cash",
-                "discountPercent": 1,
-                "remark": "remark_value",
-                "patientImage": "patientImage_value"
+                "discountPercent": 0,
+                "remark": "Regular OPD consultation",
+                "patientImage": ""
               }
             }
           }
@@ -392,7 +392,14 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "enum": ["Waiting", "Called", "In-Consultation", "Completed", "No-Show", "Cancelled"]
+              "enum": [
+                "Waiting",
+                "Called",
+                "In-Consultation",
+                "Completed",
+                "No-Show",
+                "Cancelled"
+              ]
             }
           },
           {
@@ -9216,7 +9223,7 @@
                 "certificateId": "507f1f77bcf86cd799439011",
                 "action": "create",
                 "userId": "507f1f77bcf86cd799439011",
-                "timestamp": "2026-03-07T06:07:03.690Z"
+                "timestamp": "2026-03-09T12:24:51.598Z"
               }
             }
           }
@@ -9328,7 +9335,7 @@
                 "certificateId": "507f1f77bcf86cd799439011",
                 "action": "create",
                 "userId": "507f1f77bcf86cd799439011",
-                "timestamp": "2026-03-07T06:07:03.690Z"
+                "timestamp": "2026-03-09T12:24:51.598Z"
               }
             }
           }
@@ -9469,7 +9476,7 @@
                 "templateId": "507f1f77bcf86cd799439011",
                 "patientId": "507f1f77bcf86cd799439011",
                 "doctorId": "507f1f77bcf86cd799439011",
-                "issueDate": "2026-03-07T06:07:03.694Z",
+                "issueDate": "2026-03-09T12:24:51.598Z",
                 "status": "draft",
                 "issuedBy": "issuedBy_value"
               }
@@ -9595,7 +9602,7 @@
                 "templateId": "507f1f77bcf86cd799439011",
                 "patientId": "507f1f77bcf86cd799439011",
                 "doctorId": "507f1f77bcf86cd799439011",
-                "issueDate": "2026-03-07T06:07:03.694Z",
+                "issueDate": "2026-03-09T12:24:51.598Z",
                 "status": "draft",
                 "issuedBy": "issuedBy_value"
               }
@@ -11187,7 +11194,7 @@
                 "name": "Sample Name",
                 "description": "description_value",
                 "createdAt": "createdAt_value",
-                "updatedAt": "2026-03-07T06:07:03.722Z"
+                "updatedAt": "2026-03-09T12:24:51.598Z"
               }
             }
           }
@@ -11283,7 +11290,7 @@
                 "name": "Sample Name",
                 "description": "description_value",
                 "createdAt": "createdAt_value",
-                "updatedAt": "2026-03-07T06:07:03.722Z"
+                "updatedAt": "2026-03-09T12:24:51.598Z"
               }
             }
           }
@@ -12409,7 +12416,7 @@
                 "patientId": "507f1f77bcf86cd799439011",
                 "visitId": "507f1f77bcf86cd799439011",
                 "admissionNumber": "admissionNumber_value",
-                "admissionDate": "2026-03-07T06:07:03.734Z",
+                "admissionDate": "2026-03-09T12:24:51.598Z",
                 "bedId": "507f1f77bcf86cd799439011",
                 "status": "ADMITTED"
               }
@@ -12529,7 +12536,7 @@
                 "patientId": "507f1f77bcf86cd799439011",
                 "visitId": "507f1f77bcf86cd799439011",
                 "admissionNumber": "admissionNumber_value",
-                "admissionDate": "2026-03-07T06:07:03.734Z",
+                "admissionDate": "2026-03-09T12:24:51.598Z",
                 "bedId": "507f1f77bcf86cd799439011",
                 "status": "ADMITTED"
               }
@@ -13414,7 +13421,7 @@
                 "doctorId": "507f1f77bcf86cd799439011",
                 "patientId": "507f1f77bcf86cd799439011",
                 "visitId": "507f1f77bcf86cd799439011",
-                "tokenDate": "2026-03-07T06:07:03.743Z",
+                "tokenDate": "2026-03-09T12:24:51.598Z",
                 "tokenNumber": 1,
                 "priority": "Normal",
                 "status": "Waiting",
@@ -13560,7 +13567,7 @@
                 "doctorId": "507f1f77bcf86cd799439011",
                 "patientId": "507f1f77bcf86cd799439011",
                 "visitId": "507f1f77bcf86cd799439011",
-                "tokenDate": "2026-03-07T06:07:03.743Z",
+                "tokenDate": "2026-03-09T12:24:51.598Z",
                 "tokenNumber": 1,
                 "priority": "Normal",
                 "status": "Waiting",
@@ -13668,6 +13675,27 @@
             }
           }
         ]
+      }
+    },
+    "/api/v1/opd/summary": {
+      "post": {
+        "tags": [
+          "Opd - opd.routes"
+        ],
+        "summary": "POST /api/v1/opd/summary",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v1/opd/{visitId}/summary": {
@@ -15582,7 +15610,7 @@
                 "branchId": "507f1f77bcf86cd799439011",
                 "ambulanceId": "507f1f77bcf86cd799439011",
                 "driverId": "507f1f77bcf86cd799439011",
-                "startTime": "2026-03-07T06:07:03.806Z",
+                "startTime": "2026-03-09T12:24:51.599Z",
                 "status": "Active",
                 "createdBy": "createdBy_value"
               }
@@ -15698,7 +15726,7 @@
                 "branchId": "507f1f77bcf86cd799439011",
                 "ambulanceId": "507f1f77bcf86cd799439011",
                 "driverId": "507f1f77bcf86cd799439011",
-                "startTime": "2026-03-07T06:07:03.806Z",
+                "startTime": "2026-03-09T12:24:51.599Z",
                 "status": "Active",
                 "createdBy": "createdBy_value"
               }
@@ -15826,7 +15854,7 @@
                 "hospitalId": "507f1f77bcf86cd799439011",
                 "branchId": "507f1f77bcf86cd799439011",
                 "ambulanceId": "507f1f77bcf86cd799439011",
-                "maintenanceDate": "2026-03-07T06:07:03.807Z",
+                "maintenanceDate": "2026-03-09T12:24:51.599Z",
                 "type": "Routine",
                 "performedBy": "performedBy_value"
               }
@@ -15937,7 +15965,7 @@
                 "hospitalId": "507f1f77bcf86cd799439011",
                 "branchId": "507f1f77bcf86cd799439011",
                 "ambulanceId": "507f1f77bcf86cd799439011",
-                "maintenanceDate": "2026-03-07T06:07:03.807Z",
+                "maintenanceDate": "2026-03-09T12:24:51.599Z",
                 "type": "Routine",
                 "performedBy": "performedBy_value"
               }
@@ -16342,9 +16370,9 @@
                 "appointmentNumber": "appointmentNumber_value",
                 "patientId": "507f1f77bcf86cd799439011",
                 "doctorId": "507f1f77bcf86cd799439011",
-                "appointmentDate": "2026-03-07T06:07:03.810Z",
-                "startTime": "2026-03-07T06:07:03.810Z",
-                "endTime": "2026-03-07T06:07:03.810Z",
+                "appointmentDate": "2026-03-09T12:24:51.599Z",
+                "startTime": "2026-03-09T12:24:51.599Z",
+                "endTime": "2026-03-09T12:24:51.599Z",
                 "consultationType": "OPD",
                 "status": "Booked",
                 "bookedBy": "bookedBy_value",
@@ -16496,9 +16524,9 @@
                 "appointmentNumber": "appointmentNumber_value",
                 "patientId": "507f1f77bcf86cd799439011",
                 "doctorId": "507f1f77bcf86cd799439011",
-                "appointmentDate": "2026-03-07T06:07:03.810Z",
-                "startTime": "2026-03-07T06:07:03.810Z",
-                "endTime": "2026-03-07T06:07:03.810Z",
+                "appointmentDate": "2026-03-09T12:24:51.599Z",
+                "startTime": "2026-03-09T12:24:51.599Z",
+                "endTime": "2026-03-09T12:24:51.599Z",
                 "consultationType": "OPD",
                 "status": "Booked",
                 "bookedBy": "bookedBy_value",
@@ -16640,8 +16668,8 @@
                 "branchId": "507f1f77bcf86cd799439011",
                 "doctorId": "507f1f77bcf86cd799439011",
                 "dayOfWeek": "Sunday",
-                "startTime": "2026-03-07T06:07:03.811Z",
-                "endTime": "2026-03-07T06:07:03.811Z",
+                "startTime": "2026-03-09T12:24:51.599Z",
+                "endTime": "2026-03-09T12:24:51.599Z",
                 "isActive": true
               }
             }
@@ -16762,8 +16790,8 @@
                 "branchId": "507f1f77bcf86cd799439011",
                 "doctorId": "507f1f77bcf86cd799439011",
                 "dayOfWeek": "Sunday",
-                "startTime": "2026-03-07T06:07:03.811Z",
-                "endTime": "2026-03-07T06:07:03.811Z",
+                "startTime": "2026-03-09T12:24:51.599Z",
+                "endTime": "2026-03-09T12:24:51.599Z",
                 "isActive": true
               }
             }
@@ -17373,7 +17401,7 @@
                 "donationNumber": "donationNumber_value",
                 "donorId": "507f1f77bcf86cd799439011",
                 "campId": "507f1f77bcf86cd799439011",
-                "donationDate": "2026-03-07T06:07:03.815Z",
+                "donationDate": "2026-03-09T12:24:51.599Z",
                 "collectedBy": "collectedBy_value",
                 "bloodGroup": "bloodGroup_value",
                 "quantityML": 1,
@@ -17508,7 +17536,7 @@
                 "donationNumber": "donationNumber_value",
                 "donorId": "507f1f77bcf86cd799439011",
                 "campId": "507f1f77bcf86cd799439011",
-                "donationDate": "2026-03-07T06:07:03.815Z",
+                "donationDate": "2026-03-09T12:24:51.599Z",
                 "collectedBy": "collectedBy_value",
                 "bloodGroup": "bloodGroup_value",
                 "quantityML": 1,
@@ -20239,7 +20267,7 @@
                 "branchId": "507f1f77bcf86cd799439011",
                 "batchId": "507f1f77bcf86cd799439011",
                 "cycleNumber": 1,
-                "startTime": "2026-03-07T06:07:03.831Z",
+                "startTime": "2026-03-09T12:24:51.599Z",
                 "performedBy": "performedBy_value",
                 "status": "Pending"
               }
@@ -20355,7 +20383,7 @@
                 "branchId": "507f1f77bcf86cd799439011",
                 "batchId": "507f1f77bcf86cd799439011",
                 "cycleNumber": 1,
-                "startTime": "2026-03-07T06:07:03.831Z",
+                "startTime": "2026-03-09T12:24:51.599Z",
                 "performedBy": "performedBy_value",
                 "status": "Pending"
               }
@@ -23503,8 +23531,8 @@
               "example": {
                 "patientId": "507f1f77bcf86cd799439011",
                 "uhid": "507f1f77bcf86cd799439011",
-                "visitDate": "2026-03-07T06:07:03.847Z",
-                "visitTime": "2026-03-07T06:07:03.847Z",
+                "visitDate": "2026-03-09T12:24:51.599Z",
+                "visitTime": "2026-03-09T12:24:51.599Z",
                 "visitType": "OPD",
                 "status": "Arrived",
                 "departmentId": "507f1f77bcf86cd799439011",
@@ -23658,8 +23686,8 @@
               "example": {
                 "patientId": "507f1f77bcf86cd799439011",
                 "uhid": "507f1f77bcf86cd799439011",
-                "visitDate": "2026-03-07T06:07:03.847Z",
-                "visitTime": "2026-03-07T06:07:03.847Z",
+                "visitDate": "2026-03-09T12:24:51.599Z",
+                "visitTime": "2026-03-09T12:24:51.599Z",
                 "visitType": "OPD",
                 "status": "Arrived",
                 "departmentId": "507f1f77bcf86cd799439011",
@@ -25436,7 +25464,7 @@
                 "patientId": "507f1f77bcf86cd799439011",
                 "paymentStatus": "Unpaid",
                 "createdBy": "createdBy_value",
-                "updatedBy": "2026-03-07T06:07:03.855Z"
+                "updatedBy": "2026-03-09T12:24:51.600Z"
               }
             }
           }
@@ -25551,7 +25579,7 @@
                 "patientId": "507f1f77bcf86cd799439011",
                 "paymentStatus": "Unpaid",
                 "createdBy": "createdBy_value",
-                "updatedBy": "2026-03-07T06:07:03.855Z"
+                "updatedBy": "2026-03-09T12:24:51.600Z"
               }
             }
           }
@@ -25692,7 +25720,7 @@
                 "pharmacyId": "507f1f77bcf86cd799439011",
                 "medicineId": "507f1f77bcf86cd799439011",
                 "batchNumber": "batchNumber_value",
-                "expiryDate": "2026-03-07T06:07:03.857Z",
+                "expiryDate": "2026-03-09T12:24:51.600Z",
                 "availableQuantity": 1,
                 "supplierId": "507f1f77bcf86cd799439011",
                 "status": "Available"
@@ -25819,7 +25847,7 @@
                 "pharmacyId": "507f1f77bcf86cd799439011",
                 "medicineId": "507f1f77bcf86cd799439011",
                 "batchNumber": "batchNumber_value",
-                "expiryDate": "2026-03-07T06:07:03.857Z",
+                "expiryDate": "2026-03-09T12:24:51.600Z",
                 "availableQuantity": 1,
                 "supplierId": "507f1f77bcf86cd799439011",
                 "status": "Available"
@@ -26442,7 +26470,7 @@
                 "branchId": "507f1f77bcf86cd799439011",
                 "supplierId": "507f1f77bcf86cd799439011",
                 "orderNumber": "orderNumber_value",
-                "orderDate": "2026-03-07T06:07:03.859Z",
+                "orderDate": "2026-03-09T12:24:51.600Z",
                 "status": "Draft",
                 "approvedBy": "approvedBy_value",
                 "createdBy": "createdBy_value"
@@ -26564,7 +26592,7 @@
                 "branchId": "507f1f77bcf86cd799439011",
                 "supplierId": "507f1f77bcf86cd799439011",
                 "orderNumber": "orderNumber_value",
-                "orderDate": "2026-03-07T06:07:03.859Z",
+                "orderDate": "2026-03-09T12:24:51.600Z",
                 "status": "Draft",
                 "approvedBy": "approvedBy_value",
                 "createdBy": "createdBy_value"
@@ -27203,7 +27231,7 @@
                 "gstNumber": "gstNumber_value",
                 "isActive": true,
                 "createdBy": "createdBy_value",
-                "updatedBy": "2026-03-07T06:07:03.863Z"
+                "updatedBy": "2026-03-09T12:24:51.600Z"
               }
             }
           }
@@ -27328,7 +27356,7 @@
                 "gstNumber": "gstNumber_value",
                 "isActive": true,
                 "createdBy": "createdBy_value",
-                "updatedBy": "2026-03-07T06:07:03.863Z"
+                "updatedBy": "2026-03-09T12:24:51.600Z"
               }
             }
           }
@@ -28221,10 +28249,10 @@
                 "qualification": "qualification_value",
                 "specialization": "specialization_value",
                 "shift": "shift_value",
-                "end_time": "2026-03-07T06:07:03.866Z",
+                "end_time": "2026-03-09T12:24:51.600Z",
                 "password": "password_value",
                 "created_at": "created_at_value",
-                "updated_at": "2026-03-07T06:07:03.866Z"
+                "updated_at": "2026-03-09T12:24:51.600Z"
               }
             }
           }
@@ -28401,10 +28429,10 @@
                 "qualification": "qualification_value",
                 "specialization": "specialization_value",
                 "shift": "shift_value",
-                "end_time": "2026-03-07T06:07:03.866Z",
+                "end_time": "2026-03-09T12:24:51.600Z",
                 "password": "password_value",
                 "created_at": "created_at_value",
-                "updated_at": "2026-03-07T06:07:03.866Z"
+                "updated_at": "2026-03-09T12:24:51.600Z"
               }
             }
           }
@@ -28440,6 +28468,409 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/patients/register": {
+      "post": {
+        "tags": [
+          "Patients - patientRegistration.routes"
+        ],
+        "summary": "POST /api/v1/patients/register",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "mobile": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "patientName": {
+                    "type": "string"
+                  },
+                  "gender": {
+                    "type": "string",
+                    "enum": [
+                      "Male",
+                      "Female",
+                      "Other"
+                    ]
+                  },
+                  "maritalStatus": {
+                    "type": "string",
+                    "enum": [
+                      "Single",
+                      "Married",
+                      "Divorced",
+                      "Widowed"
+                    ]
+                  },
+                  "dob": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "age": {
+                    "type": "number"
+                  },
+                  "currentAge": {
+                    "type": "number"
+                  },
+                  "relationType": {
+                    "type": "string"
+                  },
+                  "guardianName": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "string"
+                  },
+                  "country": {
+                    "type": "string"
+                  },
+                  "stateId": {
+                    "type": "string"
+                  },
+                  "cityId": {
+                    "type": "string"
+                  },
+                  "bloodGroup": {
+                    "type": "string"
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "referredDoctorId": {
+                    "type": "string"
+                  },
+                  "referralMobile": {
+                    "type": "string"
+                  },
+                  "patientImage": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "mobile",
+                  "patientName"
+                ]
+              },
+              "example": {
+                "mobile": "9876543210",
+                "email": "rahul.sharma@example.com",
+                "patientName": "Rahul Sharma",
+                "gender": "Male",
+                "maritalStatus": "Single",
+                "dob": "1995-05-10",
+                "age": 30,
+                "currentAge": 30,
+                "relationType": "Father",
+                "guardianName": "Ramesh Sharma",
+                "address": "MP Nagar Zone 2",
+                "country": "India",
+                "stateId": "507f1f77bcf86cd799439011",
+                "cityId": "507f1f77bcf86cd799439011",
+                "bloodGroup": "O+",
+                "source": "Walk-in",
+                "referredDoctorId": "6981937c68d0f7fe64da7b51",
+                "referralMobile": "9876543210",
+                "patientImage": ""
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "patient": {
+                      "type": "object",
+                      "additionalProperties": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/patients/visits": {
+      "post": {
+        "tags": [
+          "Patients - patientVisit.routes"
+        ],
+        "summary": "POST /api/v1/patients/visits",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "patientId": {
+                    "type": "string"
+                  },
+                  "visitDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "visitTime": {
+                    "type": "string"
+                  },
+                  "visitType": {
+                    "type": "string",
+                    "enum": [
+                      "OPD",
+                      "IPD"
+                    ]
+                  },
+                  "fee": {
+                    "type": "number"
+                  },
+                  "departmentId": {
+                    "type": "string"
+                  },
+                  "departmentName": {
+                    "type": "string"
+                  },
+                  "doctorId": {
+                    "type": "string"
+                  },
+                  "roomId": {
+                    "type": "string"
+                  },
+                  "slot": {
+                    "type": "string",
+                    "enum": [
+                      "Slot I",
+                      "Slot II",
+                      "Slot III"
+                    ]
+                  },
+                  "paymentMode": {
+                    "type": "string",
+                    "enum": [
+                      "Cash",
+                      "Card",
+                      "UPI",
+                      "Insurance"
+                    ]
+                  },
+                  "discountPercent": {
+                    "type": "number"
+                  },
+                  "remark": {
+                    "type": "string"
+                  },
+                  "priority": {
+                    "type": "string",
+                    "default": "Normal"
+                  }
+                },
+                "required": [
+                  "patientId",
+                  "visitDate",
+                  "visitTime",
+                  "visitType",
+                  "fee",
+                  "paymentMode"
+                ]
+              },
+              "example": {
+                "patientId": "698334ced5bdf65d67c809bd",
+                "visitDate": "2026-03-09T12:24:51.597Z",
+                "visitTime": "12:30 PM",
+                "visitType": "OPD",
+                "fee": 500,
+                "departmentId": "698334ced5bdf65d67c809bd",
+                "departmentName": "General Medicine",
+                "doctorId": "6981937c68d0f7fe64da7b51",
+                "roomId": "6981937c68d0f7fe64da7b51",
+                "slot": "Slot I",
+                "paymentMode": "Cash",
+                "discountPercent": 0,
+                "remark": "Regular visit",
+                "priority": "Normal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "visit": {
+                      "type": "object",
+                      "additionalProperties": true
+                    },
+                    "token": {
+                      "type": "object",
+                      "nullable": true,
+                      "additionalProperties": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/rooms/doctor/{doctorId}": {
+      "get": {
+        "tags": [
+          "Rooms - room.routes"
+        ],
+        "summary": "GET /api/v1/rooms/doctor/:doctorId",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "doctorId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/ipd/quick-admission": {
+      "post": {
+        "tags": [
+          "Ipd - ipdQuickAdmission.routes"
+        ],
+        "summary": "POST /api/v1/ipd/quick-admission",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/patients/tracking/opd": {
+      "get": {
+        "tags": [
+          "Patients - patientTracking.routes"
+        ],
+        "summary": "GET /api/v1/patients/tracking/opd",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fromDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "toDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/patients/tracking/ipd": {
+      "get": {
+        "tags": [
+          "Patients - patientTracking.routes"
+        ],
+        "summary": "GET /api/v1/patients/tracking/ipd",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ADMITTED",
+                "DISCHARGED"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
                 }
               }
             }

@@ -79,7 +79,7 @@ const BranchSchema = new mongoose.Schema({
 
   createdBy:{
     type:mongoose.Schema.Types.ObjectId,
-    ref:"Users"
+    ref:"User"
   }
 
 },{timestamps:true});

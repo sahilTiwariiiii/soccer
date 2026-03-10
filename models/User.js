@@ -20,6 +20,16 @@ const UserSchema = mongoose.Schema({
     trim: true,
     match: [/.+@.+\..+/, "Please fill a valid email address"]
   },
+  hospitalId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Hospital",
+    required: true
+  },
+  branchId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Branch",
+    required: true
+  },
   phone: {
     type: String,
     required: true,

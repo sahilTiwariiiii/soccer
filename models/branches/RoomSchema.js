@@ -60,7 +60,7 @@ const RoomSchema = new mongoose.Schema({
 
   assignedDoctor:{
     type:mongoose.Schema.Types.ObjectId,
-    ref:"Users"
+    ref:"User"
   },
 
   notes:String

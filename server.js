@@ -19,6 +19,7 @@ import geoRoutes from './routes/georoute/index.js';
 import coreRoutes from './routes/coreroute/index.js';
 import ipdAdmissionRoutes from './routes/ipdroute/ipdAdmission.routes.js';
 import ipdDoctorAssignmentRoutes from './routes/ipdroute/ipdDoctorAssignment.routes.js';
+import ipdQuickAdmissionRoutes from './routes/ipdroute/ipdQuickAdmission.routes.js';
 import ipdDailyNoteRoutes from './routes/ipdroute/ipdDailyNote.routes.js';
 import ipdNursingNoteRoutes from './routes/ipdroute/ipdNursingNote.routes.js';
 import branchRoutes from './routes/branchesroute/branch.routes.js';
@@ -29,6 +30,9 @@ import roomStaffAssignmentRoutes from './routes/branchesroute/roomStaffAssignmen
 import pharmacyPaymentRoutes from './routes/branchesroute/pharmacyPayment.routes.js';
 import opdTokenRoutes from './routes/opdroute/opdToken.routes.js';
 import opdRoutes from './routes/opdroute/opd.routes.js';
+import patientRegistrationRoutes from './routes/patientRegistration.routes.js';
+import patientVisitRoutes from './routes/patientVisit.routes.js';
+import patientTrackingRoutes from './routes/patientTracking.routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -60,11 +64,15 @@ app.use('/api/v1/geo', geoRoutes);
 app.use('/api/v1/core', coreRoutes);
 app.use('/api/v1/ipd/admissions', ipdAdmissionRoutes);
 app.use('/api/v1/ipd/doctor-assignments', ipdDoctorAssignmentRoutes);
+app.use('/api/v1/ipd', ipdQuickAdmissionRoutes);
 app.use('/api/v1/ipd/daily-notes', ipdDailyNoteRoutes);
 app.use('/api/v1/ipd/nursing-notes', ipdNursingNoteRoutes);
 // OPD queue and visit summary
 app.use('/api/v1/opd/tokens', opdTokenRoutes);
 app.use('/api/v1/opd', opdRoutes);
+app.use('/api/v1/patients', patientRegistrationRoutes);
+app.use('/api/v1/patients', patientVisitRoutes);
+app.use('/api/v1/patients', patientTrackingRoutes);
 
 // Branches / infrastructure
 app.use('/api/v1/branches', branchRoutes);

@@ -13,6 +13,16 @@ const PatientVisitSchema = new mongoose.Schema({
     type: String,
     index: true
   },
+  hospitalId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Hospital",
+    required: true
+  },
+  branchId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Branch",
+    required: true
+  },
 
   /* ===== VISIT CORE ===== */
   visitDate: {

@@ -1,15 +1,19 @@
 // Basic Swagger generator for Express routers and Mongoose models
 // Scans routes and controllers to produce an OpenAPI 3.0 JSON
 // Usage: node scripts/generateSwagger.js
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const ROOT = path.resolve(__dirname, '..');
 const ROUTES_DIR = path.join(ROOT, 'routes');
 const CONTROLLERS_DIR = path.join(ROOT, 'controllers');
 const MODELS_DIR = path.join(ROOT, 'models');
 const SERVER_FILE = path.join(ROOT, 'server.js');
 const OUTPUT_FILE = path.join(ROOT, 'swagger.json');
+import { addExamplesToSwagger, exampleForSchema } from './addExamplesToSwagger.js';
 
 function readFileSafe(p) {
   try {
@@ -144,26 +148,7 @@ function parseModelSchema(modelFile) {
   return { properties: props, required };
 }
 
-function exampleForSchema(schema) {
-  const obj = {};
-  const props = schema.properties || {};
-  Object.entries(props).forEach(([k, v]) => {
-    if (v.enum && v.enum.length) obj[k] = v.enum[0];
-    else if (v.type === 'string') {
-      const key = k.toLowerCase();
-      if (key.includes('email')) obj[k] = 'user@example.com';
-      else if (key.includes('phone')) obj[k] = '9000000000';
-      else if (key.includes('name')) obj[k] = 'Sample Name';
-      else if (key.endsWith('id')) obj[k] = '507f1f77bcf86cd799439011';
-      else if (key.includes('date') || key.includes('time')) obj[k] = new Date().toISOString();
-      else obj[k] = k + '_value';
-    }
-    else if (v.type === 'number') obj[k] = 1;
-    else if (v.type === 'boolean') obj[k] = true;
-    else obj[k] = null;
-  });
-  return obj;
-}
+
 
 function toTag(moduleBase, subpath, filePath) {
   // E.g., moduleBase '/api/v1/assets', subpath '/masters' => 'Assets - Masters'
@@ -327,7 +312,7 @@ function addCustomOperation(paths, fullPath, method, tag, requestSchema) {
       content: {
         'application/json': {
           schema: requestSchema,
-          example: exampleForSchema(requestSchema)
+          example: requestSchema.example || exampleForSchema(requestSchema)
         }
       }
     };
@@ -448,38 +433,81 @@ function main() {
               reqSchema = {
                 type: 'object',
                 properties: {
+                  mobile: { type: 'string', example: '9876543210' },
+                  email: { type: 'string', format: 'email', example: 'rahul.sharma@example.com' },
+                  patientName: { type: 'string', example: 'Rahul Sharma' },
+                  gender: { type: 'string', enum: ['Male', 'Female', 'Other'] },
+                  dob: { type: 'string', format: 'date', example: '1995-05-10' },
+                  age: { type: 'number', example: 30 }
+                },
+                required: ['mobile', 'patientName', 'gender', 'dob', 'age']
+              };
+            } else if (lowerPath.endsWith('/patients/visits') && r.method === 'POST') {
+              reqSchema = {
+                type: 'object',
+                properties: {
+                  patientId: { type: 'string' },
                   visitDate: { type: 'string', format: 'date-time' },
                   visitTime: { type: 'string' },
                   visitType: { type: 'string', enum: ['OPD', 'IPD', 'Emergency'] },
                   fee: { type: 'number' },
-                  mobile: { type: 'string' },
-                  email: { type: 'string', format: 'email' },
                   departmentId: { type: 'string' },
                   departmentName: { type: 'string' },
                   doctorId: { type: 'string' },
+                  roomId: { type: 'string' },
                   slot: { type: 'string', enum: ['Slot I', 'Slot II', 'Slot III'] },
-                  patientName: { type: 'string' },
-                  gender: { type: 'string', enum: ['Male', 'Female', 'Other'] },
-                  maritalStatus: { type: 'string', enum: ['Single', 'Married', 'Divorced', 'Widowed'] },
-                  dob: { type: 'string', format: 'date-time' },
-                  age: { type: 'number' },
-                  currentAge: { type: 'number' },
-                  relationType: { type: 'string' },
-                  guardianName: { type: 'string' },
-                  address: { type: 'string' },
-                  country: { type: 'string' },
-                  stateId: { type: 'string' },
-                  cityId: { type: 'string' },
-                  bloodGroup: { type: 'string' },
-                  source: { type: 'string' },
-                  referredDoctorId: { type: 'string' },
-                  referralMobile: { type: 'string' },
                   paymentMode: { type: 'string', enum: ['Cash', 'Card', 'UPI', 'Insurance'] },
                   discountPercent: { type: 'number' },
-                  remark: { type: 'string' },
-                  patientImage: { type: 'string' }
+                  remark: { type: 'string' }
                 },
-                required: ['visitDate', 'visitTime', 'visitType', 'fee', 'mobile', 'slot', 'patientName']
+                required: ['patientId', 'visitDate', 'visitTime', 'visitType', 'fee', 'departmentId', 'paymentMode']
+              };
+            } else if (lowerPath.endsWith('/ipd/quick-admission') && r.method === 'POST') {
+              reqSchema = {
+                type: 'object',
+                properties: {
+                  mobile: { type: 'string', example: '9876543210' },
+                  patientName: { type: 'string', example: 'Rina Sharma' },
+                  gender: { type: 'string', enum: ['Male', 'Female', 'Other'] },
+                  dob: { type: 'string', format: 'date', example: '1990-01-15' },
+                  age: { type: 'number', example: 34 },
+                  fee: { type: 'number', example: 5000 },
+                  departmentId: { type: 'string', example: '698334ced5bdf65d67c809bd' },
+                  doctorId: { type: 'string', example: '6981937c68d0f7fe64da7b51' },
+                  paymentMode: { type: 'string', enum: ['Cash', 'Card', 'UPI', 'Insurance'] },
+                  bedId: { type: 'string', example: '69aaca140719658b593535c6' },
+                  treatingDoctors: { type: 'array', items: { type: 'string' }, example: ['6981937c68d0f7fe64da7b51'] }
+                },
+                required: ['mobile', 'patientName', 'gender', 'dob', 'age', 'fee', 'departmentId', 'paymentMode', 'bedId']
+              };
+            } else if (lowerPath.endsWith('/ipd/admissions') && r.method === 'POST') {
+              reqSchema = {
+                type: 'object',
+                properties: {
+                  patientId: { type: 'string', example: '64c1f7a7b8b7b8b7b8b7b8b7' },
+                  visitId: { type: 'string', example: '64c1f7a7b8b7b8b7b8b7b8b8' },
+                  bedId: { type: 'string', example: '69aaca140719658b593535c6' },
+                  treatingDoctors: { type: 'array', items: { type: 'string' }, example: ['6981937c68d0f7fe64da7b51'] }
+                },
+                required: ['patientId', 'visitId', 'bedId']
+              };
+            } else if (lowerPath.endsWith('/opd/summary') && r.method === 'POST') {
+              reqSchema = {
+                type: 'object',
+                properties: {
+                  complaints: { type: 'array', items: { type: 'object', properties: { complaintName: { type: 'string' } } } },
+                  diagnoses: { type: 'array', items: { type: 'object', properties: { diagnosisName: { type: 'string' } } } },
+                  notes: { type: 'object', properties: { doctorNote: { type: 'string' } } },
+                  investigationOrders: { type: 'array', items: { type: 'object', properties: { investigation: { type: 'string' } } } },
+                  currentTreatments: { type: 'array', items: { type: 'object', properties: { medicineName: { type: 'string' } } } }
+                },
+                example: {
+                  complaints: [{ complaintName: 'Fever and cough' }],
+                  diagnoses: [{ diagnosisName: 'Viral Fever', icdCode: 'J11.1' }],
+                  notes: { doctorNote: 'Prescribed paracetamol and rest.' },
+                  investigationOrders: [{ investigation: 'CBC' }],
+                  currentTreatments: [{ medicineName: 'Paracetamol 500mg', dosage: '1-1-1', duration: '3 days' }]
+                }
               };
             } else if (lowerPath.endsWith('/opd/tokens') && r.method === 'POST') {
               reqSchema = {
@@ -618,6 +646,7 @@ function main() {
   }
 
   // Write output
+  addExamplesToSwagger(api);
   fs.writeFileSync(OUTPUT_FILE, JSON.stringify(api, null, 2), 'utf8');
   console.log(`Swagger JSON written to ${OUTPUT_FILE}`);
   // Report summary
