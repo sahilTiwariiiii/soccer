@@ -46,7 +46,14 @@ export const getPharmacyDispenses = async (req, res) => {
 
     const dispenses = await PharmacyDispense.find(filter)
       .populate("pharmacyId", "name")
-      .populate("prescriptionId", "visitId")
+      .populate({
+        path: "prescriptionId",
+        select: "visitId patientId doctorId",
+        populate: [
+          { path: "patientId", select: "uhid patientName age gender" },
+          { path: "doctorId", select: "name" }
+        ]
+      })
       .populate("prescriptionItemId", "medicineName quantityPrescribed")
       .populate("stockId", "medicineId batchNumber availableQuantity")
       .populate("dispensedBy", "name email")

@@ -53,6 +53,8 @@ ConnectDb();
 app.use('/api/v1', UserRoute);
 app.use('/api/v1', PatientRegistrationAndVisitedRoute);
 app.use('/api/v1', clinicalDetailsRoute);
+import dashboardRoutes from './routes/dashboardRoutes.js';
+app.use('/api/v1/dashboard', dashboardRoutes);
 
 // Module prefixes
 app.use('/api/v1/assets', assetRoutes);
