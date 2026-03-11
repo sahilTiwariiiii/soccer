@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const GRNSchema = new mongoose.Schema({
 
     hospitalId: {
@@ -29,3 +31,5 @@ const GRNSchema = new mongoose.Schema({
     }
   
   }, { timestamps: true });
+
+export default mongoose.model("GRN", GRNSchema);

@@ -1,6 +1,6 @@
 import express from "express";
-import stockAdjustmentController from "../controllers/stockAdjustment.controller.js";
-import authMiddleware from "../middleware/authMiddleware.js";
+import stockAdjustmentController from "../../controllers/pharmacycontroller/stockadjustment.controller.js";
+import authMiddleware from "../../middlewares/auth.js";
 
 const router = express.Router();
 

@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const InsuranceClaimSchema = new mongoose.Schema({
 
     hospitalId: {
@@ -28,5 +30,7 @@ const InsuranceClaimSchema = new mongoose.Schema({
     }
   
   }, { timestamps: true });
+
+export default mongoose.model("InsuranceClaim", InsuranceClaimSchema);
 
   

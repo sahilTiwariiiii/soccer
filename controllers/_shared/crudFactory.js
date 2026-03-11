@@ -18,7 +18,7 @@ export function buildScopeFilter(req, scope = []) {
   return filter;
 }
 
-export function createCrudHandlers({ Model, scope = [] }) {
+export function createCrudHandlers({ Model, scope = [], populate = "" }) {
   if (!Model) throw new Error("Model is required");
 
   const create = async (req, res) => {
@@ -36,10 +36,16 @@ export function createCrudHandlers({ Model, scope = [] }) {
       const scopeFilter = buildScopeFilter(req, scope);
       const { page = 1, limit = 20 } = req.query;
 
-      const docs = await Model.find(scopeFilter)
+      let query = Model.find(scopeFilter)
         .sort({ createdAt: -1 })
         .skip((Number(page) - 1) * Number(limit))
         .limit(Number(limit));
+
+      if (populate) {
+        query = query.populate(populate);
+      }
+
+      const docs = await query;
 
       const total = await Model.countDocuments(scopeFilter);
 
@@ -57,7 +63,13 @@ export function createCrudHandlers({ Model, scope = [] }) {
   const getById = async (req, res) => {
     try {
       const scopeFilter = buildScopeFilter(req, scope);
-      const doc = await Model.findOne({ _id: req.params.id, ...scopeFilter });
+      let query = Model.findOne({ _id: req.params.id, ...scopeFilter });
+      
+      if (populate) {
+        query = query.populate(populate);
+      }
+      
+      const doc = await query;
       if (!doc) return res.status(404).json({ message: "Not found" });
       return res.status(200).json(doc);
     } catch (error) {

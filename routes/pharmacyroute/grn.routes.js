@@ -5,7 +5,7 @@ import {
   getGRNById,
   updateGRN,
   deleteGRN
-} from "../controllers/grn.controller.js";
+} from "../../controllers/pharmacycontroller/grn.controller.js";
 
 
 

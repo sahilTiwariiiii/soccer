@@ -6,11 +6,13 @@ import {
   getCertificateVerificationById,
   getCertificateVerifications,
   updateCertificateVerification,
+  verifyCertificate,
 } from "../../controllers/certificatescontroller/certificateVerification.controller.js";
 
 const router = express.Router();
 
-router.post("/", authMiddleware, createCertificateVerification);
+router.post("/", authMiddleware, verifyCertificate);
+router.post("/log", authMiddleware, createCertificateVerification);
 router.get("/", authMiddleware, getCertificateVerifications);
 router.get("/:id", authMiddleware, getCertificateVerificationById);
 router.put("/:id", authMiddleware, updateCertificateVerification);

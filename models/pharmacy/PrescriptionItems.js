@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const PrescriptionItemSchema = new mongoose.Schema({
 
   prescriptionId: {
@@ -28,3 +30,5 @@ const PrescriptionItemSchema = new mongoose.Schema({
   }
 
 }, { timestamps: true });
+
+export default mongoose.model("PrescriptionItem", PrescriptionItemSchema);

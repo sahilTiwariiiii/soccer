@@ -1,4 +1,4 @@
-import PharmacyDispense from "../models/PharmacyDispenseSchema.js";
+import PharmacyDispense from "../../models/pharmacy/PharmacyDispenseRecord.js";
 
 // CREATE DISPENSE RECORD
 export const createPharmacyDispense = async (req, res) => {

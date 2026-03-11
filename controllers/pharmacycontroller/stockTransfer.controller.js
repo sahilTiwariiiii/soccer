@@ -1,4 +1,4 @@
-import StockTransfer from "../models/StockTransferSchema.js";
+import StockTransfer from "../../models/pharmacy/InterBranchStockTransfer.js";
 
 // CREATE STOCK TRANSFER REQUEST
 export const createStockTransfer = async (req, res) => {

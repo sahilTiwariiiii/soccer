@@ -1,5 +1,5 @@
-import StockAdjustment from "../models/StockAdjustment.js";
-import PharmacyStock from "../models/PharmacyStock.js";
+import StockAdjustment from "../../models/pharmacy/StockAdjustment.js";
+import PharmacyStock from "../../models/pharmacy/PharmacyStockBatchWise.js";
 
 
 // CREATE STOCK ADJUSTMENT (Token Based)

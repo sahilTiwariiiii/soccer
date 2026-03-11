@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const PrescriptionSchema = new mongoose.Schema({
 
   hospitalId: { type: mongoose.Schema.Types.ObjectId, ref: "Hospital", required: true },
@@ -25,3 +27,5 @@ const PrescriptionSchema = new mongoose.Schema({
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
 
 }, { timestamps: true });
+
+export default mongoose.model("Prescription", PrescriptionSchema);

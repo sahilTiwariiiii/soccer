@@ -28,6 +28,12 @@ const AssetMaintenanceSchema = new mongoose.Schema(
 
     next_maintenance_date: Date,
 
+    status: {
+        type: String,
+        enum: ["scheduled","in_progress","completed"],
+        default: "scheduled"
+    },
+
     description: String
 
 },

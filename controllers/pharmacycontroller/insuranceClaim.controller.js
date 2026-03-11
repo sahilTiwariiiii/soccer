@@ -1,4 +1,4 @@
-import InsuranceClaim from "../models/InsuranceClaimSchema.js";
+import InsuranceClaim from "../../models/pharmacy/InsuranceClaim.js";
 
 // CREATE INSURANCE CLAIM
 export const createInsuranceClaim = async (req, res) => {

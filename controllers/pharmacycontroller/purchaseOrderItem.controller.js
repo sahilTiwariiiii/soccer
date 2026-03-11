@@ -1,5 +1,5 @@
-import PurchaseOrderItem from "../models/PurchaseOrderItemSchema.js";
-import PurchaseOrder from "../models/PurchaseOrderSchema.js";
+import PurchaseOrderItem from "../../models/pharmacy/PurchaseOrderItems.js";
+import PurchaseOrder from "../../models/pharmacy/PurchaseOrder.js";
 
 
 // CREATE ITEM

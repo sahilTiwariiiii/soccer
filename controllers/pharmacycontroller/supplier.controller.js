@@ -1,8 +1,8 @@
-import SupplierSchema from "../models/SupplierSchemaSchema.js";
+import SupplierSchema from "../../models/pharmacy/SupplierSchema.js";
 
 
 // CREATE
-const createSupplierSchema = async (req, res) => {
+export const createSupplier = async (req, res) => {
   try {
     const hospitalId = req.user.hospitalId;
     const branchId = req.user.branchId;
@@ -49,7 +49,7 @@ const createSupplierSchema = async (req, res) => {
 
 
 // GET ALL (Auto Filter by Token)
-const getSupplierSchemas = async (req, res) => {
+export const getSuppliers = async (req, res) => {
   try {
     const hospitalId = req.user.hospitalId;
     const branchId = req.user.branchId;
@@ -97,10 +97,8 @@ const getSupplierSchemas = async (req, res) => {
   }
 };
 
-
-
 // GET BY ID (Secure Branch Check)
-const getSupplierSchemaById = async (req, res) => {
+export const getSupplierById = async (req, res) => {
   try {
     const hospitalId = req.user.hospitalId;
     const branchId = req.user.branchId;
@@ -130,10 +128,8 @@ const getSupplierSchemaById = async (req, res) => {
   }
 };
 
-
-
 // UPDATE (Secure + Token Based)
-const updateSupplierSchema = async (req, res) => {
+export const updateSupplier = async (req, res) => {
   try {
     const hospitalId = req.user.hospitalId;
     const branchId = req.user.branchId;
@@ -174,10 +170,8 @@ const updateSupplierSchema = async (req, res) => {
   }
 };
 
-
-
 // TOGGLE STATUS
-const toggleSupplierSchemaStatus = async (req, res) => {
+export const toggleSupplierStatus = async (req, res) => {
   try {
     const hospitalId = req.user.hospitalId;
     const branchId = req.user.branchId;
@@ -211,10 +205,8 @@ const toggleSupplierSchemaStatus = async (req, res) => {
   }
 };
 
-
-
 // SOFT DELETE
-const deleteSupplierSchema = async (req, res) => {
+export const deleteSupplier = async (req, res) => {
   try {
     const hospitalId = req.user.hospitalId;
     const branchId = req.user.branchId;
@@ -245,15 +237,4 @@ const deleteSupplierSchema = async (req, res) => {
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
-};
-
-
-
-export default {
-  createSupplierSchema,
-  getSupplierSchemas,
-  getSupplierSchemaById,
-  updateSupplierSchema,
-  toggleSupplierSchemaStatus,
-  deleteSupplierSchema
 };

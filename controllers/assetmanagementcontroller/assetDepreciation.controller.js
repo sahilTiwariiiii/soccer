@@ -9,6 +9,7 @@ const scope = [
 const { create, getAll, getById, updateById, deleteById } = createCrudHandlers({
   Model: AssetDepreciation,
   scope,
+  populate: "asset_id",
 });
 
 export const createAssetDepreciation = create;

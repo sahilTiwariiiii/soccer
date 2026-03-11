@@ -9,6 +9,7 @@ const scope = [
 const { create, getAll, getById, updateById, deleteById } = createCrudHandlers({
   Model: GeneratedCertificate,
   scope,
+  populate: "certificateTypeId templateId patientId doctorId issuedBy"
 });
 
 export const createGeneratedCertificate = create;

@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const PharmacyStockSchema = new mongoose.Schema({
 
   hospitalId: { type: mongoose.Schema.Types.ObjectId, ref: "Hospital", required: true },
@@ -23,3 +25,5 @@ const PharmacyStockSchema = new mongoose.Schema({
   }
 
 }, { timestamps: true });
+
+export default mongoose.model("PharmacyStock", PharmacyStockSchema);

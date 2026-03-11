@@ -11,9 +11,9 @@ const GeneratedCertificateSchema = new mongoose.Schema({
   
     templateId: { type: mongoose.Schema.Types.ObjectId, ref: "CertificateTemplate" },
   
-    patientId: { type: mongoose.Schema.Types.ObjectId, ref: "Patient" },
+    patientId: { type: mongoose.Schema.Types.ObjectId, ref: "PatientRegistration" },
   
-    doctorId: { type: mongoose.Schema.Types.ObjectId, ref: "Doctor" },
+    doctorId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   
     filledData: Object, // dynamic values
   

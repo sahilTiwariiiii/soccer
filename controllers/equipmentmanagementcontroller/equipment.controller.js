@@ -9,6 +9,7 @@ const scope = [
 const { create, getAll, getById, updateById, deleteById } = createCrudHandlers({
   Model: Equipment,
   scope,
+  populate: "categoryId vendorId departmentId locationId",
 });
 
 export const createEquipment = create;

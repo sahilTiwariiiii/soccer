@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const PharmacyDispenseSchema = new mongoose.Schema({
 
     hospitalId: { type: mongoose.Schema.Types.ObjectId, ref: "Hospital", required: true },
@@ -28,3 +30,5 @@ const PharmacyDispenseSchema = new mongoose.Schema({
     dispensedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   
   }, { timestamps: true });
+
+export default mongoose.model("PharmacyDispense", PharmacyDispenseSchema);

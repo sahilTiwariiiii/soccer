@@ -1,7 +1,7 @@
-import PharmacyStock from "../models/PharmacyStockSchema.js";
+import PharmacyStock from "../../models/pharmacy/PharmacyStockBatchWise.js";
 
 // CREATE STOCK
-const createPharmacyStock = async (req, res) => {
+export const createPharmacyStock = async (req, res) => {
   try {
     const hospitalId = req.user.hospitalId;
     const branchId = req.user.branchId;
@@ -50,7 +50,7 @@ const createPharmacyStock = async (req, res) => {
 };
 
 // GET ALL STOCKS (FILTER + PAGINATION)
-const getPharmacyStocks = async (req, res) => {
+export const getPharmacyStocks = async (req, res) => {
   try {
     const hospitalId = req.user.hospitalId;
     const branchId = req.user.branchId;
@@ -93,7 +93,7 @@ const getPharmacyStocks = async (req, res) => {
 };
 
 // GET STOCK BY ID
-const getPharmacyStockById = async (req, res) => {
+export const getPharmacyStockById = async (req, res) => {
   try {
     const hospitalId = req.user.hospitalId;
     const branchId = req.user.branchId;
@@ -123,7 +123,7 @@ const getPharmacyStockById = async (req, res) => {
 };
 
 // UPDATE STOCK
-const updatePharmacyStock = async (req, res) => {
+export const updatePharmacyStock = async (req, res) => {
   try {
     const hospitalId = req.user.hospitalId;
     const branchId = req.user.branchId;
@@ -162,7 +162,7 @@ const updatePharmacyStock = async (req, res) => {
 };
 
 // DELETE STOCK
-const deletePharmacyStock = async (req, res) => {
+export const deletePharmacyStock = async (req, res) => {
   try {
     const hospitalId = req.user.hospitalId;
     const branchId = req.user.branchId;
@@ -187,12 +187,4 @@ const deletePharmacyStock = async (req, res) => {
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
-};
-
-export default {
-  createPharmacyStock,
-  getPharmacyStocks,
-  getPharmacyStockById,
-  updatePharmacyStock,
-  deletePharmacyStock
 };

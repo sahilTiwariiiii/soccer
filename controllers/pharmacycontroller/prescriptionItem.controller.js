@@ -1,5 +1,5 @@
-import PrescriptionItem from "../models/PrescriptionItemSchema.js";
-import Prescription from "../models/PrescriptionSchema.js";
+import PrescriptionItem from "../../models/pharmacy/PrescriptionItems.js";
+import Prescription from "../../models/pharmacy/PrescriptionHeader.js";
 
 // CREATE PRESCRIPTION ITEM
 const createPrescriptionItem = async (req, res) => {

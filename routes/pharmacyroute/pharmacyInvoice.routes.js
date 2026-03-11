@@ -6,7 +6,7 @@ import {
   updatePharmacyInvoice,
   updateInvoiceHtml,
   deletePharmacyInvoice
-} from "../controllers/pharmacyInvoice.controller.js";
+} from "../../controllers/pharmacycontroller/pharmacyInvoice.controller.js";
 
 
 

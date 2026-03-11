@@ -1,4 +1,4 @@
-import Prescription from "../models/PrescriptionSchema.js";
+import Prescription from "../../models/pharmacy/PrescriptionHeader.js";
 
 
 // CREATE PRESCRIPTION (Doctor from Token)

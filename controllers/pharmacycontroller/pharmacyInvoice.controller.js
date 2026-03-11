@@ -1,4 +1,4 @@
-import PharmacyInvoice from "../models/PharmacyInvoiceSchema.js";
+import PharmacyInvoice from "../../models/pharmacy/PharmacyInvoice.js";
 
 // CREATE INVOICE
 export const createPharmacyInvoice = async (req, res) => {

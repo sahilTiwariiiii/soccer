@@ -7,7 +7,7 @@ import {
   approveInsuranceClaim,
   rejectInsuranceClaim,
   markClaimSettled
-} from "../controllers/insuranceClaim.controller.js";
+} from "../../controllers/pharmacycontroller/insuranceClaim.controller.js";
 
 
 

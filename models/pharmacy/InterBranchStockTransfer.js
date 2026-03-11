@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const StockTransferSchema = new mongoose.Schema({
 
     hospitalId: {
@@ -36,3 +38,5 @@ const StockTransferSchema = new mongoose.Schema({
     approvedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
   
   }, { timestamps: true });
+
+export default mongoose.model("StockTransfer", StockTransferSchema);

@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const PurchaseOrderSchema = new mongoose.Schema({
 
     hospitalId: {
@@ -33,3 +35,5 @@ const PurchaseOrderSchema = new mongoose.Schema({
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
   
   }, { timestamps: true });
+
+export default mongoose.model("PurchaseOrder", PurchaseOrderSchema);

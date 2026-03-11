@@ -1,13 +1,20 @@
 import express from "express";
-import supplierController from "../controllers/supplier.controller.js";
+import {
+  createSupplier,
+  getSuppliers,
+  getSupplierById,
+  updateSupplier,
+  toggleSupplierStatus,
+  deleteSupplier
+} from "../../controllers/pharmacycontroller/supplier.controller.js";
 
 const router = express.Router();
 
-router.post("/", supplierController.createSupplier);
-router.get("/", supplierController.getSuppliers);
-router.get("/:id", supplierController.getSupplierById);
-router.put("/:id", supplierController.updateSupplier);
-router.patch("/:id/toggle-status", supplierController.toggleSupplierStatus);
-router.delete("/:id", supplierController.deleteSupplier);
+router.post("/", createSupplier);
+router.get("/", getSuppliers);
+router.get("/:id", getSupplierById);
+router.put("/:id", updateSupplier);
+router.patch("/:id/toggle-status", toggleSupplierStatus);
+router.delete("/:id", deleteSupplier);
 
 export default router;

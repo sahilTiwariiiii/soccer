@@ -7,7 +7,7 @@ import {
   approveStockTransfer,
   markInTransit,
   markAsCompleted
-} from "../controllers/stockTransfer.controller.js";
+} from "../../controllers/pharmacycontroller/stockTransfer.controller.js";
 
 
 

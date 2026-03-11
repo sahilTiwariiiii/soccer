@@ -5,7 +5,7 @@ import {
   getPharmacyById,
   updatePharmacy,
   togglePharmacyStatus
-} from "../controllers/pharmacy.controller.js";
+} from "../../controllers/pharmacycontroller/pharmacy.controller.js";
 
 
 

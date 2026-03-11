@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const PharmacySchema = new mongoose.Schema({
 
     branchId: {

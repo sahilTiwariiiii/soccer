@@ -5,14 +5,14 @@ import {
   getPharmacyStockById,
   updatePharmacyStock,
   deletePharmacyStock
-} from "../controllers/pharmacystock.controller.js";
+} from "../../controllers/pharmacycontroller/pharmacystock.controller.js";
 
-import { authenticateUser } from "../middleware/authMiddleware.js";
+import authMiddleware from "../../middlewares/auth.js";
 
 const router = express.Router();
 
 // All routes require authentication
-router.use(authenticateUser);
+router.use(authMiddleware);
 
 // CRUD routes
 router.post("/", createPharmacyStock);

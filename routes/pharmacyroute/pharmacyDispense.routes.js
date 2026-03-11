@@ -5,7 +5,7 @@ import {
   getPharmacyDispenseById,
   updatePharmacyDispense,
   deletePharmacyDispense
-} from "../controllers/pharmacyDispense.controller.js";
+} from "../../controllers/pharmacycontroller/pharmacyDispense.controller.js";
 
 
 const router = express.Router();

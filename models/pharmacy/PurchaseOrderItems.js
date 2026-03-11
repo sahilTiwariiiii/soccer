@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const PurchaseOrderItemSchema = new mongoose.Schema({
 
     hospitalId: {
@@ -32,3 +34,5 @@ const PurchaseOrderItemSchema = new mongoose.Schema({
     totalAmount: Number
   
   }, { timestamps: true });
+
+export default mongoose.model("PurchaseOrderItem", PurchaseOrderItemSchema);

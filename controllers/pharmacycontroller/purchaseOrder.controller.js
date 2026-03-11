@@ -1,4 +1,4 @@
-import PurchaseOrder from "../models/PurchaseOrderSchema.js";
+import PurchaseOrder from "../../models/pharmacy/PurchaseOrder.js";
 
 
 // CREATE PURCHASE ORDER

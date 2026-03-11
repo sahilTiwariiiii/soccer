@@ -1,4 +1,4 @@
-import GRN from "../models/GRNSchema.js";
+import GRN from "../../models/pharmacy/Grngoodreceiptnotes.js";
 
 // CREATE GRN
 export const createGRN = async (req, res) => {

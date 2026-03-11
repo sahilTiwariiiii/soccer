@@ -9,6 +9,7 @@ const scope = [
 const { create, getAll, getById, updateById, deleteById } = createCrudHandlers({
   Model: CertificateType,
   scope,
+  populate: "templateId departmentId"
 });
 
 export const createCertificateType = create;
