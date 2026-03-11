@@ -9,21 +9,45 @@ import { generatepatientuhid } from "../services/generatepatientuhid.js";
 import { generateUniqueReceiptNumber } from "../services/generateuniquereceiptid.js";
 
 const createVisitForPatient = async (patient, req, res, hospitalId, branchId, departmentId, departmentName, visitDate, visitTime, visitType, doctorId, roomId, slot, fee, paymentMode, discountPercent, remark) => {
+    // Check if a visit already exists for this patient on the same day for the same visitType
+    const startOfDay = new Date(visitDate);
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date(visitDate);
+    endOfDay.setHours(23, 59, 59, 999);
+
+    const existingVisit = await PatientVisit.findOne({
+        patientId: patient._id,
+        visitType: visitType,
+        visitDate: { $gte: startOfDay, $lte: endOfDay }
+    });
+
+    if (existingVisit) {
+        return res.status(400).json({ 
+            message: `Patient already has an ${visitType} visit for today (${new Date(visitDate).toLocaleDateString()}).`,
+            existingVisit 
+        });
+    }
+
     // generate unique receipt number of id
     const generate_receipt_no = await generateUniqueReceiptNumber();
+    // Sanitize ObjectIds to handle empty strings
+    const sanitizedDoctorId = doctorId && mongoose.isValidObjectId(doctorId) ? doctorId : undefined;
+    const sanitizedRoomId = roomId && mongoose.isValidObjectId(roomId) ? roomId : undefined;
+    const sanitizedDepartmentId = departmentId && mongoose.isValidObjectId(departmentId) ? departmentId : undefined;
+
     // now when user exists  then just make the entry in the 'PatientVisit' Schema
     const patientVisited = await PatientVisit.create({
         patientId: patient._id,
         uhid: patient.uhid,
         hospitalId,
         branchId,
-        departmentId,
+        departmentId: sanitizedDepartmentId,
         departmentName,
         visitDate,
         visitTime,
         visitType,
-        doctorId,
-        roomId,
+        doctorId: sanitizedDoctorId,
+        roomId: sanitizedRoomId,
         slot,
         fee,
         paymentMode,
@@ -35,8 +59,8 @@ const createVisitForPatient = async (patient, req, res, hospitalId, branchId, de
         patientId: patientVisited.patientId,
         uhid: patientVisited.uhid,
         visitId: patientVisited._id,
-        departmentId,
-        doctorId,
+        departmentId: sanitizedDepartmentId,
+        doctorId: sanitizedDoctorId,
         paymentMode,
         discountPercent,
         fee,
@@ -45,8 +69,8 @@ const createVisitForPatient = async (patient, req, res, hospitalId, branchId, de
 
     // Generate Token if Visit Type is OPD
     let tokenInfo = null;
-    if (visitType === "OPD") {
-        const room = await Room.findById(roomId);
+    if (visitType === "OPD" && sanitizedRoomId) {
+        const room = await Room.findById(sanitizedRoomId);
         if (room) {
             const date = new Date();
             const start = new Date(date.getFullYear(), date.getMonth(), date.getDate());
@@ -124,8 +148,8 @@ if (!mobile) {
 }
 //  department id aur docket id ko mandatory nahi kiya kyuki agar mujhe bas xray karan ahai toh fir fir doctor ka koi role nahi 
 
-if (!slot) {
-    return res.status(400).json({ message: "Slot is required" })
+if (visitType === "OPD" && !slot) {
+    return res.status(400).json({ message: "Slot is required for OPD visit" })
 }
 if (!patientName) {
     return res.status(400).json({ message: "Patient Name is required" })
@@ -140,18 +164,16 @@ if (!dob) {
 if (age===undefined||age===null) {
     return res.status(400).json({ message: "Age is required" })
 }
-if (!country) {
-    return res.status(400).json({ message: "Country is required" })
-}
-if (!stateId) {
-    return res.status(400).json({ message: "State is required" })
-}
-if (!cityId) {
-    return res.status(400).json({ message: "City is required" })
+// Relaxing state/city/country requirements for IPD if not provided
+if (visitType === "OPD") {
+    if (!country) return res.status(400).json({ message: "Country is required" });
+    if (!stateId) return res.status(400).json({ message: "State is required" });
+    if (!cityId) return res.status(400).json({ message: "City is required" });
 }
 
 if (!paymentMode) {
-    return res.status(400).json({ message: "Payment Mode is required" })
+    // Default to Cash if not provided
+    req.body.paymentMode = "Cash";
 }
     try {
         const userId = req.user.id || req.user._id;
@@ -164,6 +186,15 @@ if (!paymentMode) {
         if (!hospitalId || !branchId) {
             return res.status(400).json({ message: "User is not associated with a hospital or branch." });
         }
+
+        // Sanitize ObjectIds to handle empty strings
+        const sanitizedDoctorId = doctorId && mongoose.isValidObjectId(doctorId) ? doctorId : undefined;
+        const sanitizedRoomId = roomId && mongoose.isValidObjectId(roomId) ? roomId : undefined;
+        const sanitizedDepartmentId = departmentId && mongoose.isValidObjectId(departmentId) ? departmentId : undefined;
+        const sanitizedCountryId = country && mongoose.isValidObjectId(country) ? country : undefined;
+        const sanitizedStateId = stateId && mongoose.isValidObjectId(stateId) ? stateId : undefined;
+        const sanitizedCityId = cityId && mongoose.isValidObjectId(cityId) ? cityId : undefined;
+        const sanitizedReferredDoctorId = referredDoctorId && mongoose.isValidObjectId(referredDoctorId) ? referredDoctorId : undefined;
        
         // check that the uhid is alrady present in the 
         // yaha pe koi autometic regestratin nahi hoga jaisa agar ex agar doctor bolta hai koi test toh fir paitent dobara ayega aur dusare jagha jab vo patietnt kahega ki ye test karvana hai tab hum uske liye automatic karenge taki vo pathology department me apne aapp chale jye request aur fir jab patient jyega toh consult kar lega koi 'Transaction Process nahi hogi simple registration agar opd me jana hai toh vo agar ipd me jana hai toh vo aur agar dusari bar ayr ho toh vo that it nothing else complex'
@@ -174,20 +205,20 @@ if (!paymentMode) {
         if (uhid) {
             const patient = await PatientRegistration.findOne({ uhid });
             if (patient) {
-                return createVisitForPatient(patient, req, res, hospitalId, branchId, departmentId, departmentName, visitDate, visitTime, visitType, doctorId, roomId, slot, fee, paymentMode, discountPercent, remark);
+                return createVisitForPatient(patient, req, res, hospitalId, branchId, sanitizedDepartmentId, departmentName, visitDate, visitTime, visitType, sanitizedDoctorId, sanitizedRoomId, slot, fee, paymentMode, discountPercent, remark);
             }
         }
 
         // Check for existing patient by mobile to prevent duplication
         const existingPatient = await PatientRegistration.findOne({ mobile });
         if (existingPatient) {
-            return createVisitForPatient(existingPatient, req, res, hospitalId, branchId, departmentId, departmentName, visitDate, visitTime, visitType, doctorId, roomId, slot, fee, paymentMode, discountPercent, remark);
+            return createVisitForPatient(existingPatient, req, res, hospitalId, branchId, sanitizedDepartmentId, departmentName, visitDate, visitTime, visitType, sanitizedDoctorId, sanitizedRoomId, slot, fee, paymentMode, discountPercent, remark);
         }
 
         // if not find any uhid then create it
         const uhid_generate = await generatepatientuhid();
         // now the user was registered in our hospital now we also make the entry it on the Patient Visit Schema
-        const newPatient=await PatientRegistration.create({
+        const newPatientData = {
             uhid: uhid_generate,
             mobile,
             email,
@@ -200,19 +231,22 @@ if (!paymentMode) {
             relationType,
             guardianName,
             address,
-            country,
-            stateId,
-            cityId,
+            country: sanitizedCountryId,
             bloodGroup,
             source,
-            referredDoctorId,
+            referredDoctorId: sanitizedReferredDoctorId,
             referralMobile,
             discountPercent,
             remark,
             patientImage,
-            departmentId,
+            departmentId: sanitizedDepartmentId,
             departmentName,
-        })
+        };
+
+        if (sanitizedStateId) newPatientData.stateId = sanitizedStateId;
+        if (sanitizedCityId) newPatientData.cityId = sanitizedCityId;
+
+        const newPatient = await PatientRegistration.create(newPatientData);
         // generate the receipt number
         const generate_receipt_no=await generateUniqueReceiptNumber();
         
@@ -221,15 +255,15 @@ if (!paymentMode) {
             uhid:newPatient.uhid,
             hospitalId,
             branchId,
-            departmentId,
+            departmentId: sanitizedDepartmentId,
             departmentName,
             visitDate,
             visitTime,
             visitType,
             // dont pass any status because we will get the status will be budefault set as 'arrived'
             // status,
-            doctorId,
-            roomId,
+            doctorId: sanitizedDoctorId,
+            roomId: sanitizedRoomId,
             slot,
             fee,
             paymentMode,
@@ -241,8 +275,8 @@ receiptNumber:generate_receipt_no,
 patientId:patientVisited.patientId,
 uhid:patientVisited.uhid,
 visitId:patientVisited._id,
-departmentId,
-doctorId,
+departmentId: sanitizedDepartmentId,
+doctorId: sanitizedDoctorId,
 paymentMode,
 discountPercent,
 fee,
@@ -251,8 +285,8 @@ remark,
 
         // Generate Token if Visit Type is OPD
         let tokenInfo = null;
-        if (visitType === "OPD") {
-            const room = await Room.findById(roomId);
+        if (visitType === "OPD" && sanitizedRoomId) {
+            const room = await Room.findById(sanitizedRoomId);
             if (room) {
                 const date = new Date();
                 const start = new Date(date.getFullYear(), date.getMonth(), date.getDate());

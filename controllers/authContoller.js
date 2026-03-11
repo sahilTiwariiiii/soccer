@@ -1,72 +1,48 @@
 import User from "../models/User.js";
+import Role from "../models/Role.js";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import generateUniqueEmployeeId from '../services/generateemployeeid.service.js'
-export const registerUser=async(req,res)=>{
-    const {
-        name,
-        email,
-        phone,
-        role,
-        department_id,
-        assigned_wards,
-        profile_picture,
-        address,
-        pin_code,
-        documents,       // array of { document_id, type, value }
-        qualification,
-        specialization,
-        shift,           // { start_time, end_time, days }
-        permissions,
-        password
-      } = req.body;      
-    try {
-        if(!name){
-          return  res.status(400).json({message:"Name is required"})
-        }
-        if(!email){
-            return  res.status(400).json({message:"Email is required"})
-        }
-        if(!password){
-            return  res.status(400).json({message:"Password is required"})
-        }
-        if(!role){
-            return  res.status(400).json({message:"Role is required"})
-        }
-        if(!department_id){
-            return  res.status(400).json({message:"Department is required"})
-        }
-        if(!phone){
-            return res.status(400).json({message:"Phone is required"})
-        }
-        if(!qualification){
-            return res.status(400).json({message:"Qualificaiton is required"})
-        }
 
-        // now find that is the email already exist in our database or not
-        const user=await User.findOne({email});
-       if(user){
-        return res.status(409).json({message:"User already exists , Please Login"})
-       }
-    //    if user not exists then register that 
-    // hash user password 
-    const unique_employee_id= await generateUniqueEmployeeId();
-    const salt=await bcrypt.genSalt(10);
-    const hashedPassword= await bcrypt.hash(password,salt);
-     // Create user → save all fields present in req.body, but overwrite password with hashedPassword
-     await User.create({
-        ...req.body,
-        password:hashedPassword,
-        employee_id:unique_employee_id
-     })
-    
-    //  why to put this return in place of every 'response'
-     
-     return res.status(200).json({message:"User created Sucessfully"},req.body);
-    } catch (error) {
-      return  res.status(500).json({message:error.message});
+export const registerUser = async (req, res) => {
+  const { hospitalId, branchId } = req.user;
+  const { name, email, password, phone, role, department_id, qualification, dateOfBirth, gender, address, joiningDate, salary } = req.body;
+
+  try {
+    const { hospitalId, branchId } = req.user;
+
+    if (!name || !email || !password || !role || !department_id || !phone || !qualification) {
+      return res.status(400).json({ message: "Please fill all the required fields" });
     }
-}
+
+    const user = await User.findOne({ email });
+    if (user) {
+      return res.status(409).json({ message: "User already exists, Please Login" });
+    }
+
+    const roleExists = await Role.findById(role);
+    if (!roleExists) {
+      return res.status(404).json({ message: "Role not found" });
+    }
+
+    const unique_employee_id = await generateUniqueEmployeeId();
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    await User.create({
+      ...req.body,
+      password: hashedPassword,
+      employee_id: unique_employee_id,
+      hospitalId,
+      branchId,
+      permissions: roleExists.permissions,
+    });
+
+    return res.status(200).json({ message: "User created successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
 // // Example without return:
 // if(!name){
 //     res.status(400).json({message:"Name is required"})

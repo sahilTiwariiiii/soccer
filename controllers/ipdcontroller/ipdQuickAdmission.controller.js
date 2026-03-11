@@ -33,6 +33,27 @@ export const ipdQuickAdmissionController = async (req, res) => {
     try {
         const { hospitalId, branchId, _id: userId } = req.user;
 
+        // Sanitize ObjectIds
+        const sanitizedDoctorId = doctorId && mongoose.isValidObjectId(doctorId) ? doctorId : undefined;
+        const sanitizedDepartmentId = departmentId && mongoose.isValidObjectId(departmentId) ? departmentId : undefined;
+        const sanitizedCountryId = country && mongoose.isValidObjectId(country) ? country : undefined;
+        const sanitizedStateId = stateId && mongoose.isValidObjectId(stateId) ? stateId : undefined;
+        const sanitizedCityId = cityId && mongoose.isValidObjectId(cityId) ? cityId : undefined;
+        const sanitizedReferredDoctorId = referredDoctorId && mongoose.isValidObjectId(referredDoctorId) ? referredDoctorId : undefined;
+        const sanitizedBedId = bedId && mongoose.isValidObjectId(bedId) ? bedId : undefined;
+
+        // Sanitize treatingDoctors array
+        let sanitizedTreatingDoctors = [];
+        if (Array.isArray(treatingDoctors)) {
+            sanitizedTreatingDoctors = treatingDoctors.filter(id => mongoose.isValidObjectId(id));
+        } else if (treatingDoctors && mongoose.isValidObjectId(treatingDoctors)) {
+            sanitizedTreatingDoctors = [treatingDoctors];
+        }
+        
+        if (sanitizedTreatingDoctors.length === 0) {
+            sanitizedTreatingDoctors = [userId];
+        }
+
         // 1. Identify or Create Patient
         let patient;
         if (uhid) {
@@ -45,8 +66,14 @@ export const ipdQuickAdmissionController = async (req, res) => {
             const newUhid = await generatepatientuhid();
             patient = await PatientRegistration.create([{
                 uhid: newUhid, mobile, email, patientName, gender, maritalStatus, dob, age, currentAge,
-                relationType, guardianName, address, country, stateId, cityId, bloodGroup,
-                source, referredDoctorId, referralMobile, discountPercent, remark, patientImage
+                relationType, guardianName, address, 
+                country: sanitizedCountryId, 
+                stateId: sanitizedStateId, 
+                cityId: sanitizedCityId, 
+                bloodGroup,
+                source, 
+                referredDoctorId: sanitizedReferredDoctorId, 
+                referralMobile, discountPercent, remark, patientImage
             }], { session });
             patient = patient[0];
         }
@@ -61,9 +88,9 @@ export const ipdQuickAdmissionController = async (req, res) => {
             visitDate: visitDate || new Date(),
             visitTime: visitTime || new Date().toLocaleTimeString(),
             visitType: "IPD",
-            departmentId,
+            departmentId: sanitizedDepartmentId,
             departmentName,
-            doctorId,
+            doctorId: sanitizedDoctorId,
             fee,
             paymentMode,
             receiptNo,
@@ -77,8 +104,8 @@ export const ipdQuickAdmissionController = async (req, res) => {
             patientId: patient._id,
             uhid: patient.uhid,
             visitId: visit._id,
-            departmentId,
-            doctorId,
+            departmentId: sanitizedDepartmentId,
+            doctorId: sanitizedDoctorId,
             paymentMode,
             discountPercent,
             fee,
@@ -87,8 +114,8 @@ export const ipdQuickAdmissionController = async (req, res) => {
         }], { session });
 
         // 4. Handle Bed Allocation
-        if (bedId) {
-            const bed = await Bed.findById(bedId).session(session);
+        if (sanitizedBedId) {
+            const bed = await Bed.findById(sanitizedBedId).session(session);
             if (!bed) throw new Error("Bed not found.");
             if (bed.status !== "Available") {
                 throw new Error(`Bed is already ${bed.status}`);
@@ -105,8 +132,8 @@ export const ipdQuickAdmissionController = async (req, res) => {
             patientId: patient._id,
             visitId: visit._id,
             admissionNumber: ipn,
-            bedId,
-            treatingDoctors: treatingDoctors || [userId], // default to logged-in user if not provided
+            bedId: sanitizedBedId,
+            treatingDoctors: sanitizedTreatingDoctors,
             status: "ADMITTED"
         }], { session });
 

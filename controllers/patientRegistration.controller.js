@@ -48,6 +48,31 @@ export const findPatient = async (req, res) => {
   }
 };
 
+export const getPatients = async (req, res) => {
+  try {
+    const { search, limit = 20, page = 1 } = req.query;
+    const query = {};
+    if (search) {
+      query.$or = [
+        { patientName: { $regex: search, $options: "i" } },
+        { mobile: { $regex: search, $options: "i" } },
+        { uhid: { $regex: search, $options: "i" } }
+      ];
+    }
+
+    const patients = await PatientRegistration.find(query)
+      .limit(Number(limit))
+      .skip((Number(page) - 1) * Number(limit))
+      .sort({ createdAt: -1 });
+
+    const total = await PatientRegistration.countDocuments(query);
+
+    return res.status(200).json({ data: patients, total });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 export const registerPatient = async (req, res) => {
   try {
     const { 
@@ -72,6 +97,12 @@ export const registerPatient = async (req, res) => {
       patientImage 
     } = req.body;
 
+    // Sanitize ObjectIds to handle empty strings
+    const sanitizedCountryId = country && mongoose.isValidObjectId(country) ? country : undefined;
+    const sanitizedStateId = stateId && mongoose.isValidObjectId(stateId) ? stateId : undefined;
+    const sanitizedCityId = cityId && mongoose.isValidObjectId(cityId) ? cityId : undefined;
+    const sanitizedReferredDoctorId = referredDoctorId && mongoose.isValidObjectId(referredDoctorId) ? referredDoctorId : undefined;
+
     // 1. Check if patient already exists with mobile number
     const existingPatient = await PatientRegistration.findOne({ mobile });
     if (existingPatient) {
@@ -95,18 +126,17 @@ export const registerPatient = async (req, res) => {
       relationType,
       guardianName,
       address,
-      country,
-      stateId,
-      cityId,
+      country: sanitizedCountryId,
+      stateId: sanitizedStateId,
+      cityId: sanitizedCityId,
       bloodGroup,
       source,
-      referredDoctorId,
+      referredDoctorId: sanitizedReferredDoctorId,
       referralMobile,
       patientImage
     });
 
     return res.status(201).json({ message: "Patient registered successfully", patient: newPatient });
-
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

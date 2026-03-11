@@ -35,56 +35,50 @@ const UserSchema = mongoose.Schema({
     required: true,
     trim: true
   },
-  role: {  //yaha pe Role collection ka reference do
-    type: String,
-    required: true,
-    // Hospital Admin will be able to create multiple roles
-    // enum: ["manager", "doctor", "nurse", "receptionist", "lab_technician"]
+  role: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Role",
+    required: true
   },
   department_id: {
-    // type: mongoose.Schema.Types.ObjectId,
-    // ref: "Department",
-    // required: true
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Department",
+    required: true
   },
   assigned_wards: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Ward"
   }],
+  floor_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Floor"
+  },
   profile_picture: {
-    type: String,
-    default: ""
+    type: String
   },
   address: {
-    type: String,
-    default: ""
-  },
-  emergency_contact: {
-    type: String,
-    default: ""
+    type: String
   },
   documents: [
     {
-      document_id: { type:mongoose.Schema.Types.ObjectId, ref: "Document", required: true },
-      type: { type: String, enum: ["file", "text"], required: true }, // file or text
-      value: { type: String, required: true } // file_url OR text value
+      document_id: String,
+      type: String,
+      value: String
     }
-    // ab ye har array entry ke liye vlaue ke liye ek new mongoose object id banayega toh ye na ho isliye yaha pe hum '_id:false' likh denge toh har entry ke liye unique id nahi banayega
   ],
   pin_code: {
-    type: Number
+    type: String
   },
   qualification: {
-    type: String,
-    default: ""
+    type: String
   },
   specialization: {
-    type: String,
-    default: ""
+    type: String
   },
   shift: {
-    start_time: { type: String, default: "" },
-    end_time: { type: String, default: "" },
-    days: [{ type: String, enum: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] }]
+    start_time: String,
+    end_time: String,
+    days: [String]
   },
   permissions: [{
     type: String

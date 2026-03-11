@@ -5,6 +5,8 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
+import multer from 'multer';
+import authMiddleware from './middlewares/auth.js';
 
 import { ConnectDb } from './db/database.js';
 import UserRoute from './routes/UserRoute.js';
@@ -33,6 +35,7 @@ import opdRoutes from './routes/opdroute/opd.routes.js';
 import patientRegistrationRoutes from './routes/patientRegistration.routes.js';
 import patientVisitRoutes from './routes/patientVisit.routes.js';
 import patientTrackingRoutes from './routes/patientTracking.routes.js';
+import roleRoutes from './routes/role.routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -45,11 +48,14 @@ swaggerDocument.servers = [{ url: '/', description: 'Same origin' }];
 const app = express();
 dotenv.config();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 ConnectDb();
 
 // Core prefix
+const upload = multer();
+app.post('/api/v1/register', authMiddleware, upload.none(), UserRoute);
 app.use('/api/v1', UserRoute);
 app.use('/api/v1', PatientRegistrationAndVisitedRoute);
 app.use('/api/v1', clinicalDetailsRoute);
@@ -75,6 +81,7 @@ app.use('/api/v1/opd', opdRoutes);
 app.use('/api/v1/patients', patientRegistrationRoutes);
 app.use('/api/v1/patients', patientVisitRoutes);
 app.use('/api/v1/patients', patientTrackingRoutes);
+app.use('/api/v1/roles', roleRoutes);
 
 // Branches / infrastructure
 app.use('/api/v1/branches', branchRoutes);
