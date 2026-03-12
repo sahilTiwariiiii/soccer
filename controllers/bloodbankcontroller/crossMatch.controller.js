@@ -1,7 +1,7 @@
 // controllers/crossMatch.controller.js
-import CrossMatch from "../models/CrossMatch.js";
-import BloodRequest from "../models/BloodRequest.js";
-import BloodComponent from "../models/BloodComponent.js";
+import CrossMatch from "../../models/bloodbank/CrossMatch.js";
+import BloodRequest from "../../models/bloodbank/BloodRequest.js";
+import BloodComponent from "../../models/bloodbank/BloodComponent.js";
 
 /**
  * Create Cross Match Entry

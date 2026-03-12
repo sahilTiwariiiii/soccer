@@ -1,6 +1,6 @@
 // controllers/bloodComponent.controller.js
-import BloodComponent from "../models/BloodComponent.js";
-import BloodDonation from "../models/BloodDonation.js";
+import BloodComponent from "../../models/bloodbank/BloodComponent.js";
+import BloodDonation from "../../models/bloodbank/BloodDonation.js";
 
 /**
  * Create Blood Component (after separation)

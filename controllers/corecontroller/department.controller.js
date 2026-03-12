@@ -1,5 +1,5 @@
 import Department from "../../models/Department.js";
-import { createCrudHandlers } from "../_shared/crudFactory.js";
+import { createCrudHandlers } from "../_shared/handlerFactory.js";
 
 const { create, getAll, getById, updateById, deleteById } = createCrudHandlers({
   Model: Department,

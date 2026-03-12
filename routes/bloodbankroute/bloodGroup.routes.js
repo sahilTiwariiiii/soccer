@@ -6,9 +6,9 @@ import {
   getBloodGroupById,
   updateBloodGroup,
   deleteBloodGroup,
-} from "../controllers/bloodGroup.controller.js";
+} from "../../controllers/bloodbankcontroller/bloodGroup.controller.js";
 
-import authMiddleware from "../middlewares/auth.js";
+import authMiddleware from "../../middlewares/auth.js";
 
 const router = express.Router();
 

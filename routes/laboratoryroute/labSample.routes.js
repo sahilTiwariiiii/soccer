@@ -6,7 +6,7 @@ import {
   getLabSampleById,
   updateLabSampleStatus,
   deleteLabSample
-} from "../controllers/labSample.controller.js";
+} from "../../controllers/laboratorycontroller/labSample.controller.js";
 
 const router = express.Router();
 

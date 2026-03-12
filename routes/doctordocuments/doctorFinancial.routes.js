@@ -5,7 +5,7 @@ import {
   getDoctorFinancialById,
   updateDoctorFinancial,
   deleteDoctorFinancial
-} from "../controllers/doctorFinancial.controller.js";
+} from "../../controllers/doctorcotroller/doctorFinancial.controller.js";
 
 const router = express.Router();
 

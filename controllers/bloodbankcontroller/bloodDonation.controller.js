@@ -1,6 +1,6 @@
 // controllers/bloodDonation.controller.js
-import BloodDonation from "../models/BloodDonation.js";
-import BloodDonor from "../models/BloodDonor.js";
+import BloodDonation from "../../models/bloodbank/BloodDonation.js";
+import BloodDonor from "../../models/bloodbank/BloodDonor.js";
 
 
 // CREATE Donation

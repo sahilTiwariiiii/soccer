@@ -1,5 +1,5 @@
 // controllers/bloodDonationCamp.controller.js
-import BloodDonationCamp from "../models/BloodDonationCamp.js";
+import BloodDonationCamp from "../../models/bloodbank/BloodDonationCamp.js";
 
 
 // CREATE Camp

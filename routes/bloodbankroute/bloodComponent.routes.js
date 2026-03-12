@@ -7,7 +7,7 @@ import {
   updateBloodComponent,
   updateBloodComponentStatus,
   deleteBloodComponent,
-} from "../controllers/bloodComponent.controller.js";
+} from "../../controllers/bloodbankcontroller/bloodComponent.controller.js";
 
 
 

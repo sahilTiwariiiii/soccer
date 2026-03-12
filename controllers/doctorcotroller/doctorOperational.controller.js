@@ -1,4 +1,4 @@
-import { DoctorOperational } from "../models/DoctorOperational.js";
+import { DoctorOperational } from "../../models/DoctorOperational.js";
 import mongoose from "mongoose";
 
 /* ================================

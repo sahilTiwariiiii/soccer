@@ -8,7 +8,7 @@ import {
   updateDigitalSignature,
   deleteSingleDocument,
   deleteDoctorDocument
-} from "../controllers/doctorDocumentController.js";
+} from "../../controllers/doctorcotroller/doctorDocument.js";
 
 const router = express.Router();
 

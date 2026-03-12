@@ -1,5 +1,5 @@
-import EquipmentStatusHistory from "../../models/equipmentmanagement/EquipmentStatusHistorySchema.js";
 import { createCrudHandlers } from "../_shared/crudFactory.js";
+import EquipmentStatusHistory from "../../models/equipmentmanagement/EquipmentStatusHistorySchema.js";
 
 const scope = [
   { tokenKey: "hospitalId", modelField: "hospitalId" },

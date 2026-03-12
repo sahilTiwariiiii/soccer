@@ -1,5 +1,6 @@
 import AMCContract from "../../models/equipmentmanagement/AMCContractSchema.js";
-import { createCrudHandlers } from "../_shared/crudFactory.js";
+import asyncHandler from "express-async-handler";
+import { createCrudHandlers } from "../_shared/handlerFactory.js";
 
 const scope = [
   { tokenKey: "hospitalId", modelField: "hospitalId" },

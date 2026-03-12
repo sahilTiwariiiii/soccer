@@ -1,3 +1,4 @@
+import asyncHandler from "express-async-handler";
 import Equipment from "../../models/equipmentmanagement/EquipmentSchema.js";
 import { createCrudHandlers } from "../_shared/crudFactory.js";
 

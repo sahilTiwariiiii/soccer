@@ -1,6 +1,6 @@
 // controllers/bloodRequest.controller.js
-import BloodRequest from "../models/BloodRequest.js";
-import Patient from "../models/Patient.js";
+import BloodRequest from "../../models/bloodbank/BloodRequest.js";
+import Patient from "../../models/patient.js";
 
 /**
  * Create Blood Request

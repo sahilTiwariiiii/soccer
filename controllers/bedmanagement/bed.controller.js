@@ -1,5 +1,5 @@
-const Ward = require('../models/bedmanagement/Ward');
-const Bed = require('../models/bedmanagement/Bed');
+const Ward = require('../../models/bedmanagement/Ward');
+const Bed = require('../../models/bedmanagement/Bed');
 
 exports.createWard = async (req, res) => {
     try {

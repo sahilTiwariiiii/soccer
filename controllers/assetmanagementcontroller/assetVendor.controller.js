@@ -1,5 +1,5 @@
 import AssetVendor from "../../models/assetmanagement/AssetVendor.js";
-import { createCrudHandlers } from "../_shared/crudFactory.js";
+import createCrudHandlers from "../_shared/crudFactory.js";
 
 const scope = [
   { tokenKey: "hospitalId", modelField: "hospital_id" },

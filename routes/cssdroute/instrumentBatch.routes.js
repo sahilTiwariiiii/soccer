@@ -5,8 +5,8 @@ import {
   getSingleInstrumentBatch,
   updateInstrumentBatch,
   deleteInstrumentBatch,
-} from "../controllers/instrumentBatch.controller.js";
-import authMiddleware from "../middlewares/auth.js";
+} from "../../controllers/cssdcontroller/instrumentBatch.controller.js";
+import authMiddleware from "../../middlewares/auth.js";
 
 const router = express.Router();
 

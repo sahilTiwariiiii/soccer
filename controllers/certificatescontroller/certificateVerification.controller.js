@@ -1,6 +1,6 @@
 import CertificateVerification from "../../models/adminandroleandpermissionanagement/certificates/CertificateVerificationSchema.js";
 import GeneratedCertificate from "../../models/adminandroleandpermissionanagement/certificates/GeneratedCertificateSchema.js";
-import { createCrudHandlers } from "../_shared/crudFactory.js";
+import { createCrudHandlers } from "../_shared/handlerFactory.js";
 
 const scope = [
   { tokenKey: "hospitalId", modelField: "hospitalId" },

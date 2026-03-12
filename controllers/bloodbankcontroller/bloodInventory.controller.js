@@ -1,6 +1,6 @@
 // controllers/bloodInventory.controller.js
-import BloodInventory from "../models/BloodInventory.js";
-import BloodComponent from "../models/BloodComponent.js";
+import BloodInventory from "../../models/bloodbank/BloodInventory.js";
+import BloodComponent from "../../models/bloodbank/BloodComponent.js";
 
 /**
  * Add Component To Inventory

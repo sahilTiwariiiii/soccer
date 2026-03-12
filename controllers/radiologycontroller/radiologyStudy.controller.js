@@ -1,4 +1,4 @@
-import RadiologyStudy from "../models/RadiologyStudy.js";
+import RadiologyStudy from "../../models/radiology/RadiologyStudy.js";
 import mongoose from "mongoose";
 
 /* =====================================

@@ -5,8 +5,8 @@ import {
   getSingleAmbulance,
   updateAmbulance,
   deleteAmbulance
-} from "../controllers/ambulanceMaster.controller.js";
-import authMiddleware from "../middlewares/auth.js";
+} from "../../controllers/ambulancecontroller/ambulanceMaster.controller.js";
+import authMiddleware from "../../middlewares/auth.js";
 
 const router = express.Router();
 

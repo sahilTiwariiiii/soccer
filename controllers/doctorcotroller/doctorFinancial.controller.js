@@ -1,4 +1,4 @@
-import { DoctorFinancial } from "../models/DoctorFinancial.js";
+import { DoctorFinancial } from "../../models/DoctorFinancial.js";
 import mongoose from "mongoose";
 
 // ✅ Create Doctor Financial

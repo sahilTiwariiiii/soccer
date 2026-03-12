@@ -1,6 +1,6 @@
-import AmbulanceAssignment from "../models/ambulance/AmbulanceAssignment.js";
-import AmbulanceMaster from "../models/ambulance/AmbulanceMaster.js";
-import User from "../models/User.js";
+import AmbulanceAssignment from "../../models/ambulance/AmbulanceAssignment.js";
+import AmbulanceMaster from "../../models/ambulance/AmbulanceMaster.js";
+import User from "../../models/User.js";
 
 /* =================================
    1️⃣ Create Assignment

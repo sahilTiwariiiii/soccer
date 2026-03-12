@@ -1,5 +1,5 @@
-import InstrumentIssue from "../models/CSSD/InstrumentIssue.js";
-import InstrumentBatch from "../models/CSSD/InstrumentBatch.js";
+import InstrumentIssue from "../../models/cssdandsterilization/InstrumentIssue.js";
+import InstrumentBatch from "../../models/cssdandsterilization/InstrumentBatch.js";
 
 /* =================================
    1️⃣ Issue Instrument

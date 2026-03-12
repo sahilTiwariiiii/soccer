@@ -1,5 +1,5 @@
-import InstrumentBatch from "../models/CSSD/InstrumentBatch.js";
-import InstrumentMaster from "../models/CSSD/InstrumentMaster.js";
+import InstrumentBatch from "../../models/cssdandsterilization/InstrumentBatch.js";
+import InstrumentMaster from "../../models/cssdandsterilization/InstrumentMaster.js";
 
 /* =================================
    1️⃣ Create Instrument Batch

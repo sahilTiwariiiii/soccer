@@ -1,4 +1,4 @@
-const Invoice = require('../models/billing/Invoice');
+const Invoice = require('../../models/billing/Invoice');
 
 exports.createInvoice = async (req, res) => {
     try {

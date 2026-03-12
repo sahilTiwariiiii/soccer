@@ -5,8 +5,8 @@ import {
   getSingleInstrument,
   updateInstrument,
   deleteInstrument,
-} from "../controllers/instrumentMaster.controller.js";
-import authMiddleware from "../middlewares/auth.js";
+} from "../../controllers/cssdcontroller/instrumentMaster.controller.js";
+import authMiddleware from "../../middlewares/auth.js";
 
 const router = express.Router();
 

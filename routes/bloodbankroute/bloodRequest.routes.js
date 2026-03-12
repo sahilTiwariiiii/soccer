@@ -7,7 +7,7 @@ import {
   updateBloodRequest,
   updateBloodRequestStatus,
   deleteBloodRequest,
-} from "../controllers/bloodRequest.controller.js";
+} from "../../controllers/bloodbankcontroller/bloodRequest.controller.js";
 
 
 

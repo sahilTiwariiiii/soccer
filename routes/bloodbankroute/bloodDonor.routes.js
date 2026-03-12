@@ -6,9 +6,9 @@ import {
   getBloodDonorById,
   updateBloodDonor,
   deleteBloodDonor,
-} from "../controllers/bloodDonor.controller.js";
+} from "../../controllers/bloodbankcontroller/bloodDonor.controller.js";
 
-import authMiddleware from "../middlewares/auth.js";
+import authMiddleware from "../../middlewares/auth.js";
 
 const router = express.Router();
 

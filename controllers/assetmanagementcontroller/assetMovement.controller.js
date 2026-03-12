@@ -9,6 +9,12 @@ const scope = [
 const { create, getAll, getById, updateById, deleteById } = createCrudHandlers({
   Model: AssetMovement,
   scope,
+  populate: [
+    { path: "asset_id" },
+    { path: "from_location_id" },
+    { path: "to_location_id" },
+  ],
+  sort: { createdAt: -1 },
 });
 
 export const createAssetMovement = create;

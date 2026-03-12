@@ -7,7 +7,7 @@ import {
   updateRadiologyReport,
   verifyRadiologyReport,
   deleteRadiologyReport
-} from "../controllers/radiologyReport.controller.js";
+} from "../../controllers/radiologycontroller/radiologyReport.controller.js";
 
 
 const router = express.Router();

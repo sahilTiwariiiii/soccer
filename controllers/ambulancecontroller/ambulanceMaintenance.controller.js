@@ -1,6 +1,6 @@
-import AmbulanceMaintenance from "../models/ambulance/AmbulanceMaintenance.js";
-import AmbulanceMaster from "../models/ambulance/AmbulanceMaster.js";
-import User from "../models/User.js";
+import AmbulanceMaintenance from "../../models/ambulance/AmbulanceMaintenance.js";
+import AmbulanceMaster from "../../models/ambulance/AmbulanceMaster.js";
+import User from "../../models/User.js";
 
 /* =================================
    1️⃣ Create Maintenance Record

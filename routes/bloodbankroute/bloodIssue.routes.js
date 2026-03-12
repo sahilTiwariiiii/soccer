@@ -6,7 +6,7 @@ import {
   getBloodIssueById,
   returnBloodIssue,
   deleteBloodIssue,
-} from "../controllers/bloodIssue.controller.js";
+} from "../../controllers/bloodbankcontroller/bloodIssue.controller.js";
 
 
 

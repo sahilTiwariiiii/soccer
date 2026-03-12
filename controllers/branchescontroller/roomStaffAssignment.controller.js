@@ -1,4 +1,4 @@
-import RoomStaffAssignment from "../../models/branches/RoomStaffAssignmentSchema.js";
+import RoomStaffAssignment from '../../models/branches/RoomStaffAssignmentSchema.js';
 
 export const createRoomStaffAssignment = async (req, res) => {
   try {

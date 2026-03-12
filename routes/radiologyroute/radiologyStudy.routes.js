@@ -7,7 +7,7 @@ import {
   updateRadiologyStudy,
   updateRadiologyStudyStatus,
   deleteRadiologyStudy
-} from "../controllers/radiologyStudy.controller.js";
+} from "../../controllers/radiologycontroller/radiologyStudy.controller.js";
 
 
 

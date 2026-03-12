@@ -1,5 +1,5 @@
-import PatientRegistration from "../../models/PatientRegistration.js";
 import { createCrudHandlers } from "../_shared/crudFactory.js";
+import PatientRegistration from "../../models/PatientRegistration.js";
 
 const { create, getAll, getById, updateById, deleteById } = createCrudHandlers({
   Model: PatientRegistration,

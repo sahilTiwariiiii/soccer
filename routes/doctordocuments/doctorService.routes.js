@@ -7,7 +7,7 @@ import {
   deleteDoctorService,
   addServiceToDoctor,
   removeServiceFromDoctor
-} from "../controllers/doctorService.controller.js";
+} from "../../controllers/doctorcotroller/doctorService.controller.js";
 
 const router = express.Router();
 

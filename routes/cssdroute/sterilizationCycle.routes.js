@@ -1,12 +1,12 @@
 import express from "express";
-import authMiddleware from "../middlewares/auth.js";
+import authMiddleware from "../../middlewares/auth.js";
 import {
   createSterilizationCycle,
   updateSterilizationCycle,
   getSterilizationCycles,
   getSingleSterilizationCycle,
   deleteSterilizationCycle,
-} from "../controllers/sterilizationCycle.controller.js";
+} from "../../controllers/cssdcontroller/sterilizationCycle.controller.js";
 
 
 const router = express.Router();

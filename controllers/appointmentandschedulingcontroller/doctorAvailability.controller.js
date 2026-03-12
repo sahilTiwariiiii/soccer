@@ -1,4 +1,4 @@
-import DoctorAvailability from "../models/appointmentandscheduling/DoctorAvailability.js";
+import DoctorAvailability from "../../models/appointmentandscheduling/DoctorAvailability.js";
 
 // 🔹 Create Doctor Availability
 export const createDoctorAvailability = async (req, res) => {

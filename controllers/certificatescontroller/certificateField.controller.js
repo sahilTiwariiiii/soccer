@@ -1,5 +1,5 @@
 import CertificateField from "../../models/adminandroleandpermissionanagement/certificates/CertificateFieldSchema.js";
-import { createCrudHandlers } from "../_shared/crudFactory.js";
+import { createCrudHandlers } from "../_shared/handlerFactory.js";
 
 const scope = [
   { tokenKey: "hospitalId", modelField: "hospitalId" },

@@ -8,7 +8,7 @@ import {
   addSchedule,
   addLeave,
   updateLeaveStatus
-} from "../controllers/doctorOperational.controller.js";
+} from "../../controllers/doctorcotroller/doctorOperational.controller.js";
 
 const router = express.Router();
 

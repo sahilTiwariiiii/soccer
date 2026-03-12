@@ -1,4 +1,4 @@
-import InstrumentMaster from "../models/CSSD/InstrumentMaster.js";
+import InstrumentMaster from "../../models/cssdandsterilization/InstrumentMaster.js";
 
 /* =================================
    1️⃣ Create Instrument

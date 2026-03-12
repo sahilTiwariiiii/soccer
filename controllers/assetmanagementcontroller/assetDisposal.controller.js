@@ -9,7 +9,10 @@ const scope = [
 const { create, getAll, getById, updateById, deleteById } = createCrudHandlers({
   Model: AssetDisposal,
   scope,
-  populate: "asset_id",
+  populate: {
+    path: "asset_id",
+    populate: [{ path: "asset_category_id" }, { path: "department_id" }],
+  },
 });
 
 export const createAssetDisposal = create;

@@ -1,5 +1,5 @@
-import AmbulanceMaster from "../models/ambulance/AmbulanceMaster.js";
-import User from "../models/User.js"; // for populating driver
+import AmbulanceMaster from "../../models/ambulance/AmbulanceMaster.js";
+import User from "../../models/User.js"; // for populating driver
 
 /* =================================
    1️⃣ Create Ambulance

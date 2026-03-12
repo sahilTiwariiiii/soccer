@@ -5,7 +5,7 @@ import {
   getAllBloodDiscards,
   getBloodDiscardById,
   deleteBloodDiscard,
-} from "../controllers/bloodDiscard.controller.js";
+} from "../../controllers/bloodbankcontroller/bloodDiscard.controller.js";
 
 
 

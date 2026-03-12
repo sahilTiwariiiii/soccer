@@ -1,8 +1,8 @@
- import AmbulanceTrip from "../models/ambulance/AmbulanceTrip.js";
-import AmbulanceMaster from "../models/ambulance/AmbulanceMaster.js";
-import User from "../models/User.js"; // For driver/patient population
-import PatientRegistration from "../models/PatientRegistration.js";
-import PatientVisit from "../models/PatientVisitSchema.js";
+ import AmbulanceTrip from "../../models/ambulance/AmbulanceTrip.js";
+import AmbulanceMaster from "../../models/ambulance/AmbulanceMaster.js";
+import User from "../../models/User.js"; // For driver/patient population
+import PatientRegistration from "../../models/PatientRegistration.js";
+import PatientVisit from "../../models/PatientVisitSchema.js";
 
 /* =================================
    1️⃣ Create a Trip

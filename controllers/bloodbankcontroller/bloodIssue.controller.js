@@ -1,8 +1,8 @@
 // controllers/bloodIssue.controller.js
-import BloodIssue from "../models/BloodIssue.js";
-import BloodRequest from "../models/BloodRequest.js";
-import BloodComponent from "../models/BloodComponent.js";
-import BloodInventory from "../models/BloodInventory.js";
+import BloodIssue from "../../models/bloodbank/BloodIssue.js";
+import BloodRequest from "../../models/bloodbank/BloodRequest.js";
+import BloodComponent from "../../models/bloodbank/BloodComponent.js";
+import BloodInventory from "../../models/bloodbank/BloodInventory.js";
 
 /**
  * Issue Blood

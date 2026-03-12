@@ -1,5 +1,5 @@
 import AssetSubCategory from "../../models/assetmanagement/AssetSubCategory.js";
-import { createCrudHandlers } from "../_shared/crudFactory.js";
+import { createCrudHandlers } from "../_shared/handlerFactory.js";
 
 const scope = [
   { tokenKey: "hospitalId", modelField: "hospital_id" },

@@ -6,7 +6,7 @@ import {
   getRadiologyImageById,
   updateRadiologyImage,
   deleteRadiologyImage
-} from "../controllers/radiologyImage.controller.js";
+} from "../../controllers/radiologycontroller/radiologyImage.controller.js";
 
 
 

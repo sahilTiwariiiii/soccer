@@ -1,4 +1,4 @@
-import { DoctorDocument } from "../models/DoctorDocument.js";
+import { DoctorDocument } from "../../models/DoctorDocument.js";
 
 // 1️⃣ Create
 export const createDoctorDocument = async (req, res) => {

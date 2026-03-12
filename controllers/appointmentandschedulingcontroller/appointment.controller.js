@@ -1,4 +1,4 @@
-import Appointment from "../models/appointmentandscheduling/AppointmentSchema.js";
+import Appointment from "../../models/appointmentandscheduling/AppointmentSchema.js";
 
 /* ======================================================
    🔹 Create Appointment

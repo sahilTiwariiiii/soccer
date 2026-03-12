@@ -1,5 +1,5 @@
-import SterilizationCycle from "../models/CSSD/SterilizationCycle.js";
-import InstrumentBatch from "../models/CSSD/InstrumentBatch.js";
+import SterilizationCycle from "../../models/cssdandsterilization/SterilizationCycle.js";
+import InstrumentBatch from "../../models/cssdandsterilization/InstrumentBatch.js";
 
 /* =================================
    1️⃣ Create Sterilization Cycle

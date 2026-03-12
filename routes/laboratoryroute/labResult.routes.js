@@ -7,7 +7,7 @@ import {
   updateLabResult,
   updateLabResultStatus,
   deleteLabResult
-} from "../controllers/labResult.controller.js";
+} from "../../controllers/laboratorycontroller/labResult.controller.js";
 
 const router = express.Router();
 

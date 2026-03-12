@@ -1,5 +1,5 @@
-const PatientHistory = require('../models/ehr/PatientHistory');
-const Prescription = require('../models/ehr/Prescription');
+const PatientHistory = require('../../models/ehr/PatientHistory');
+const Prescription = require('../../models/ehr/Prescription');
 
 exports.createPatientHistory = async (req, res) => {
     try {

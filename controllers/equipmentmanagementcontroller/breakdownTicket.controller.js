@@ -1,3 +1,4 @@
+import catchAsync from "../_shared/catchAsync.js";
 import BreakdownTicket from "../../models/equipmentmanagement/BreakdownTicketSchema.js";
 import { createCrudHandlers } from "../_shared/crudFactory.js";
 

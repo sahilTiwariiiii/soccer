@@ -1,5 +1,5 @@
 // controllers/bloodDonor.controller.js
-import BloodDonor from "../models/BloodDonor.js";
+import BloodDonor from "../../models/bloodbank/BloodDonor.js";
 
 // CREATE Donor
 export const createBloodDonor = async (req, res) => {

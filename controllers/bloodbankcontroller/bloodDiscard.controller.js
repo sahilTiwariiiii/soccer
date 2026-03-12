@@ -1,7 +1,7 @@
 // controllers/bloodDiscard.controller.js
-import BloodDiscard from "../models/BloodDiscard.js";
-import BloodComponent from "../models/BloodComponent.js";
-import BloodInventory from "../models/BloodInventory.js";
+import BloodDiscard from "../../models/bloodbank/BloodDiscard.js";
+import BloodComponent from "../../models/bloodbank/BloodComponent.js";
+import BloodInventory from "../../models/bloodbank/BloodInventory.js";
 
 /**
  * Discard Blood Component

@@ -6,7 +6,7 @@ import {
   getCrossMatchById,
   updateCrossMatch,
   deleteCrossMatch,
-} from "../controllers/crossMatch.controller.js";
+} from "../../controllers/bloodbankcontroller/crossMatch.controller.js";
 
 
 

@@ -1,5 +1,5 @@
 // controllers/bloodGroup.controller.js
-import BloodGroup from "../models/BloodGroup.js";
+import BloodGroup from "../../models/bloodbank/BloodGroup.js";
 
 // CREATE Blood Group
 export const createBloodGroup = async (req, res) => {

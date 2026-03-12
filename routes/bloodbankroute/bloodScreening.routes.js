@@ -6,7 +6,7 @@ import {
   getBloodScreeningById,
   updateBloodScreening,
   deleteBloodScreening,
-} from "../controllers/bloodScreening.controller.js";
+} from "../../controllers/bloodbankcontroller/bloodScreening.controller.js";
 
 
 

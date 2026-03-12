@@ -7,7 +7,7 @@ import {
   updateBloodInventory,
   updateBloodInventoryStatus,
   deleteBloodInventory,
-} from "../controllers/bloodInventory.controller.js";
+} from "../../controllers/bloodbankcontroller/bloodInventory.controller.js";
 
 
 
