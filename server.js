@@ -20,6 +20,7 @@ import hospitalRoutes from './routes/hospitalroute/index.js';
 import geoRoutes from './routes/georoute/index.js';
 import coreRoutes from './routes/coreroute/index.js';
 import pharmacyRoutes from './routes/pharmacyroute/index.js';
+import ambulanceRoutes from './routes/ambulanceroute/index.js';
 import ipdAdmissionRoutes from './routes/ipdroute/ipdAdmission.routes.js';
 import ipdDoctorAssignmentRoutes from './routes/ipdroute/ipdDoctorAssignment.routes.js';
 import ipdQuickAdmissionRoutes from './routes/ipdroute/ipdQuickAdmission.routes.js';
@@ -32,11 +33,22 @@ import bedRoutes from './routes/branchesroute/bed.routes.js';
 import roomStaffAssignmentRoutes from './routes/branchesroute/roomStaffAssignment.routes.js';
 import pharmacyPaymentRoutes from './routes/branchesroute/pharmacyPayment.routes.js';
 import opdTokenRoutes from './routes/opdroute/opdToken.routes.js';
+import appointmentRoutes from './routes/appointmentandschedulingroute/index.js';
+import bloodBankRoutes from './routes/bloodbankroute/index.js';
+import cssdRoutes from './routes/cssdroute/index.js';
+import radiologyRoutes from './routes/radiologyroute/index.js';
+import laboratoryRoutes from './routes/laboratoryroute/index.js';
+import userManagementRoutes from './routes/usermanagement/index.js';
+import billingRoutes from './routes/billing/billing.routes.js';
+import ehrRoutes from './routes/ehr/ehr.routes.js';
+import inventoryRoutes from './routes/inventory/inventory.routes.js';
+import bedManagementRoutes from './routes/bedmanagement/bed.routes.js';
 import opdRoutes from './routes/opdroute/opd.routes.js';
 import patientRegistrationRoutes from './routes/patientRegistration.routes.js';
 import patientVisitRoutes from './routes/patientVisit.routes.js';
 import patientTrackingRoutes from './routes/patientTracking.routes.js';
 import roleRoutes from './routes/role.routes.js';
+import dashboardRoutes from './routes/dashboardRoutes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -60,7 +72,6 @@ app.post('/api/v1/register', authMiddleware, upload.none(), UserRoute);
 app.use('/api/v1', UserRoute);
 app.use('/api/v1', PatientRegistrationAndVisitedRoute);
 app.use('/api/v1', clinicalDetailsRoute);
-import dashboardRoutes from './routes/dashboardRoutes.js';
 app.use('/api/v1/dashboard', dashboardRoutes);
 
 // Module prefixes
@@ -72,7 +83,22 @@ app.use('/api/v1/hospitals', hospitalRoutes);
 app.use('/api/v1/geo', geoRoutes);
 app.use('/api/v1/core', coreRoutes);
 app.use('/api/v1/pharmacy', pharmacyRoutes);
-app.use('/api/v1/ipd/admissions', ipdAdmissionRoutes);
+app.use('/api/v1/ambulance', ambulanceRoutes);
+app.use('/api/v1/appointments', appointmentRoutes);
+app.use('/api/v1/blood-bank', bloodBankRoutes);
+app.use('/api/v1/cssd', cssdRoutes);
+app.use('/api/v1/radiology', radiologyRoutes);
+app.use('/api/v1/laboratory', laboratoryRoutes);
+app.use('/api/v1/usermanagement', userManagementRoutes);
+app.use('/api/v1/billing', billingRoutes);
+app.use('/api/v1/ehr', ehrRoutes);
+app.use('/api/v1/inventory', inventoryRoutes);
+app.use('/api/v1/bedmanagement', bedManagementRoutes);
+app.use('/api/v1/billing', billingRoutes);
+app.use('/api/v1/ehr', ehrRoutes);
+app.use('/api/v1/inventory', inventoryRoutes);
+app.use('/api/v1/bedmanagement', bedManagementRoutes);
+
 app.use('/api/v1/ipd/doctor-assignments', ipdDoctorAssignmentRoutes);
 app.use('/api/v1/ipd', ipdQuickAdmissionRoutes);
 app.use('/api/v1/ipd/daily-notes', ipdDailyNoteRoutes);
@@ -153,81 +179,43 @@ const swaggerUiOptions = {
       border: 1px solid rgba(17, 24, 39, 0.08);
     }
     .swagger-ui .opblock {
-      border-radius: 10px;
-      margin-bottom: 16px;
-      border-width: 1px;
-      overflow: hidden;
-      background: #ffffff;
+      border-radius: 8px;
+      border: 1px solid rgba(17, 24, 39, 0.08);
+      box-shadow: none;
+      margin-bottom: 12px;
     }
-    .swagger-ui .opblock-summary {
-      padding: 12px 18px;
+    .swagger-ui .opblock .opblock-summary {
+      padding: 12px 16px;
     }
-    .swagger-ui .opblock-summary-method {
-      border-radius: 999px;
-      padding: 4px 14px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      font-size: 11px;
-    }
-    .opblock.opblock-post {
-      border-color: rgba(16, 185, 129, 0.5);
-      background: #f0fdf4;
-    }
-    .opblock.opblock-get {
-      border-color: rgba(59, 130, 246, 0.5);
-      background: #eff6ff;
-    }
-    .opblock.opblock-put {
-      border-color: rgba(234, 179, 8, 0.5);
-      background: #fffbeb;
-    }
-    .opblock.opblock-delete {
-      border-color: rgba(239, 68, 68, 0.5);
-      background: #fef2f2;
-    }
-    .swagger-ui .btn {
-      border-radius: 999px !important;
-      padding: 6px 16px !important;
-      font-size: 12px !important;
-      font-weight: 500 !important;
+    .swagger-ui .opblock-tag {
+      font-size: 18px;
+      border-bottom: none;
+      padding: 24px 0 12px 0;
+      color: #111827;
     }
     .swagger-ui .btn.authorize {
-      background: linear-gradient(90deg, #22c55e, #16a34a) !important;
-      border: none !important;
-      color: #fff !important;
+      background-color: #2563eb;
+      color: #fff;
+      border-color: #2563eb;
+      border-radius: 6px;
+      font-weight: 600;
     }
-    .swagger-ui .btn.execute {
-      background: linear-gradient(90deg, #6366f1, #3b82f6) !important;
-      border: none !important;
-      color: #fff !important;
+    .swagger-ui .btn.authorize svg {
+      fill: #fff;
     }
-    .swagger-ui .model-box, 
-    .swagger-ui .response-col_description__inner,
-    .swagger-ui .parameters-container,
-    .swagger-ui table {
-      background: #ffffff !important;
-      color: #111827 !important;
-    }
-    .swagger-ui .parameter__name,
-    .swagger-ui .parameter__type,
-    .swagger-ui .response-col_status {
-      color: #2563eb !important;
-    }
-    .swagger-ui .tab li {
-      color: #4b5563 !important;
-    }
-    .swagger-ui .tab li.active {
-      color: #111827 !important;
-      border-color: #6366f1 !important;
-    }
-  `
+  `,
 };
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerUiOptions));
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, swaggerUiOptions)
+);
 
-const port = process.env.PORT || 6000;
-app.listen(port, () => {
-  console.log(`Server is running on Port ${port}`);
+// Fallback for static assets or other routes
+app.use(express.static(path.join(__dirname, 'public')));
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
-

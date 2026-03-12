@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const InvestigationMasterSchema = new mongoose.Schema({
 
   hospitalId: {
@@ -33,3 +35,5 @@ const InvestigationMasterSchema = new mongoose.Schema({
   }
 
 }, { timestamps: true });
+
+export default mongoose.model("InvestigationMaster", InvestigationMasterSchema);

@@ -1,4 +1,5 @@
 import express from "express";
+import authMiddleware from "../../middlewares/auth.js";
 import {
   createDoctorAvailability,
   getAllDoctorAvailability,
@@ -6,15 +7,15 @@ import {
   updateDoctorAvailability,
   toggleAvailabilityStatus,
   deleteDoctorAvailability
-} from "../controllers/doctorAvailability.controller.js";
+} from "../../controllers/appointmentandschedulingcontroller/doctorAvailability.controller.js";
 
 const router = express.Router();
 
-router.post("/", createDoctorAvailability);
-router.get("/", getAllDoctorAvailability);
-router.get("/:id", getDoctorAvailabilityById);
-router.put("/:id", updateDoctorAvailability);
-router.patch("/:id/toggle-status", toggleAvailabilityStatus);
-router.delete("/:id", deleteDoctorAvailability);
+router.post("/", authMiddleware, createDoctorAvailability);
+router.get("/", authMiddleware, getAllDoctorAvailability);
+router.get("/:id", authMiddleware, getDoctorAvailabilityById);
+router.put("/:id", authMiddleware, updateDoctorAvailability);
+router.patch("/:id/toggle-status", authMiddleware, toggleAvailabilityStatus);
+router.delete("/:id", authMiddleware, deleteDoctorAvailability);
 
 export default router;

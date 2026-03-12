@@ -1,4 +1,5 @@
 import express from "express";
+import authMiddleware from "../../middlewares/auth.js";
 import {
   createLabSample,
   getAllLabSamples,
@@ -7,11 +8,9 @@ import {
   deleteLabSample
 } from "../controllers/labSample.controller.js";
 
-
-
 const router = express.Router();
 
-
+router.use(authMiddleware);
 
 router.post("/", createLabSample);
 

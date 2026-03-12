@@ -1,4 +1,5 @@
 import express from "express";
+import authMiddleware from "../../middlewares/auth.js";
 import {
   createRadiologyStudy,
   getAllRadiologyStudies,
@@ -12,7 +13,7 @@ import {
 
 const router = express.Router();
 
- // Inject hospitalId, branchId, userId from token
+router.use(authMiddleware);
 
 router.post("/", createRadiologyStudy);
 

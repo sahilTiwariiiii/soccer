@@ -8,7 +8,7 @@ import {
   deleteBloodGroup,
 } from "../controllers/bloodGroup.controller.js";
 
-import authMiddleware from "../middlewares/authMiddleware.js";
+import authMiddleware from "../middlewares/auth.js";
 
 const router = express.Router();
 

@@ -1,4 +1,5 @@
 import express from "express";
+import authMiddleware from "../../middlewares/auth.js";
 import {
   createRadiologyReport,
   getAllRadiologyReports,
@@ -11,6 +12,7 @@ import {
 
 const router = express.Router();
 
+router.use(authMiddleware);
 
 router.post("/", createRadiologyReport);
 

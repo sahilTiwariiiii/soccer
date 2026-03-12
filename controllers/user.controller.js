@@ -3,19 +3,24 @@ import Role from "../models/Role.js";
 
 export const listUsers = async (req, res) => {
   try {
-    const { role, search, page = 1, limit = 20 } = req.query;
+    const { role, roleName, search, page = 1, limit = 20 } = req.query;
     const filter = {};
+    
     if (role) {
-      const roleDoc = await Role.findOne({ name: role });
+      filter.role = role;
+    } else if (roleName) {
+      const roleDoc = await Role.findOne({ name: { $regex: roleName, $options: "i" } });
       if (roleDoc) {
         filter.role = roleDoc._id;
       }
     }
+
     if (search) {
       filter.$or = [
         { name: { $regex: search, $options: "i" } },
         { email: { $regex: search, $options: "i" } },
-        { phone: { $regex: search, $options: "i" } }
+        { phone: { $regex: search, $options: "i" } },
+        { employee_id: { $regex: search, $options: "i" } }
       ];
     }
     const docs = await User.find(filter)
@@ -23,6 +28,7 @@ export const listUsers = async (req, res) => {
       .populate('hospitalId', 'name')
       .populate('branchId', 'name')
       .populate('department_id', 'name')
+      .populate('managerId', 'name employee_id role')
       .sort({ created_at: -1 })
       .skip((Number(page) - 1) * Number(limit))
       .limit(Number(limit));
