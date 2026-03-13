@@ -38,4 +38,4 @@ const BedSchema = new mongoose.Schema({
 
 },{timestamps:true});
 
-export default mongoose.model("Bed",BedSchema);
+export default mongoose.model("BedSchema",BedSchema);

@@ -4,7 +4,7 @@ const PrescriptionItemSchema = new mongoose.Schema({
 
   prescriptionId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Prescription",
+    ref: "PrescriptionHeader",
     required: true
   },
 

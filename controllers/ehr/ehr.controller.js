@@ -1,7 +1,7 @@
-const PatientHistory = require('../../models/ehr/PatientHistory');
-const Prescription = require('../../models/ehr/Prescription');
+import PatientHistory from '../../models/ehr/PatientHistory.js';
+import Prescription from '../../models/ehr/Prescription.js';
 
-exports.createPatientHistory = async (req, res) => {
+export const createPatientHistory = async (req, res) => {
     try {
         const history = new PatientHistory(req.body);
         await history.save();
@@ -11,7 +11,7 @@ exports.createPatientHistory = async (req, res) => {
     }
 };
 
-exports.getPatientHistory = async (req, res) => {
+export const getPatientHistory = async (req, res) => {
     try {
         const history = await PatientHistory.find({ patient: req.params.patientId }).populate('author');
         res.send(history);
@@ -20,7 +20,7 @@ exports.getPatientHistory = async (req, res) => {
     }
 };
 
-exports.createPrescription = async (req, res) => {
+export const createPrescription = async (req, res) => {
     try {
         const prescription = new Prescription(req.body);
         await prescription.save();
@@ -30,7 +30,7 @@ exports.createPrescription = async (req, res) => {
     }
 };
 
-exports.getPrescriptions = async (req, res) => {
+export const getPrescriptions = async (req, res) => {
     try {
         const prescriptions = await Prescription.find({ patient: req.params.patientId }).populate('doctor');
         res.send(prescriptions);

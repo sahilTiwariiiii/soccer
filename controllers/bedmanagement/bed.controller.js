@@ -1,7 +1,7 @@
-const Ward = require('../../models/bedmanagement/Ward');
-const Bed = require('../../models/bedmanagement/Bed');
+import Ward from '../../models/bedmanagement/Ward.js';
+import Bed from '../../models/bedmanagement/Bed.js';
 
-exports.createWard = async (req, res) => {
+export const createWard = async (req, res) => {
     try {
         const ward = new Ward(req.body);
         await ward.save();
@@ -11,7 +11,7 @@ exports.createWard = async (req, res) => {
     }
 };
 
-exports.getWards = async (req, res) => {
+export const getWards = async (req, res) => {
     try {
         const wards = await Ward.find({});
         res.send(wards);
@@ -20,7 +20,7 @@ exports.getWards = async (req, res) => {
     }
 };
 
-exports.createBed = async (req, res) => {
+export const createBed = async (req, res) => {
     try {
         const bed = new Bed(req.body);
         await bed.save();
@@ -30,7 +30,7 @@ exports.createBed = async (req, res) => {
     }
 };
 
-exports.getBeds = async (req, res) => {
+export const getBeds = async (req, res) => {
     try {
         const beds = await Bed.find({}).populate('ward').populate('patient');
         res.send(beds);
@@ -39,7 +39,7 @@ exports.getBeds = async (req, res) => {
     }
 };
 
-exports.assignBed = async (req, res) => {
+export const assignBed = async (req, res) => {
     try {
         const bed = await Bed.findById(req.params.bedId);
         bed.isOccupied = true;
@@ -51,7 +51,7 @@ exports.assignBed = async (req, res) => {
     }
 };
 
-exports.dischargeBed = async (req, res) => {
+export const dischargeBed = async (req, res) => {
     try {
         const bed = await Bed.findById(req.params.bedId);
         bed.isOccupied = false;

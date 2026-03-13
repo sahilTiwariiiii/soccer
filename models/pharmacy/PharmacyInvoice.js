@@ -13,10 +13,7 @@ const PharmacyInvoiceSchema = new mongoose.Schema({
     required: true
   },
 
-  prescriptionId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Prescription"
-  },
+  prescriptionId: { type: mongoose.Schema.Types.ObjectId, ref: "PrescriptionHeader" },
 
   patientId: {
     type: mongoose.Schema.Types.ObjectId,

@@ -1,6 +1,6 @@
-const Invoice = require('../../models/billing/Invoice');
+import Invoice from '../../models/billing/Invoice.js';
 
-exports.createInvoice = async (req, res) => {
+export const createInvoice = async (req, res) => {
     try {
         const invoice = new Invoice(req.body);
         await invoice.save();
@@ -10,7 +10,7 @@ exports.createInvoice = async (req, res) => {
     }
 };
 
-exports.getInvoices = async (req, res) => {
+export const getInvoices = async (req, res) => {
     try {
         const invoices = await Invoice.find({}).populate('patient');
         res.send(invoices);

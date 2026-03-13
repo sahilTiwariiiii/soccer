@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const bedSchema = new mongoose.Schema({
     ward: {
@@ -20,4 +20,4 @@ const bedSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Bed', bedSchema);
+export default mongoose.model('Bed', bedSchema);

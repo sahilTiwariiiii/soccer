@@ -1,5 +1,5 @@
+import 'dotenv/config';
 import express from 'express';
-import dotenv from 'dotenv';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
@@ -59,7 +59,6 @@ const swaggerDocument = JSON.parse(
 swaggerDocument.servers = [{ url: '/', description: 'Same origin' }];
 
 const app = express();
-dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());

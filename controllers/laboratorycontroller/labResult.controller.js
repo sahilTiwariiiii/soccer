@@ -1,4 +1,4 @@
-import LabResult from "../models/LabResult.js";
+import LabResult from "../../models/laboratorymanagement/LabResult.js";
 import mongoose from "mongoose";
 
 /**

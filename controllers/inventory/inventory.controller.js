@@ -1,7 +1,7 @@
-const InventoryItem = require('../models/inventory/InventoryItem');
-const StockTransaction = require('../models/inventory/StockTransaction');
+import InventoryItem from '../../models/inventory/InventoryItem.js';
+import StockTransaction from '../../models/inventory/StockTransaction.js';
 
-exports.createInventoryItem = async (req, res) => {
+export const createInventoryItem = async (req, res) => {
     try {
         const item = new InventoryItem(req.body);
         await item.save();
@@ -11,7 +11,7 @@ exports.createInventoryItem = async (req, res) => {
     }
 };
 
-exports.getInventoryItems = async (req, res) => {
+export const getInventoryItems = async (req, res) => {
     try {
         const items = await InventoryItem.find({});
         res.send(items);
@@ -20,7 +20,7 @@ exports.getInventoryItems = async (req, res) => {
     }
 };
 
-exports.createStockTransaction = async (req, res) => {
+export const createStockTransaction = async (req, res) => {
     try {
         const transaction = new StockTransaction(req.body);
         await transaction.save();

@@ -1,6 +1,6 @@
 import PermissionGroup from "../../models/usermanagement/PermissionGroup.js";
-import catchAsync from "../../utils/catchAsync.js";
-import AppError from "../../utils/appError.js";
+import catchAsync from "../_shared/catchAsync.js";
+import AppError from "../../utils/AppError.js";
 
 export const createPermissionGroup = catchAsync(async (req, res, next) => {
   const { name, permissions, description } = req.body;

@@ -34,7 +34,7 @@ const IPDAdmissionSchema = new mongoose.Schema(
 
     bedId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Bed", // from Branch module
+      ref: "BedSchema", // from Branch module
     },
 
     treatingDoctors: [

@@ -1,7 +1,7 @@
 import Payroll from "../../models/usermanagement/Payroll.js";
 import SalaryStructure from "../../models/usermanagement/SalaryStructure.js";
-import catchAsync from "../../utils/catchAsync.js";
-import AppError from "../../utils/appError.js";
+import catchAsync from "../_shared/catchAsync.js";
+import AppError from "../../utils/AppError.js";
 
 export const generatePayroll = catchAsync(async (req, res, next) => {
   const { month, year, userId } = req.body;

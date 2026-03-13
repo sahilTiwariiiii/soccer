@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
+import * as bedController from '../../controllers/bedmanagement/bed.controller.js';
 const router = express.Router();
-const bedController = require('../controllers/bedmanagement/bed.controller');
 
 router.post('/wards', bedController.createWard);
 router.get('/wards', bedController.getWards);
@@ -9,4 +9,4 @@ router.get('/beds', bedController.getBeds);
 router.put('/beds/:bedId/assign', bedController.assignBed);
 router.put('/beds/:bedId/discharge', bedController.dischargeBed);
 
-module.exports = router;
+export default router;

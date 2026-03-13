@@ -1,8 +1,8 @@
-const express = require('express');
+import express from 'express';
+import * as billingController from '../../controllers/billing/billing.controller.js';
 const router = express.Router();
-const billingController = require('../controllers/billing/billing.controller');
 
 router.post('/invoices', billingController.createInvoice);
 router.get('/invoices', billingController.getInvoices);
 
-module.exports = router;
+export default router;

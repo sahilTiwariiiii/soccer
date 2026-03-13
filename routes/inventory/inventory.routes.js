@@ -1,9 +1,9 @@
-const express = require('express');
+import express from 'express';
+import * as inventoryController from '../../controllers/inventory/inventory.controller.js';
 const router = express.Router();
-const inventoryController = require('../controllers/inventory/inventory.controller');
 
 router.post('/inventory-items', inventoryController.createInventoryItem);
 router.get('/inventory-items', inventoryController.getInventoryItems);
 router.post('/stock-transactions', inventoryController.createStockTransaction);
 
-module.exports = router;
+export default router;

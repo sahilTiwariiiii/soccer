@@ -1,6 +1,6 @@
 import LeaveRequest from "../../models/usermanagement/LeaveRequest.js";
-import catchAsync from "../../utils/catchAsync.js";
-import AppError from "../../utils/appError.js";
+import catchAsync from "../_shared/catchAsync.js";
+import AppError from "../../utils/AppError.js";
 
 export const applyLeave = catchAsync(async (req, res, next) => {
   const { leaveType, startDate, endDate, reason, attachment } = req.body;

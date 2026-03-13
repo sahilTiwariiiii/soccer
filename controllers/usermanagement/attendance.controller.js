@@ -1,6 +1,6 @@
 import Attendance from "../../models/usermanagement/Attendance.js";
-import catchAsync from "../../utils/catchAsync.js";
-import AppError from "../../utils/appError.js";
+import catchAsync from "../_shared/catchAsync.js";
+import AppError from "../../utils/AppError.js";
 
 export const clockIn = catchAsync(async (req, res, next) => {
   const { location, device } = req.body;
