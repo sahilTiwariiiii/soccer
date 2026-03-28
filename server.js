@@ -49,6 +49,9 @@ import patientVisitRoutes from './routes/patientVisit.routes.js';
 import patientTrackingRoutes from './routes/patientTracking.routes.js';
 import roleRoutes from './routes/role.routes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
+import investigationRoutes from './routes/InvestigationMasterRoute.js';
+import investigationOrderRoutes from './routes/InvestigationOrderRoute.js';
+import auditLogRoutes from './routes/auditLog.routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -74,49 +77,49 @@ app.use('/api/v1', clinicalDetailsRoute);
 app.use('/api/v1/dashboard', dashboardRoutes);
 
 // Module prefixes
-app.use('/api/v1/assets', assetRoutes);
-app.use('/api/v1/equipment', equipmentRoutes);
-app.use('/api/v1/certificates', certificateRoutes);
-app.use('/api/v1/vitals', vitalsRoutes);
-app.use('/api/v1/hospitals', hospitalRoutes);
-app.use('/api/v1/geo', geoRoutes);
-app.use('/api/v1/core', coreRoutes);
-app.use('/api/v1/pharmacy', pharmacyRoutes);
-app.use('/api/v1/ambulance', ambulanceRoutes);
-app.use('/api/v1/appointments', appointmentRoutes);
-app.use('/api/v1/blood-bank', bloodBankRoutes);
-app.use('/api/v1/cssd', cssdRoutes);
-app.use('/api/v1/radiology', radiologyRoutes);
-app.use('/api/v1/laboratory', laboratoryRoutes);
-app.use('/api/v1/usermanagement', userManagementRoutes);
-app.use('/api/v1/billing', billingRoutes);
-app.use('/api/v1/ehr', ehrRoutes);
-app.use('/api/v1/inventory', inventoryRoutes);
-app.use('/api/v1/bedmanagement', bedManagementRoutes);
-app.use('/api/v1/billing', billingRoutes);
-app.use('/api/v1/ehr', ehrRoutes);
-app.use('/api/v1/inventory', inventoryRoutes);
-app.use('/api/v1/bedmanagement', bedManagementRoutes);
+app.use('/api/v1/assets', authMiddleware, assetRoutes);
+app.use('/api/v1/equipment', authMiddleware, equipmentRoutes);
+app.use('/api/v1/certificates', authMiddleware, certificateRoutes);
+app.use('/api/v1/vitals', authMiddleware, vitalsRoutes);
+app.use('/api/v1/hospitals', authMiddleware, hospitalRoutes);
+app.use('/api/v1/geo', authMiddleware, geoRoutes);
+app.use('/api/v1/core', authMiddleware, coreRoutes);
+app.use('/api/v1/pharmacy', authMiddleware, pharmacyRoutes);
+app.use('/api/v1/ambulance', authMiddleware, ambulanceRoutes);
+app.use('/api/v1/appointments', authMiddleware, appointmentRoutes);
+app.use('/api/v1/blood-bank', authMiddleware, bloodBankRoutes);
+app.use('/api/v1/cssd', authMiddleware, cssdRoutes);
+app.use('/api/v1/radiology', authMiddleware, radiologyRoutes);
+app.use('/api/v1/laboratory', authMiddleware, laboratoryRoutes);
+app.use('/api/v1/usermanagement', authMiddleware, userManagementRoutes);
+app.use('/api/v1/billing', authMiddleware, billingRoutes);
+app.use('/api/v1/ehr', authMiddleware, ehrRoutes);
+app.use('/api/v1/inventory', authMiddleware, inventoryRoutes);
+app.use('/api/v1/bedmanagement', authMiddleware, bedManagementRoutes);
 
-app.use('/api/v1/ipd/doctor-assignments', ipdDoctorAssignmentRoutes);
-app.use('/api/v1/ipd', ipdQuickAdmissionRoutes);
-app.use('/api/v1/ipd/daily-notes', ipdDailyNoteRoutes);
-app.use('/api/v1/ipd/nursing-notes', ipdNursingNoteRoutes);
+app.use('/api/v1/ipd/doctor-assignments', authMiddleware, ipdDoctorAssignmentRoutes);
+app.use('/api/v1/ipd/admissions', authMiddleware, ipdAdmissionRoutes);
+app.use('/api/v1/ipd', authMiddleware, ipdQuickAdmissionRoutes);
+app.use('/api/v1/ipd/daily-notes', authMiddleware, ipdDailyNoteRoutes);
+app.use('/api/v1/ipd/nursing-notes', authMiddleware, ipdNursingNoteRoutes);
+app.use('/api/v1/investigations', authMiddleware, investigationRoutes);
+app.use('/api/v1/investigation-orders', authMiddleware, investigationOrderRoutes);
+app.use('/api/v1/audit-logs', authMiddleware, auditLogRoutes);
 // OPD queue and visit summary
-app.use('/api/v1/opd/tokens', opdTokenRoutes);
-app.use('/api/v1/opd', opdRoutes);
-app.use('/api/v1/patients', patientRegistrationRoutes);
-app.use('/api/v1/patients', patientVisitRoutes);
-app.use('/api/v1/patients', patientTrackingRoutes);
-app.use('/api/v1/roles', roleRoutes);
+app.use('/api/v1/opd/tokens', authMiddleware, opdTokenRoutes);
+app.use('/api/v1/opd', authMiddleware, opdRoutes);
+app.use('/api/v1/patients', authMiddleware, patientRegistrationRoutes);
+app.use('/api/v1/patients', authMiddleware, patientVisitRoutes);
+app.use('/api/v1/patients', authMiddleware, patientTrackingRoutes);
+app.use('/api/v1/roles', authMiddleware, roleRoutes);
 
 // Branches / infrastructure
-app.use('/api/v1/branches', branchRoutes);
-app.use('/api/v1/floors', floorRoutes);
-app.use('/api/v1/rooms', roomRoutes);
-app.use('/api/v1/beds', bedRoutes);
-app.use('/api/v1/room-staff-assignments', roomStaffAssignmentRoutes);
-app.use('/api/v1/pharmacy-payments', pharmacyPaymentRoutes);
+app.use('/api/v1/branches', authMiddleware, branchRoutes);
+app.use('/api/v1/floors', authMiddleware, floorRoutes);
+app.use('/api/v1/rooms', authMiddleware, roomRoutes);
+app.use('/api/v1/beds', authMiddleware, bedRoutes);
+app.use('/api/v1/room-staff-assignments', authMiddleware, roomStaffAssignmentRoutes);
+app.use('/api/v1/pharmacy-payments', authMiddleware, pharmacyPaymentRoutes);
 
 // Serve raw swagger.json
 app.get('/swagger.json', (req, res) => {

@@ -1,9 +1,10 @@
 import InvestigationMaster from "../models/Investigation.js";
+import User from "../models/User.js";
 
 // Create
 // Create Investigation
 export const CreateInvestigationMaster = async (req, res) => {
-    const userId = req.user.id;
+    const { id: userId, hospitalId, branchId } = req.user;
     const { name, category, price, isActive } = req.body;
 
     // Validation
@@ -22,20 +23,22 @@ export const CreateInvestigationMaster = async (req, res) => {
 
     try {
         // Check user exists
-        const user = await User.findById(userId);
+        const user = await User.findById(userId).populate('role');
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
 
-        // Role check (FIXED)
-        if (user.role !== "doctor" && user.role !== "admin") {
+        // Role check (assuming user.role is a populated object with a name)
+        const roleName = user.role.name || user.role;
+        if (roleName !== "Doctor" && roleName !== "Admin") {
             return res.status(401).json({
                 message: "Only Doctor and Admin can create Investigations"
             });
         }
 
-        // ✅ Check if same test already exists (case insensitive)
+        // ✅ Check if same test already exists in this hospital (case insensitive)
         const isTestExists = await InvestigationMaster.findOne({
+            hospitalId,
             name: { $regex: new RegExp(`^${name}$`, "i") }
         });
 
@@ -47,6 +50,8 @@ export const CreateInvestigationMaster = async (req, res) => {
 
         // ✅ Create new test
         const newInvestigation = await InvestigationMaster.create({
+            hospitalId,
+            branchId,
             name,
             category,
             price,
@@ -66,35 +71,37 @@ export const CreateInvestigationMaster = async (req, res) => {
 // Update
 // Update Investigation
 export const UpdateInvestigationMaster = async (req, res) => {
-    const userId = req.user.id;
+    const { id: userId, hospitalId, branchId } = req.user;
     const { id } = req.params;
     const { name, category, price, isActive } = req.body;
 
     try {
         // Check user
-        const user = await User.findById(userId);
+        const user = await User.findById(userId).populate('role');
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
 
-        if (user.role !== "doctor" && user.role !== "admin") {
+        const roleName = user.role.name || user.role;
+        if (roleName !== "Doctor" && roleName !== "Admin") {
             return res.status(401).json({
                 message: "Only Doctor and Admin can update Investigations"
             });
         }
 
         // Check investigation exists
-        const investigation = await InvestigationMaster.findById(id);
+        const investigation = await InvestigationMaster.findOne({ _id: id, hospitalId });
         if (!investigation) {
             return res.status(404).json({
                 message: "Investigation not found"
             });
         }
 
-        // heck duplicate name
+        // check duplicate name
         if (name) {
             const isTestExists = await InvestigationMaster.findOne({
                 _id: { $ne: id },
+                hospitalId,
                 name: { $regex: new RegExp(`^${name}$`, "i") }
             });
 
@@ -124,59 +131,57 @@ export const UpdateInvestigationMaster = async (req, res) => {
 };
 // Get All For Doctor or Nurse
 export const GetAllInvestigationMaster = async (req, res) => {
-    const user=req.user.id;
-    const { name, category, minPrice,maxPrice, isActive } = req.query;
-    const filter = {};
+    const { hospitalId, branchId } = req.user;
+    const { name, category, minPrice, maxPrice, isActive } = req.query;
+    
+    const filter = { hospitalId };
+    
     try {
-        if (user.role !== "doctor" && user.role !== "admin") {
-            return res.status(401).json({
-                message: "Only Doctor and Admin can Get Investigations"
-            });
-        }
-        // Category Filetr
+        // Category Filter
         if(name){
             filter.name={$regex:name,$options:"i"};
         }
         if (category) filter.category = category;
-        if (price) filter.price = price;
-        if (isActive) filter.isActive = isActive;
+        if (isActive !== undefined) filter.isActive = isActive;
+        
         // Price Filter
         if(minPrice || maxPrice){
             filter.price={};
-             if(minPrice) filter.price.$gte=Number(minPrice)
+            if(minPrice) filter.price.$gte=Number(minPrice)
             if(maxPrice) filter.price.$lte=Number(maxPrice)
         }
 
-// find 
-const find_investigation=await InvestigationMaster.find(filter);
-return res.status(200).json({
-    sucess:true,
-    count:find_investigation.length,
-    data:find_investigation
-})
+        // find 
+        const find_investigation = await InvestigationMaster.find(filter);
+        return res.status(200).json({
+            success: true,
+            count: find_investigation.length,
+            data: find_investigation
+        })
     } catch (error) {
-        return res.status(500).json({sucess:False, message: error.message });
+        return res.status(500).json({ success: false, message: error.message });
     }
 }
 // Delete Investigation
 export const DeleteInvestigationMaster = async (req, res) => {
-    const userId = req.user.id;
+    const { id: userId, hospitalId } = req.user;
     const { id } = req.params;
 
     try {
         // Check user
-        const user = await User.findById(userId);
+        const user = await User.findById(userId).populate('role');
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
 
-        if (user.role !== "doctor" && user.role !== "admin") {
+        const roleName = user.role.name || user.role;
+        if (roleName !== "Doctor" && roleName !== "Admin") {
             return res.status(401).json({
                 message: "Only Doctor and Admin can delete Investigations"
             });
         }
 
-        const investigation = await InvestigationMaster.findByIdAndDelete(id);
+        const investigation = await InvestigationMaster.findOneAndDelete({ _id: id, hospitalId });
 
         if (!investigation) {
             return res.status(404).json({

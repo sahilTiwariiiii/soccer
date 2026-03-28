@@ -45,6 +45,10 @@ const UserSchema = mongoose.Schema({
     ref: "Department",
     required: true
   },
+  managerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+  },
   assigned_wards: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Ward"

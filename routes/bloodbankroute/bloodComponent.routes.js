@@ -1,5 +1,5 @@
-// routes/bloodComponent.routes.js
 import express from "express";
+import authMiddleware from "../../middlewares/auth.js";
 import {
   createBloodComponent,
   getAllBloodComponents,
@@ -15,21 +15,21 @@ const router = express.Router();
 ;
 
 // Create
-router.post("/", createBloodComponent);
+router.post("/", authMiddleware, createBloodComponent);
 
 // Get All (with filters)
-router.get("/", getAllBloodComponents);
+router.get("/", authMiddleware, getAllBloodComponents);
 
 // Get Single
-router.get("/:id", getBloodComponentById);
+router.get("/:id", authMiddleware, getBloodComponentById);
 
 // Update Full
-router.put("/:id", updateBloodComponent);
+router.put("/:id", authMiddleware, updateBloodComponent);
 
 // Update Status Only
-router.patch("/:id/status", updateBloodComponentStatus);
+router.patch("/:id/status", authMiddleware, updateBloodComponentStatus);
 
 // Delete
-router.delete("/:id", deleteBloodComponent);
+router.delete("/:id", authMiddleware, deleteBloodComponent);
 
 export default router;
